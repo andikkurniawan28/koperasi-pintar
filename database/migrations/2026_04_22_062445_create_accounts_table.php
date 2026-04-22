@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->string('name')->unique();
             $table->string('normal_balance');
+            $table->double('initial_balance')->default(0);
+            $table->boolean('is_payment_gateway')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });
