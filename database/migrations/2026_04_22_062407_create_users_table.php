@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('password');
             // $table->rememberToken();
             $table->boolean('is_active')->default(1);
-            $table->string('color')->nullable();
+            // $table->string('color')->nullable();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

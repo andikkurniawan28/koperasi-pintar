@@ -22,11 +22,11 @@ return new class extends Migration
             $table->foreignId('purchase_id')->nullable()->constrained();
             $table->foreignId('invoice_id')->nullable()->constrained();
             $table->foreignId('payment_id')->nullable()->constrained();
-            $table->foreignId('payment_id')->nullable()->constrained();
             $table->foreignId('saving_id')->nullable()->constrained();
             $table->foreignId('withdraw_id')->nullable()->constrained();
             $table->foreignId('loan_id')->nullable()->constrained();
             $table->foreignId('installment_id')->nullable()->constrained();
+            $table->foreignId('stock_adjustment_id')->nullable()->constrained();
             $table->foreignId('user_id')->constrained();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
