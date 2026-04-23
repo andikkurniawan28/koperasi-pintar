@@ -52,13 +52,37 @@
             </a>
             <ul class="menu-sub">
 
-                {{-- @if (in_array($role, ['Admin']))
+                @if (in_array($role, ['Admin']))
                     <li class="menu-item @yield('ledger_active')">
                         <a href="{{ route('ledger.index') }}" class="menu-link">
                             <div>Buku Besar</div>
                         </a>
                     </li>
-                @endif --}}
+                @endif
+
+                @if (in_array($role, ['Admin']))
+                    <li class="menu-item @yield('cash_flow_active')">
+                        <a href="{{ route('cash_flow.index') }}" class="menu-link">
+                            <div>Arus Kas</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin']))
+                    <li class="menu-item @yield('profit_loss_active')">
+                        <a href="{{ route('profit_loss.index') }}" class="menu-link">
+                            <div>Laba Rugi</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin']))
+                    <li class="menu-item @yield('balance_sheet_active')">
+                        <a href="{{ route('balance_sheet.index') }}" class="menu-link">
+                            <div>Neraca</div>
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </li>
@@ -107,6 +131,14 @@
                     <li class="menu-item @yield('account_active')">
                         <a href="{{ route('account.index') }}" class="menu-link">
                             <div>Akun</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($role === 'Admin')
+                    <li class="menu-item @yield('saving_type_active')">
+                        <a href="{{ route('saving_type.index') }}" class="menu-link">
+                            <div>Jenis Simpanan</div>
                         </a>
                     </li>
                 @endif

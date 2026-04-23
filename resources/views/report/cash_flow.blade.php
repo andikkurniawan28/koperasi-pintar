@@ -80,7 +80,7 @@
 
 $('#btn-process').click(function(){
 
-    $.post("{{ route('report_cash_flow.process') }}",{
+    $.post("{{ route('cash_flow.process') }}",{
 
         _token : "{{ csrf_token() }}",
         date_from : $('#date_from').val(),

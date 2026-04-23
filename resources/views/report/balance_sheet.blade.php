@@ -270,7 +270,7 @@
 
 $('#btn-process').click(function(){
 
-    $.post("{{ route('report_balance_sheet.process') }}",{
+    $.post("{{ route('balance_sheet.process') }}",{
 
         _token : "{{ csrf_token() }}",
         date_from : $('#date_from').val(),

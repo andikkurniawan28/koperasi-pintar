@@ -22,12 +22,18 @@
                     <select name="sub" class="form-control">
                         <option value="Aset Lancar">Aset Lancar</option>
                         <option value="Aset Tetap">Aset Tetap</option>
-                        <option value="Kewajiban Jangka Pendek">Kewajiban Jangka Pendek</option>
+                        <option value="Jangka Pendek">Jangka Pendek</option>
+                        <option value="Simpanan">Simpanan</option>
                         <option value="Modal">Modal</option>
-                        <option value="Pendapatan Usaha">Pendapatan Usaha</option>
-                        <option value="Pendapatan Lain-lain">Pendapatan Lain-lain</option>
-                        <option value="Beban Operasional">Beban Operasional</option>
-                        <option value="Beban Lain-lain">Beban Lain-lain</option>
+                        <option value="Toko Anggota">Toko Anggota</option>
+                        <option value="Toko Umum">Toko Umum</option>
+                        <option value="Simpan Pinjam Anggota">Simpan Pinjam Anggota</option>
+                        <option value="Simpan Pinjam Umum">Simpan Pinjam Umum</option>
+                        <option value="Jasa Anggota">Jasa Anggota</option>
+                        <option value="Jasa Umum">Jasa Umum</option>
+                        <option value="Lain-lain">Lain-lain</option>
+                        <option value="Toko">Toko</option>
+                        <option value="Operasional">Operasional</option>
                     </select>
                 </div>
 

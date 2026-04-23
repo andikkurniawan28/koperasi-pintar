@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class SavingType extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    public function account(){
+        return $this->belongsTo(Account::class);
+    }
 }

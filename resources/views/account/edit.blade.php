@@ -28,12 +28,18 @@
                     <select name="sub" class="form-control">
                         <option value="Aset Lancar" {{ old('sub', $account->sub) == 'Aset Lancar' ? 'selected' : '' }}>Aset Lancar</option>
                         <option value="Aset Tetap" {{ old('sub', $account->sub) == 'Aset Tetap' ? 'selected' : '' }}>Aset Tetap</option>
-                        <option value="Kewajiban Jangka Pendek" {{ old('sub', $account->sub) == 'Kewajiban Jangka Pendek' ? 'selected' : '' }}>Kewajiban Jangka Pendek</option>
+                        <option value="Jangka Pendek" {{ old('sub', $account->sub) == 'Jangka Pendek' ? 'selected' : '' }}>Jangka Pendek</option>
+                        <option value="Simpanan" {{ old('sub', $account->sub) == 'Simpanan' ? 'selected' : '' }}>Simpanan</option>
                         <option value="Modal" {{ old('sub', $account->sub) == 'Modal' ? 'selected' : '' }}>Modal</option>
-                        <option value="Pendapatan Usaha" {{ old('sub', $account->sub) == 'Pendapatan Usaha' ? 'selected' : '' }}>Pendapatan Usaha</option>
-                        <option value="Pendapatan Lain-lain" {{ old('sub', $account->sub) == 'Pendapatan Lain-lain' ? 'selected' : '' }}>Pendapatan Lain-lain</option>
-                        <option value="Beban Operasional" {{ old('sub', $account->sub) == 'Beban Operasional' ? 'selected' : '' }}>Beban Operasional</option>
-                        <option value="Beban Lain-lain" {{ old('sub', $account->sub) == 'Beban Lain-lain' ? 'selected' : '' }}>Beban Lain-lain</option>
+                        <option value="Toko Anggota" {{ old('sub', $account->sub) == 'Toko Anggota' ? 'selected' : '' }}>Toko Anggota</option>
+                        <option value="Toko Umum" {{ old('sub', $account->sub) == 'Toko Umum' ? 'selected' : '' }}>Toko Umum</option>
+                        <option value="Simpan Pinjam Anggota" {{ old('sub', $account->sub) == 'Simpan Pinjam Anggota' ? 'selected' : '' }}>Simpan Pinjam Anggota</option>
+                        <option value="Simpan Pinjam Umum" {{ old('sub', $account->sub) == 'Simpan Pinjam Umum' ? 'selected' : '' }}>Simpan Pinjam Umum</option>
+                        <option value="Jasa Anggota" {{ old('sub', $account->sub) == 'Jasa Anggota' ? 'selected' : '' }}>Jasa Anggota</option>
+                        <option value="Jasa Umum" {{ old('sub', $account->sub) == 'Jasa Umum' ? 'selected' : '' }}>Jasa Umum</option>
+                        <option value="Lain-lain" {{ old('sub', $account->sub) == 'Lain-lain' ? 'selected' : '' }}>Lain-lain</option>
+                        <option value="Toko" {{ old('sub', $account->sub) == 'Toko' ? 'selected' : '' }}>Toko</option>
+                        <option value="Operasional" {{ old('sub', $account->sub) == 'Operasional' ? 'selected' : '' }}>Operasional</option>
                     </select>
                 </div>
 

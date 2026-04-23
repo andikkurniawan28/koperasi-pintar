@@ -63,7 +63,7 @@
     <script>
         $('#btn-process').click(function() {
 
-            $.post("{{ route('report_profit_loss.process') }}", {
+            $.post("{{ route('profit_loss.process') }}", {
 
                 _token: "{{ csrf_token() }}",
                 date_from: $('#date_from').val(),

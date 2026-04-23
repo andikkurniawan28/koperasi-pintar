@@ -13,17 +13,45 @@ class Account extends Model
 
     public static function defineGroup($sub)
     {
-        if($sub == "Aset Lancar" or $sub == "Aset Tetap") {
-            return "Aset";
-        } else if($sub == "Kewajiban Jangka Pendek") {
-            return "Kewajiban";
-        } else if($sub == "Modal") {
-            return "Modal";
-        } else if($sub == "Pendapatan Usaha" or $sub == "Pendapatan Lain-lain"){
-            return "Pendapatan";
-        } else if($sub == "Beban Operasional" or $sub == "Beban Lain-lain"){
-            return "Beban";
+        // ASET
+        if (in_array($sub, ['Aset Lancar', 'Aset Tetap'])) {
+            return 'Aset';
         }
+
+        // KEWAJIBAN
+        if (in_array($sub, ['Jangka Pendek', 'Simpanan'])) {
+            return 'Kewajiban';
+        }
+
+        // MODAL
+        if ($sub == 'Modal') {
+            return 'Modal';
+        }
+
+        // PENDAPATAN
+        if (in_array($sub, [
+            'Toko Anggota',
+            'Toko Umum',
+            'Simpan Pinjam Anggota',
+            'Simpan Pinjam Umum',
+            'Jasa Anggota',
+            'Jasa Umum',
+            'Lain-lain'
+        ])) {
+            return 'Pendapatan';
+        }
+
+        // HPP
+        if ($sub == 'Toko') {
+            return 'HPP';
+        }
+
+        // BEBAN
+        if (in_array($sub, ['Operasional', 'Lain-lain'])) {
+            return 'Beban';
+        }
+
+        return null; // fallback biar aman
     }
 
     public static function defineNormalBalance($group)

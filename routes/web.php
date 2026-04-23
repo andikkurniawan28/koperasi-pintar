@@ -2,9 +2,14 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BalanceSheetController;
+use App\Http\Controllers\CashFlowController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProfitLossController;
+use App\Http\Controllers\SavingTypeController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -61,4 +66,20 @@ Route::middleware(['auth'])->group(function () {
     Route::put('account/{account}', [AccountController::class, 'update'])->name('account.update')->middleware('role:Admin');
     Route::delete('account/{account}', [AccountController::class, 'destroy'])->name('account.destroy')->middleware('role:Admin');
 
+    Route::get('saving_type', [SavingTypeController::class, 'index'])->name('saving_type.index')->middleware('role:Admin');
+    Route::get('saving_type/create', [SavingTypeController::class, 'create'])->name('saving_type.create')->middleware('role:Admin');
+    Route::post('saving_type', [SavingTypeController::class, 'store'])->name('saving_type.store')->middleware('role:Admin');
+    Route::get('saving_type/{saving_type}/edit', [SavingTypeController::class, 'edit'])->name('saving_type.edit')->middleware('role:Admin');
+    Route::put('saving_type/{saving_type}', [SavingTypeController::class, 'update'])->name('saving_type.update')->middleware('role:Admin');
+    Route::delete('saving_type/{saving_type}', [SavingTypeController::class, 'destroy'])->name('saving_type.destroy')->middleware('role:Admin');
+
+    Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Admin');
+    Route::get('cash_flow', [CashFlowController::class, 'index'])->name('cash_flow.index')->middleware('role:Admin');
+    Route::get('profit_loss', [ProfitLossController::class, 'index'])->name('profit_loss.index')->middleware('role:Admin');
+    Route::get('balance_sheet', [BalanceSheetController::class, 'index'])->name('balance_sheet.index')->middleware('role:Admin');
 });
+
+Route::post('ledger', [LedgerController::class, 'process'])->name('ledger.process');
+Route::post('cash_flow', [CashFlowController::class, 'process'])->name('cash_flow.process');
+Route::post('profit_loss', [ProfitLossController::class, 'process'])->name('profit_loss.process');
+Route::post('balance_sheet', [BalanceSheetController::class, 'process'])->name('balance_sheet.process');

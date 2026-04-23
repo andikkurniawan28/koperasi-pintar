@@ -2,64 +2,97 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
 use App\Models\SavingType;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class SavingTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = SavingType::query();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('account', fn($row) => $row->account->code .' - '. $row->account->name ?? '-')
+                ->filterColumn('account', function ($query, $keyword) {
+                    $query->whereHas('account', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('account', function ($query, $keyword) {
+                    $query->whereHas('account', function ($q) use ($keyword) {
+                        $q->where('code', 'like', "%{$keyword}%");
+                    });
+                })
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('saving_type.edit', $row->id);
+                    $deleteUrl = route('saving_type.destroy', $row->id);
+
+                    return '<div class="btn-group" role="group">
+                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
+                                    ' . csrf_field() . method_field('DELETE') . '
+                                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                                </form>
+                            </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('saving_type.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return view('saving_type.create', [
+            'accounts' => Account::all(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:saving_types,name',
+            'account_id' => 'required|exists:accounts,id',
+        ]);
+
+        SavingType::create([
+            'name' => $request->name,
+            'account_id' => $request->account_id,
+        ]);
+
+        return redirect()->route('saving_type.index')->with('success', 'Jenis Simpanan berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(SavingType $savingType)
+    public function edit(SavingType $saving_type)
     {
-        //
+        $accounts = Account::all();
+        return view('saving_type.edit', compact('saving_type', 'accounts'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(SavingType $savingType)
+    public function update(Request $request, SavingType $saving_type)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255|unique:saving_types,name,' . $saving_type->id,
+            'account_id' => 'required|exists:accounts,id',
+        ]);
+
+        $saving_type->update([
+            'name' => $request->name,
+            'account_id' => $request->account_id,
+        ]);
+
+        return redirect()->route('saving_type.index')->with('success', 'Jenis Simpanan berhasil diperbarui.');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, SavingType $savingType)
+    public function destroy(SavingType $saving_type)
     {
-        //
-    }
+        $saving_type->delete();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(SavingType $savingType)
-    {
-        //
+        return redirect()->route('saving_type.index')->with('success', 'Jenis Simpanan berhasil dihapus.');
     }
 }
