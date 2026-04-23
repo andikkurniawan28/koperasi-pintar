@@ -65,7 +65,7 @@
                     <thead>
                         <tr>
                             <th>Tanggal</th>
-                            <th>Kode</th>
+                            {{-- <th>Kode</th> --}}
                             <th>Keterangan</th>
                             <th class="text-end">Debit</th>
                             <th class="text-end">Kredit</th>
@@ -122,7 +122,6 @@ $('#btn-process').click(function(){
                 html += `
                 <tr>
                     <td>${row.date}</td>
-                    <td>${row.code}</td>
                     <td>${row.description}</td>
                     <td class="text-end">${format(row.debit)}</td>
                     <td class="text-end">${format(row.credit)}</td>

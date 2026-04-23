@@ -34,6 +34,14 @@
             </a>
             <ul class="menu-sub">
 
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('sales_active')">
+                        <a href="{{ route('sales.index') }}" class="menu-link">
+                            <div>Penjualan</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
 

@@ -9,4 +9,8 @@ use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
     use AuthorizesRequests, ValidatesRequests;
+
+    public static function cleanCurrencyFormatting($val){
+        return (double) str_replace('.', '', $val ?? 0);
+    }
 }

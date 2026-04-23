@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('buy_price');
             $table->double('price_for_member');
             $table->double('price_for_customer');
-            $table->integer('minimum_alert');
+            $table->integer('minimum_alert')->default(1);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

@@ -2,64 +2,202 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Account;
+use App\Models\Customer;
+use App\Models\Member;
+use App\Models\Product;
 use App\Models\Sales;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\DataTables;
 
 class SalesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->ajax()) {
+            $data = Sales::with(['customer', 'user'])->latest();
+
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('member', fn($row) => $row->member->name ?? '-')
+                ->addColumn('customer', fn($row) => $row->customer->name ?? '-')
+                ->addColumn('user', fn($row) => $row->user->name ?? '-')
+                ->filterColumn('member', function ($query, $keyword) {
+                    $query->whereHas('member', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('customer', function ($query, $keyword) {
+                    $query->whereHas('customer', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->filterColumn('user', function ($query, $keyword) {
+                    $query->whereHas('user', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    });
+                })
+                ->addColumn('action', function ($row) {
+                    $editUrl = route('sales.edit', $row->id);
+                    $showUrl = route('sales.show', $row->id);
+                    $deleteUrl = route('sales.destroy', $row->id);
+                    // $recap = route('sales.payment_record_per_invoice', $row->id);
+
+                    return '<div class="btn-group">
+                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>
+                                <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
+                                    ' . csrf_field() . method_field('DELETE') . '
+                                    <button class="btn btn-sm btn-danger">Hapus</button>
+                                </form>
+                            </div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+        return view('sales.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Sales $sales)
     {
-        //
+        $sales->load(['customer', 'user', 'member', 'product']);
+        return view('sales.show', compact('sales'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function create()
+    {
+        return view('sales.create', [
+            'customers' => Customer::all(),
+            'members' => Member::all(),
+            'payment_gateways' => Account::where('is_payment_gateway', 1)->get(),
+            'products' => Product::all(),
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'date' => 'required|date',
+            'type' => 'required|in:member,customer',
+            'customer_id' => 'nullable|exists:customers,id',
+            'member_id' => 'nullable|exists:members,id',
+            'subtotal' => 'required',
+            'discount' => 'required',
+            'taxes' => 'required',
+            'expenses' => 'required',
+            'grand_total' => 'required',
+            'account_id' => 'required|exists:accounts,id',
+            'items' => 'required|array',
+            'items.*.product_id' => 'required',
+            'items.*.qty' => 'required|numeric|min:1',
+            'items.*.price' => 'required',
+        ]);
+
+        $request = self::cleanRequest($request);
+
+        DB::beginTransaction();
+
+        try {
+            $sales = Sales::catatPenjualan($request);
+
+            DB::commit();
+
+            return redirect()->route('sales.index')->with('success', 'Penjualan berhasil dibuat.');
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
     public function edit(Sales $sales)
     {
-        //
+        $sales->load('product');
+
+        return view('sales.edit', [
+            'sales' => $sales,
+            'customers' => Customer::all(),
+            'members' => Member::all(),
+            'payment_gateways' => Account::where('is_payment_gateway', 1)->get(),
+            'products' => Product::all(),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Sales $sales)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'date' => 'required|date',
+            'type' => 'required|in:member,customer',
+            'customer_id' => 'nullable|exists:customers,id',
+            'member_id' => 'nullable|exists:members,id',
+            'subtotal' => 'required',
+            'discount' => 'required',
+            'taxes' => 'required',
+            'expenses' => 'required',
+            'grand_total' => 'required',
+            'account_id' => 'required|exists:accounts,id',
+            'items' => 'required|array|min:1',
+            'items.*.product_id' => 'required|exists:products,id',
+            'items.*.qty' => 'required|numeric|min:1',
+            'items.*.price' => 'required',
+        ]);
+
+        $request = self::cleanRequest($request);
+
+        DB::beginTransaction();
+
+        try {
+            $sales = Sales::updatePenjualan($id, $request);
+
+            DB::commit();
+
+            return redirect()->route('sales.index')->with('success', 'Penjualan berhasil diupdate.');
+        } catch (Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with('error', $e->getMessage());
+        }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Sales $sales)
     {
-        //
+        $sales->delete();
+
+        return redirect()->route('sales.index')->with('success', 'Penjualan berhasil dihapus.');
+    }
+
+    public static function cleanCurrencyFormatting($val){
+        return (double) str_replace('.', '', $val ?? 0);
+    }
+
+    public static function cleanRequest($request)
+    {
+        $request->request->add([
+            'subtotal' => self::cleanCurrencyFormatting($request->subtotal),
+            'discount' => self::cleanCurrencyFormatting($request->discount),
+            'taxes' => self::cleanCurrencyFormatting($request->taxes),
+            'expenses' => self::cleanCurrencyFormatting($request->expenses),
+            'grand_total' => self::cleanCurrencyFormatting($request->grand_total),
+        ]);
+
+        $items = collect($request->items)->map(function ($item) {
+            return [
+                'product_id' => $item['product_id'],
+                'qty'        => $item['qty'],
+                'price'      => self::cleanCurrencyFormatting($item['price']),
+                'amount'      => self::cleanCurrencyFormatting($item['amount']),
+            ];
+        })->toArray();
+
+        $request->merge([
+            'items' => $items
+        ]);
+
+        return $request;
     }
 }

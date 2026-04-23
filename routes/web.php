@@ -10,6 +10,7 @@ use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfitLossController;
+use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SavingTypeController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -80,6 +81,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit')->middleware('role:Admin');
     Route::put('product/{product}', [ProductController::class, 'update'])->name('product.update')->middleware('role:Admin');
     Route::delete('product/{product}', [ProductController::class, 'destroy'])->name('product.destroy')->middleware('role:Admin');
+
+    Route::get('sales', [SalesController::class, 'index'])->name('sales.index')->middleware('role:Admin, Kasir');
+    Route::get('sales/create', [SalesController::class, 'create'])->name('sales.create')->middleware('role:Admin, Kasir');
+    Route::post('sales', [SalesController::class, 'store'])->name('sales.store')->middleware('role:Admin, Kasir');
+    Route::get('sales/{sales}', [SalesController::class, 'show'])->name('sales.show')->middleware('role:Admin, Kasir');
+    Route::get('sales/{sales}/edit', [SalesController::class, 'edit'])->name('sales.edit')->middleware('role:Admin');
+    Route::put('sales/{sales}', [SalesController::class, 'update'])->name('sales.update')->middleware('role:Admin');
+    Route::delete('sales/{sales}', [SalesController::class, 'destroy'])->name('sales.destroy')->middleware('role:Admin');
 
     Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Admin');
     Route::get('cash_flow', [CashFlowController::class, 'index'])->name('cash_flow.index')->middleware('role:Admin');

@@ -4,8 +4,12 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Account;
+use App\Models\Customer;
+use App\Models\Member;
+use App\Models\Product;
 use App\Models\Role;
 use App\Models\SavingType;
+use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -24,6 +28,23 @@ class DatabaseSeeder extends Seeder
         User::insert([
             ['name' => 'Admin','role_id' => 1,'username' => 'admin','password' => bcrypt('admin')],
             ['name' => 'Kasir','role_id' => 2,'username' => 'kasir','password' => bcrypt('kasir')],
+        ]);
+
+        Member::insert([
+            ['name' => 'Budi Sugiarto', 'description' => 'PT. ABC', 'whatsapp' => '081234567891', 'code' => '1234']
+        ]);
+
+        Customer::insert([
+            ['name' => 'Andi Madieka', 'description' => 'PT. ABC', 'whatsapp' => '081234567891']
+        ]);
+
+        Supplier::insert([
+            ['name' => 'Wahyu Sumaji', 'description' => 'PT. XYZ', 'whatsapp' => '081234567891']
+        ]);
+
+        Product::insert([
+            ['name' => 'Indomie Goreng', 'buy_price' => 3000, 'price_for_member' => 3200, 'price_for_customer' => 3200,  'barcode' => 1234],
+            ['name' => 'Le Mineral Galon', 'buy_price' => 19000, 'price_for_member' => 20000, 'price_for_customer' => 21000,  'barcode' => 2234],
         ]);
 
         Account::insert([
