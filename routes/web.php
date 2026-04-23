@@ -1,5 +1,12 @@
 <?php
 
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +20,45 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('login', [AuthController::class, 'login'])->name('login');
+Route::post('login', [AuthController::class, 'loginProcess'])->name('loginProcess');
+Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/', HomeController::class)->name('home')->middleware(['auth']);
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('user', [UserController::class, 'index'])->name('user.index')->middleware('role:Admin');
+    Route::get('user/create', [UserController::class, 'create'])->name('user.create')->middleware('role:Admin');
+    Route::post('user', [UserController::class, 'store'])->name('user.store')->middleware('role:Admin');
+    Route::get('user/{user}/edit', [UserController::class, 'edit'])->name('user.edit')->middleware('role:Admin');
+    Route::put('user/{user}', [UserController::class, 'update'])->name('user.update')->middleware('role:Admin');
+    Route::delete('user/{user}', [UserController::class, 'destroy'])->name('user.destroy')->middleware('role:Admin');
+
+    Route::get('customer', [CustomerController::class, 'index'])->name('customer.index')->middleware('role:Admin');
+    Route::get('customer/create', [CustomerController::class, 'create'])->name('customer.create')->middleware('role:Admin');
+    Route::post('customer', [CustomerController::class, 'store'])->name('customer.store')->middleware('role:Admin');
+    Route::get('customer/{customer}/edit', [CustomerController::class, 'edit'])->name('customer.edit')->middleware('role:Admin');
+    Route::put('customer/{customer}', [CustomerController::class, 'update'])->name('customer.update')->middleware('role:Admin');
+    Route::delete('customer/{customer}', [CustomerController::class, 'destroy'])->name('customer.destroy')->middleware('role:Admin');
+
+    Route::get('member', [MemberController::class, 'index'])->name('member.index')->middleware('role:Admin');
+    Route::get('member/create', [MemberController::class, 'create'])->name('member.create')->middleware('role:Admin');
+    Route::post('member', [MemberController::class, 'store'])->name('member.store')->middleware('role:Admin');
+    Route::get('member/{member}/edit', [MemberController::class, 'edit'])->name('member.edit')->middleware('role:Admin');
+    Route::put('member/{member}', [MemberController::class, 'update'])->name('member.update')->middleware('role:Admin');
+    Route::delete('member/{member}', [MemberController::class, 'destroy'])->name('member.destroy')->middleware('role:Admin');
+
+    Route::get('supplier', [SupplierController::class, 'index'])->name('supplier.index')->middleware('role:Admin');
+    Route::get('supplier/create', [SupplierController::class, 'create'])->name('supplier.create')->middleware('role:Admin');
+    Route::post('supplier', [SupplierController::class, 'store'])->name('supplier.store')->middleware('role:Admin');
+    Route::get('supplier/{supplier}/edit', [SupplierController::class, 'edit'])->name('supplier.edit')->middleware('role:Admin');
+    Route::put('supplier/{supplier}', [SupplierController::class, 'update'])->name('supplier.update')->middleware('role:Admin');
+    Route::delete('supplier/{supplier}', [SupplierController::class, 'destroy'])->name('supplier.destroy')->middleware('role:Admin');
+
+    Route::get('account', [AccountController::class, 'index'])->name('account.index')->middleware('role:Admin');
+    Route::get('account/create', [AccountController::class, 'create'])->name('account.create')->middleware('role:Admin');
+    Route::post('account', [AccountController::class, 'store'])->name('account.store')->middleware('role:Admin');
+    Route::get('account/{account}/edit', [AccountController::class, 'edit'])->name('account.edit')->middleware('role:Admin');
+    Route::put('account/{account}', [AccountController::class, 'update'])->name('account.update')->middleware('role:Admin');
+    Route::delete('account/{account}', [AccountController::class, 'destroy'])->name('account.destroy')->middleware('role:Admin');
+
 });
