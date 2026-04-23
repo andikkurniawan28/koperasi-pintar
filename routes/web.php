@@ -12,6 +12,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SavingTypeController;
+use App\Http\Controllers\StockLedgerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -91,12 +92,14 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('sales/{sales}', [SalesController::class, 'destroy'])->name('sales.destroy')->middleware('role:Admin');
 
     Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Admin');
+    Route::get('stock_ledger', [StockLedgerController::class, 'index'])->name('stock_ledger.index')->middleware('role:Admin');
     Route::get('cash_flow', [CashFlowController::class, 'index'])->name('cash_flow.index')->middleware('role:Admin');
     Route::get('profit_loss', [ProfitLossController::class, 'index'])->name('profit_loss.index')->middleware('role:Admin');
     Route::get('balance_sheet', [BalanceSheetController::class, 'index'])->name('balance_sheet.index')->middleware('role:Admin');
 });
 
 Route::post('ledger', [LedgerController::class, 'process'])->name('ledger.process');
+Route::post('stock_ledger', [StockLedgerController::class, 'process'])->name('stock_ledger.process');
 Route::post('cash_flow', [CashFlowController::class, 'process'])->name('cash_flow.process');
 Route::post('profit_loss', [ProfitLossController::class, 'process'])->name('profit_loss.process');
 Route::post('balance_sheet', [BalanceSheetController::class, 'process'])->name('balance_sheet.process');

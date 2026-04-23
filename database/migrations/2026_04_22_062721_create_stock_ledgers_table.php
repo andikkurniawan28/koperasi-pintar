@@ -16,9 +16,9 @@ return new class extends Migration
             $table->date('date');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('product_id')->constrained();
-            $table->foreignId('sales_id')->nullable()->constrained();
-            $table->foreignId('purchase_id')->nullable()->constrained();
-            $table->foreignId('stock_adjustment_id')->nullable()->constrained();
+            $table->foreignId('sales_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('purchase_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('stock_adjustment_id')->nullable()->constrained()->onDelete('cascade');
             $table->text('description');
             $table->integer('in');
             $table->integer('out');

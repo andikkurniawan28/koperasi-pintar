@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\SalesProduct;
+use App\Models\StockLedger;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -32,8 +33,7 @@ class Sales extends Model
     {
         $code = 'SLS' . date('YmdHis');
 
-        // Insert table sales
-        $sales = Sales::create([
+        $sales = self::create([
             'type' => $request->type,
             'code' => $code,
             'date' => $request->date,
@@ -48,8 +48,15 @@ class Sales extends Model
             'account_id' => $request->account_id,
         ]);
 
-        // Insert table sales product
+        $totalHpp = 0;
+
         foreach ($request->items as $item) {
+
+            $product = Product::find($item['product_id']);
+
+            $hpp = $product->buy_price * $item['qty'];
+            $totalHpp += $hpp;
+
             SalesProduct::create([
                 'sales_id' => $sales->id,
                 'product_id' => $item['product_id'],
@@ -57,10 +64,20 @@ class Sales extends Model
                 'price' => $item['price'],
                 'amount' => $item['amount'],
             ]);
+
+            StockLedger::create([
+                'sales_id' => $sales->id,
+                'product_id' => $item['product_id'],
+                'date' => $sales->date,
+                'user_id' => $sales->user_id,
+                'description' => "Penjualan toko ". $sales->code,
+                'out' => $item['qty'],
+                'in' => 0,
+            ]);
         }
 
-        // Insert table ledger
-        Ledger::catatPenjualan($sales, $request);
+        // kirim HPP ke ledger
+        Ledger::catatPenjualan($sales, $request, $totalHpp);
 
         return $sales;
     }
@@ -83,8 +100,17 @@ class Sales extends Model
         ]);
 
         SalesProduct::where('sales_id', $sales->id)->delete();
+        StockLedger::where('sales_id', $sales->id)->delete();
+        Ledger::where('sales_id', $sales->id)->delete();
+
+        $totalHpp = 0;
 
         foreach ($request->items as $item) {
+
+            $product = Product::find($item['product_id']);
+            $hpp = $product->buy_price * $item['qty'];
+            $totalHpp += $hpp;
+
             SalesProduct::create([
                 'sales_id'   => $sales->id,
                 'product_id' => $item['product_id'],
@@ -92,11 +118,19 @@ class Sales extends Model
                 'price'      => $item['price'],
                 'amount'     => $item['amount'],
             ]);
+
+            StockLedger::create([
+                'sales_id' => $sales->id,
+                'product_id' => $item['product_id'],
+                'date' => $sales->date,
+                'user_id' => $sales->user_id,
+                'description' => "Penjualan toko ". $sales->code,
+                'out' => $item['qty'],
+                'in' => 0,
+            ]);
         }
 
-        Ledger::where('sales_id', $sales->id)->delete();
-
-        Ledger::catatPenjualan($sales, $request);
+        Ledger::catatPenjualan($sales, $request, $totalHpp);
 
         return $sales;
     }

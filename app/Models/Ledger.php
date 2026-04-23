@@ -15,8 +15,9 @@ class Ledger extends Model
         return $this->belongsTo(Account::class);
     }
 
-    public static function catatPenjualan($sales, $request)
+    public static function catatPenjualan($sales, $request, $totalHpp)
     {
+        // Kas / Bank
         self::insert([
             'date' => $sales->date,
             'user_id' => $sales->user_id,
@@ -26,11 +27,9 @@ class Ledger extends Model
             'credit' => 0,
             'sales_id' => $sales->id,
         ]);
-        if($sales->type == 'member'){
-            $account_id = 13;
-        } else {
-            $account_id = 14;
-        }
+
+        // Pendapatan
+        $account_id = ($sales->type == 'member') ? 13 : 14;
 
         self::insert([
             'date' => $sales->date,
@@ -41,5 +40,31 @@ class Ledger extends Model
             'debit' => 0,
             'sales_id' => $sales->id,
         ]);
+
+        // HPP
+        if ($totalHpp > 0) {
+
+            // Debit HPP
+            self::insert([
+                'date' => $sales->date,
+                'user_id' => $sales->user_id,
+                'account_id' => 20,
+                'description' => 'HPP '.$sales->code,
+                'debit' => $totalHpp,
+                'credit' => 0,
+                'sales_id' => $sales->id,
+            ]);
+
+            // Credit Persediaan
+            self::insert([
+                'date' => $sales->date,
+                'user_id' => $sales->user_id,
+                'account_id' => 5,
+                'description' => 'Persediaan keluar '.$sales->code,
+                'credit' => $totalHpp,
+                'debit' => 0,
+                'sales_id' => $sales->id,
+            ]);
+        }
     }
 }

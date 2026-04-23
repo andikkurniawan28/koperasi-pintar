@@ -29,7 +29,7 @@
         <!-- Toko -->
         <li class="menu-item @yield('transaksi_toko_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <i class="menu-icon tf-icons bx bx-store"></i>
                 <div>Toko</div>
             </a>
             <ul class="menu-sub">
@@ -48,7 +48,7 @@
         <!-- Simpan Pinjam -->
         <li class="menu-item @yield('transaksi_simpan_pinjam_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <i class="menu-icon tf-icons bx bx-wallet"></i>
                 <div>Simpan Pinjam</div>
             </a>
             <ul class="menu-sub">
@@ -59,7 +59,7 @@
         <!-- Jasa -->
         <li class="menu-item @yield('transaksi_jasa_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <i class="menu-icon tf-icons bx bx-wrench"></i>
                 <div>Jasa</div>
             </a>
             <ul class="menu-sub">
@@ -78,6 +78,14 @@
                     <li class="menu-item @yield('ledger_active')">
                         <a href="{{ route('ledger.index') }}" class="menu-link">
                             <div>Buku Besar</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin']))
+                    <li class="menu-item @yield('stock_ledger_active')">
+                        <a href="{{ route('stock_ledger.index') }}" class="menu-link">
+                            <div>Kartu Stok</div>
                         </a>
                     </li>
                 @endif
