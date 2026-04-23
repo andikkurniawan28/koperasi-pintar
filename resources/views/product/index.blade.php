@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h1 class="h3 mb-3"><strong>Daftar produk</strong></h1>
+    <h1 class="h3 mb-3"><strong>Daftar Produk</strong></h1>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <a href="{{ route('product.create') }}" class="btn btn-primary">
@@ -19,12 +19,12 @@
                 <table id="productTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center">
                     <thead>
                         <tr>
-                            <th>Kategori</th>
                             <th>Nama</th>
-                            <th>Packaging</th>
-                            <th>Harga</th>
-                            <th>Min Order</th>
-                            {{-- <th>Biaya</th> --}}
+                            <th>Barcode</th>
+                            <th>Harga Beli</th>
+                            <th>Harga Jual ke Anggota</th>
+                            <th>Harga Jual ke Umum</th>
+                            <th>Min Stok</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -47,12 +47,12 @@
             ajax: "{{ route('product.index') }}",
             order: [[0, 'asc']],
             columns: [
-                { data: 'category', name: 'category' },
                 { data: 'name', name: 'name' },
-                { data: 'packaging', name: 'packaging' },
-                { data: 'price', name: 'price', render: function(data) { return formatRupiah(data); } },
-                // { data: 'cost', name: 'cost', render: function(data) { return formatRupiah(data); } },
-                { data: 'minimum_order', name: 'minimum_order' },
+                { data: 'barcode', name: 'barcode' },
+                { data: 'buy_price', name: 'buy_price', render: function(data) { return formatRupiah(data); } },
+                { data: 'price_for_member', name: 'price_for_member', render: function(data) { return formatRupiah(data); } },
+                { data: 'price_for_customer', name: 'price_for_customer', render: function(data) { return formatRupiah(data); } },
+                { data: 'minimum_alert', name: 'minimum_alert' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

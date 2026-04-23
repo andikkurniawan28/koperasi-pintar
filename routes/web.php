@@ -8,6 +8,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\SavingTypeController;
 use App\Http\Controllers\SupplierController;
@@ -72,6 +73,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('saving_type/{saving_type}/edit', [SavingTypeController::class, 'edit'])->name('saving_type.edit')->middleware('role:Admin');
     Route::put('saving_type/{saving_type}', [SavingTypeController::class, 'update'])->name('saving_type.update')->middleware('role:Admin');
     Route::delete('saving_type/{saving_type}', [SavingTypeController::class, 'destroy'])->name('saving_type.destroy')->middleware('role:Admin');
+
+    Route::get('product', [ProductController::class, 'index'])->name('product.index')->middleware('role:Admin');
+    Route::get('product/create', [ProductController::class, 'create'])->name('product.create')->middleware('role:Admin');
+    Route::post('product', [ProductController::class, 'store'])->name('product.store')->middleware('role:Admin');
+    Route::get('product/{product}/edit', [ProductController::class, 'edit'])->name('product.edit')->middleware('role:Admin');
+    Route::put('product/{product}', [ProductController::class, 'update'])->name('product.update')->middleware('role:Admin');
+    Route::delete('product/{product}', [ProductController::class, 'destroy'])->name('product.destroy')->middleware('role:Admin');
 
     Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Admin');
     Route::get('cash_flow', [CashFlowController::class, 'index'])->name('cash_flow.index')->middleware('role:Admin');

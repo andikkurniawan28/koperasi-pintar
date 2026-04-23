@@ -26,21 +26,35 @@
             </a>
         </li>
 
-        <!-- Transaksi -->
-        <li class="menu-item @yield('transaksi_active')">
+        <!-- Toko -->
+        <li class="menu-item @yield('transaksi_toko_active')">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-receipt"></i>
-                <div>Transaksi</div>
+                <div>Toko</div>
             </a>
             <ul class="menu-sub">
 
-                {{-- @if (in_array($role, ['Admin', 'Admin']))
-                    <li class="menu-item @yield('order_active')">
-                        <a href="{{ route('order.index') }}" class="menu-link">
-                            <div>Order</div>
-                        </a>
-                    </li>
-                @endif --}}
+            </ul>
+        </li>
+
+        <!-- Simpan Pinjam -->
+        <li class="menu-item @yield('transaksi_simpan_pinjam_active')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <div>Simpan Pinjam</div>
+            </a>
+            <ul class="menu-sub">
+
+            </ul>
+        </li>
+
+        <!-- Jasa -->
+        <li class="menu-item @yield('transaksi_jasa_active')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-receipt"></i>
+                <div>Jasa</div>
+            </a>
+            <ul class="menu-sub">
 
             </ul>
         </li>
@@ -139,6 +153,14 @@
                     <li class="menu-item @yield('saving_type_active')">
                         <a href="{{ route('saving_type.index') }}" class="menu-link">
                             <div>Jenis Simpanan</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($role === 'Admin')
+                    <li class="menu-item @yield('product_active')">
+                        <a href="{{ route('product.index') }}" class="menu-link">
+                            <div>Produk</div>
                         </a>
                     </li>
                 @endif

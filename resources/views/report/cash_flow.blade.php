@@ -7,7 +7,7 @@
 
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    <h4 class="mb-4"><strong>Laporan Arus Kas</strong></h4>
+    <h1 class="h3 mb-3"><strong>Laporan Arus Kas</strong></h1>
 
     {{-- Filter --}}
     <div class="card mb-3">

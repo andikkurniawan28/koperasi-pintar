@@ -6,7 +6,7 @@
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
 
-    <h4 class="mb-4"><strong>Buku Besar</strong></h4>
+    <h1 class="h3 mb-3"><strong>Buku Besar</strong></h1>
 
     <div class="card mb-3">
         <div class="card-body">

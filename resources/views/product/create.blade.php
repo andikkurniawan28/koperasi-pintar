@@ -5,24 +5,17 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="mb-4"><strong>Tambah produk</strong></h4>
+    <h1 class="h3 mb-3"><strong>Tambah Produk</strong></h1>
 
     <div class="card">
         <div class="card-body">
             <form action="{{ route('product.store') }}" method="POST" id="form-product">
                 @csrf
 
-                {{-- Kategori --}}
+                {{-- Barcode --}}
                 <div class="mb-3">
-                    <label class="form-label">Kategori Produk</label>
-                    <select name="product_category_id" class="form-select select2" required>
-                        <option value="">-- Pilih Kategori --</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label class="form-label">Barcode</label>
+                    <input type="text" name="barcode" class="form-control" required autofocus>
                 </div>
 
                 {{-- Nama --}}
@@ -31,19 +24,26 @@
                     <input type="text" name="name" class="form-control" required>
                 </div>
 
-                {{-- Minimum Order --}}
                 <div class="mb-3">
-                    <label class="form-label">Minimum Order</label>
-                    <input type="number" name="minimum_order" class="form-control" value="1" required>
+                    <label class="form-label">Harga Beli</label>
+                    <input type="text" name="buy_price" class="form-control rupiah">
                 </div>
 
-                {{-- Harga --}}
-                @foreach($packagings as $p)
                 <div class="mb-3">
-                    <label class="form-label">Harga Jual (Packaging {{ $p->name }})</label>
-                    <input type="text" name="price_{{ $p->id }}" class="form-control rupiah">
+                    <label class="form-label">Harga Jual ke Anggota</label>
+                    <input type="text" name="price_for_member" class="form-control rupiah">
                 </div>
-                @endforeach
+
+                <div class="mb-3">
+                    <label class="form-label">Harga Jual ke Umum</label>
+                    <input type="text" name="price_for_customer" class="form-control rupiah">
+                </div>
+
+                {{-- Minimum Order --}}
+                <div class="mb-3">
+                    <label class="form-label">Minimum Stok</label>
+                    <input type="number" name="minimum_alert" class="form-control" value="1" required>
+                </div>
 
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('product.index') }}" class="btn btn-secondary me-2">Batal</a>

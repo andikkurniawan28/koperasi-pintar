@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h4 class="mb-4"><strong>Edit produk</strong></h4>
+    <h1 class="h3 mb-3"><strong>Edit Produk</strong></h1>
 
     <div class="card">
         <div class="card-body">
@@ -13,18 +13,11 @@
                 @csrf
                 @method('PUT')
 
-                {{-- Kategori --}}
+                {{-- Barcode --}}
                 <div class="mb-3">
-                    <label class="form-label">Kategori Produk</label>
-                    <select name="product_category_id" class="form-select select2" required>
-                        <option value="">-- Pilih Kategori --</option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}"
-                                {{ old('product_category_id', $product->product_category_id) == $category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                    <label class="form-label">Barcode</label>
+                    <input type="text" name="barcode" class="form-control"
+                        value="{{ old('barcode', $product->barcode) }}" required autofocus>
                 </div>
 
                 {{-- Nama --}}
@@ -34,42 +27,29 @@
                         value="{{ old('name', $product->name) }}" required>
                 </div>
 
-                {{-- Packaging --}}
                 <div class="mb-3">
-                    <label class="form-label">Packaging</label>
-                    <input type="text" class="form-control"
-                        value="{{ $product->packaging->name ?? '-' }}" readonly>
+                    <label class="form-label">Harga Beli</label>
+                    <input type="text" name="buy_price" class="form-control rupiah"
+                        value="{{ old('buy_price', number_format($product->buy_price,0,',','.')) }}">
                 </div>
 
-                {{-- Minimum Order --}}
                 <div class="mb-3">
-                    <label class="form-label">Minimum Order</label>
-                    <input type="number" name="minimum_order" class="form-control"
-                        value="{{ $product->minimum_order }}" required>
+                    <label class="form-label">Harga Jual ke Anggota</label>
+                    <input type="text" name="price_for_member" class="form-control rupiah"
+                        value="{{ old('price_for_member', number_format($product->price_for_member,0,',','.')) }}">
                 </div>
 
-                {{-- Harga --}}
                 <div class="mb-3">
-                    <label class="form-label">Harga Jual</label>
-                    <input type="text" name="price"
-                        class="form-control rupiah"
-                        value="{{ number_format(old('price', $product->price), 0, ',', '.') }}" required>
+                    <label class="form-label">Harga Jual ke Umum</label>
+                    <input type="text" name="price_for_customer" class="form-control rupiah"
+                        value="{{ old('price_for_customer', number_format($product->price_for_customer,0,',','.')) }}">
                 </div>
 
-                {{-- Base Price --}}
+                {{-- Minimum Stok --}}
                 <div class="mb-3">
-                    <label class="form-label">Base Price</label>
-                    <input type="text" name="base_price"
-                        class="form-control rupiah"
-                        value="{{ number_format(old('base_price', $product->base_price), 0, ',', '.') }}">
-                </div>
-
-                {{-- Cost --}}
-                <div class="mb-3">
-                    <label class="form-label">Cost</label>
-                    <input type="text" name="cost"
-                        class="form-control rupiah"
-                        value="{{ number_format(old('cost', $product->cost), 0, ',', '.') }}">
+                    <label class="form-label">Minimum Stok</label>
+                    <input type="number" name="minimum_alert" class="form-control"
+                        value="{{ old('minimum_alert', $product->minimum_alert) }}" required>
                 </div>
 
                 <div class="d-flex justify-content-end">
