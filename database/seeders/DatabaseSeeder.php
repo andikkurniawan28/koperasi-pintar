@@ -73,6 +73,8 @@ class DatabaseSeeder extends Seeder
             ['id'=>23,'group'=>'Beban','sub'=>'Operasional','code'=>'603','name'=>'Beban ATK','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
             ['id'=>24,'group'=>'Beban','sub'=>'Operasional','code'=>'604','name'=>'Beban Penyusutan','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
             ['id'=>25,'group'=>'Beban','sub'=>'Lain-lain','code'=>'605','name'=>'Beban Lain-lain','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
+            ['id'=>26,'group'=>'Aset','sub'=>'Aset Lancar','code'=>'106','name'=>'PPN Masukan','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
+            ['id'=>27,'group'=>'Kewajiban','sub'=>'Jangka Pendek','code'=>'204','name'=>'PPN Keluaran','normal_balance'=>'Kredit','initial_balance'=>0,'is_payment_gateway'=>0],
         ]);
 
         SavingType::insert([

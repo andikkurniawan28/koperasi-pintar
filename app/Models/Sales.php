@@ -13,6 +13,19 @@ class Sales extends Model
 
     protected $guarded = [];
 
+    protected static function booted()
+    {
+        static::created(function ($sales) {
+            ActivityLog::log(auth()->user()->id, "Membuat penjualan ". $sales->code);
+        });
+        static::updated(function ($sales) {
+            ActivityLog::log(auth()->user()->id, "Mengedit penjualan ". $sales->code);
+        });
+        static::deleted(function ($sales) {
+            ActivityLog::log(auth()->user()->id, "Menghapus penjualan ". $sales->code);
+        });
+    }
+
     public function member(){
         return $this->belongsTo(Member::class);
     }

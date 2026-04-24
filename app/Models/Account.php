@@ -11,6 +11,19 @@ class Account extends Model
 
     protected $guarded = [];
 
+    protected static function booted()
+    {
+        static::created(function ($account) {
+            ActivityLog::log(auth()->user()->id, "Membuat akun ". $account->name);
+        });
+        static::updated(function ($account) {
+            ActivityLog::log(auth()->user()->id, "Mengedit akun ". $account->name);
+        });
+        static::deleted(function ($account) {
+            ActivityLog::log(auth()->user()->id, "Menghapus akun ". $account->name);
+        });
+    }
+
     public static function defineGroup($sub)
     {
         // ASET
