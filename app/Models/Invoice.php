@@ -77,7 +77,6 @@ class Invoice extends Model
             ]);
         }
 
-        // kirim HPP ke ledger
         Ledger::catatTagihan($invoice, $request);
 
         if($invoice->paid > 0)
