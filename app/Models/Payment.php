@@ -64,9 +64,19 @@ class Payment extends Model
         $paid = self::where('invoice_id', $invoice->id)->sum('total');
         $left = $invoice->grand_total - $paid;
 
+        $status = 'Belum Bayar';
+
+        if ($paid > 0 && $left > 0) {
+            $status = 'DP';
+        } elseif ($left <= 0) {
+            $status = 'Lunas';
+        }
+
+
         $invoice->update([
             'paid' => $paid,
-            'left' => $left
+            'left' => $left,
+            'status' => $status,
         ]);
 
         Ledger::catatPembayaran($payment);
@@ -87,9 +97,18 @@ class Payment extends Model
         $paid = self::where('invoice_id', $invoice->id)->sum('total');
         $left = $invoice->grand_total - $paid;
 
+        $status = 'Belum Bayar';
+
+        if ($paid > 0 && $left > 0) {
+            $status = 'DP';
+        } elseif ($left <= 0) {
+            $status = 'Lunas';
+        }
+
         $invoice->update([
-            'paid' => $paid,
-            'left' => $left
+            'paid'   => $paid,
+            'left'   => $left,
+            'status' => $status
         ]);
     }
 }

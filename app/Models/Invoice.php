@@ -65,6 +65,7 @@ class Invoice extends Model
             'paid' => $request->paid,
             'left' => $request->left,
             'account_id' => $request->account_id,
+            'status' => 'Belum Bayar',
         ]);
 
         foreach ($request->items as $item) {
