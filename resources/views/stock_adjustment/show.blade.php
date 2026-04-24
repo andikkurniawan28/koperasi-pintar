@@ -29,8 +29,8 @@
             {{-- CUSTOMER --}}
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h6><strong>Kepada:</strong></h6>
-                    <p class="mb-0">{{ $stock_adjustment->customer->name ?? $stock_adjustment->member->name }}</p>
+                    {{-- <h6><strong>Kepada:</strong></h6>
+                    <p class="mb-0">{{ $stock_adjustment->customer->name ?? $stock_adjustment->member->name }}</p> --}}
                 </div>
                 <div class="col-md-6 text-end">
                     <h6><strong>Dibuat oleh:</strong></h6>
@@ -44,36 +44,36 @@
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
+                            <th>Jenis</th>
                             <th>Produk</th>
                             <th>Qty</th>
-                            <th>Harga</th>
                             <th>Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($stock_adjustment->product as $i => $item)
+                        {{-- @foreach($stock_adjustment->product as $i => $stock_adjustment) --}}
                         <tr>
-                            <td>{{ $i+1 }}</td>
+                            <td>1</td>
                             {{-- <td>
-                                {{ $item->product->productCategory->name }} -
-                                {{ $item->product->name }}
+                                {{ $stock_adjustment->product->productCategory->name }} -
+                                {{ $stock_adjustment->product->name }}
                                 <br>
                                 <small class="text-muted">
-                                    {{ $item->product->packaging->name ?? '-' }}
+                                    {{ $stock_adjustment->product->packaging->name ?? '-' }}
                                 </small>
                             </td> --}}
-                            <td>{{ $item->product->name }}</td>
-                            <td>{{ $item->qty }}</td>
-                            <td>{{ number_format($item->price,0,',','.') }}</td>
-                            <td>{{ number_format($item->amount,0,',','.') }}</td>
+                            <td>{{ $stock_adjustment->inOut }}</td>
+                            <td>{{ $stock_adjustment->product->name }}</td>
+                            <td>{{ $stock_adjustment->qty }}</td>
+                            <td>{{ number_format($stock_adjustment->total,0,',','.') }}</td>
                         </tr>
-                        @endforeach
+                        {{-- @endforeach --}}
                     </tbody>
                 </table>
             </div>
 
             {{-- SUMMARY --}}
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-md-6">
                     <p class="mb-1"><strong>Catatan:</strong></p>
                     <p class="text-muted">Terima kasih telah berbelanja 🙏</p>
@@ -101,17 +101,9 @@
                             <th>Grand Total</th>
                             <td class="text-end"><strong>{{ number_format($stock_adjustment->grand_total,0,',','.') }}</strong></td>
                         </tr>
-                        {{-- <tr>
-                            <th>Dibayar</th>
-                            <td class="text-end">{{ number_format($stock_adjustment->paid,0,',','.') }}</td>
-                        </tr>
-                        <tr>
-                            <th>Sisa</th>
-                            <td class="text-end">{{ number_format($stock_adjustment->left,0,',','.') }}</td>
-                        </tr> --}}
                     </table>
                 </div>
-            </div>
+            </div> --}}
 
             {{-- ACTION --}}
             <div class="text-end mt-4">

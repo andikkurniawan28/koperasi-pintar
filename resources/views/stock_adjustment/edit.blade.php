@@ -4,300 +4,162 @@
 @section('stock_adjustment_active', 'active')
 
 @section('content')
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h1 class="h3 mb-3"><strong>Edit Stok Opname</strong></h1>
+<div class="container-xxl flex-grow-1 container-p-y">
 
-        <div class="card">
-            <div class="card-body">
-                <form action="{{ route('stock_adjustment.update', $stock_adjustment->id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
+    <h1 class="h3 mb-3"><strong>Edit Stock Opname</strong></h1>
 
-                    {{-- Header --}}
-                    <div class="row mb-3">
+    <div class="card">
+        <div class="card-body">
 
-                        <div class="col-md-3">
-                            <label>Tanggal</label>
-                            <input type="date" name="date" value="{{ $stock_adjustment->date }}" class="form-control" required>
-                        </div>
+            <form action="{{ route('stock_adjustment.update', $data->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-                        <div class="col-md-3">
-                            <label>Jenis Transaksi</label>
-                            <div class="btn-group w-100">
-                                <input type="radio" class="btn-check" name="type" id="member" value="member"
-                                    {{ $stock_adjustment->type == 'member' ? 'checked' : '' }}>
-                                <label class="btn btn-outline-primary" for="member">Anggota</label>
+                <div class="row mb-3">
 
-                                <input type="radio" class="btn-check" name="type" id="customer" value="customer"
-                                    {{ $stock_adjustment->type == 'customer' ? 'checked' : '' }}>
-                                <label class="btn btn-outline-primary" for="customer">Umum</label>
-                            </div>
-                        </div>
-
-                        <div class="col-md-3 member-field">
-                            <label>Anggota</label>
-                            <select name="member_id" class="form-select select2">
-                                <option value="">-- Pilih --</option>
-                                @foreach ($members as $t)
-                                    <option value="{{ $t->id }}" {{ $stock_adjustment->member_id == $t->id ? 'selected' : '' }}>
-                                        {{ $t->name }} - {{ $t->code }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-3 customer-field">
-                            <label>Customer</label>
-                            <select name="customer_id" class="form-select select2">
-                                <option value="">-- Pilih --</option>
-                                @foreach ($customers as $c)
-                                    <option value="{{ $c->id }}"
-                                        {{ $stock_adjustment->customer_id == $c->id ? 'selected' : '' }}>
-                                        {{ $c->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
+                    <div class="col-md-3">
+                        <label>Tanggal</label>
+                        <input type="date" name="date"
+                               value="{{ $data->date }}"
+                               class="form-control" required>
                     </div>
 
-                    {{-- Items --}}
-                    <div class="table-responsive">
-                        <table class="table" id="items-table">
-                            <thead>
-                                <tr>
-                                    <th>Produk</th>
-                                    <th width="120">Qty</th>
-                                    <th width="180">Harga</th>
-                                    <th width="180">Amount</th>
-                                    <th width="80">Hapus</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+                    <div class="col-md-3">
+                        <label>Tipe</label>
+                        <select name="inOut" class="form-control">
+                            <option value="in" {{ $data->inOut == 'in' ? 'selected' : '' }}>
+                                Masuk (Stock Bertambah)
+                            </option>
+                            <option value="out" {{ $data->inOut == 'out' ? 'selected' : '' }}>
+                                Keluar (Stock Berkurang)
+                            </option>
+                        </select>
                     </div>
 
-                    <button type="button" class="btn btn-primary mb-3 mt-3" id="add-row">
-                        + Tambah Item
-                    </button>
-
-                    {{-- Summary --}}
-                    <div class="row">
-                        <div class="col-md-8 offset-md-4">
-                            <div class="row">
-
-                                <div class="col-md-6">
-                                    <div class="mb-2">
-                                        <label>Subtotal</label>
-                                        <input type="text" name="subtotal" id="subtotal"
-                                            value="{{ number_format($stock_adjustment->subtotal) }}" class="form-control" readonly>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label>Diskon</label>
-                                        <input type="text" name="discount" id="discount"
-                                            value="{{ number_format($stock_adjustment->discount) }}" class="form-control">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label>Biaya Lain-lain</label>
-                                        <input type="text" name="expenses" id="expenses"
-                                            value="{{ number_format($stock_adjustment->expenses) }}" class="form-control">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label>Pajak</label>
-                                        <input type="text" name="taxes" id="taxes"
-                                            value="{{ number_format($stock_adjustment->taxes) }}" class="form-control">
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="mb-2">
-                                        <label>Grand Total</label>
-                                        <input type="text" name="grand_total" id="grand_total"
-                                            value="{{ number_format($stock_adjustment->grand_total) }}" class="form-control" readonly>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label>Uang Diterima</label>
-                                        <input type="text" id="paid" class="form-control" value="0">
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label>Kembalian</label>
-                                        <input type="text" id="left" class="form-control" readonly>
-                                    </div>
-
-                                    <div class="mb-2">
-                                        <label>Pembayaran lewat</label>
-                                        <select name="account_id" class="form-control select2">
-                                            @foreach ($payment_gateways as $p)
-                                                <option value="{{ $p->id }}"
-                                                    {{ $stock_adjustment->account_id == $p->id ? 'selected' : '' }}>
-                                                    {{ $p->code }} - {{ $p->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
+                    <div class="col-md-6">
+                        <label>Produk</label>
+                        <select name="product_id" class="form-control select2" required>
+                            <option value="">-- Pilih Produk --</option>
+                            @foreach ($products as $p)
+                                <option value="{{ $p->id }}"
+                                    {{ $data->product_id == $p->id ? 'selected' : '' }}>
+                                    {{ $p->barcode }} - {{ $p->name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
-                    <div class="text-end mt-3">
-                        <a href="{{ route('stock_adjustment.index') }}" class="btn btn-secondary">Batal</a>
-                        <button class="btn btn-success">Update</button>
+                </div>
+
+                <div class="row mb-3">
+
+                    <div class="col-md-3">
+                        <label>Qty</label>
+                        <input type="number"
+                               id="qty"
+                               name="qty"
+                               value="{{ $data->qty }}"
+                               class="form-control"
+                               min="1"
+                               required>
                     </div>
 
-                </form>
-            </div>
+                    <div class="col-md-3">
+                        <label>Harga Beli</label>
+                        <input type="text" id="buy_price" class="form-control" readonly>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label>Total</label>
+                        <input type="text"
+                               name="total"
+                               id="total"
+                               value="{{ number_format($data->total,0,',','.') }}"
+                               class="form-control"
+                               readonly>
+                    </div>
+
+                </div>
+
+                <div class="text-end mt-3">
+                    <a href="{{ route('stock_adjustment.index') }}" class="btn btn-secondary">Batal</a>
+                    <button class="btn btn-success">Update</button>
+                </div>
+
+            </form>
+
         </div>
     </div>
+
+</div>
 @endsection
 
-
 @section('script')
-    <script>
-        $(function() {
+<script>
+$(function() {
 
-            let index = 0;
+    $('.select2').select2();
 
-            let selectedType = $('input[name="type"]:checked').val();
+    let products = @json($products);
 
-            function toggleCustomerMember() {
-                if (selectedType === 'member') {
-                    $('.member-field').show();
-                    $('.customer-field').hide();
-                    $('select[name="customer_id"]').val(null).trigger('change');
-                } else {
-                    $('.member-field').hide();
-                    $('.customer-field').show();
-                    $('select[name="member_id"]').val(null).trigger('change');
-                }
-            }
+    function format(num) {
+        return new Intl.NumberFormat('id-ID').format(num || 0);
+    }
 
-            toggleCustomerMember();
+    function parse(num) {
+        return parseFloat((num || '').replace(/\./g, '')) || 0;
+    }
 
-            $('input[name="type"]').on('change', function() {
-                selectedType = $(this).val();
-                toggleCustomerMember();
-                $('.product').trigger('change');
-            });
+    // =========================
+    // SET AWAL (EDIT MODE)
+    // =========================
+    function setInitial() {
+        let productId = $('select[name="product_id"]').val();
+        let product = products.find(p => p.id == productId);
 
-            function formatRupiah(angka) {
-                return new Intl.NumberFormat('id-ID').format(angka || 0);
-            }
+        let price = product ? product.buy_price : 0;
 
-            function parseRupiah(str) {
-                return parseFloat((str || '').replace(/\./g, '')) || 0;
-            }
+        $('#buy_price').val(format(price));
+    }
 
-            let products = @json($products);
-            let existingItems = @json($stock_adjustment->product);
+    setInitial();
+    calculate();
 
-            function addRow(item = null) {
+    // =========================
+    // PILIH PRODUK
+    // =========================
+    $('select[name="product_id"]').on('change', function() {
 
-                let row = `
-        <tr>
-            <td>
-                <select name="items[${index}][product_id]" class="form-select select2 product">
-                    <option value="">-- Pilih --</option>
-                    ${products.map(p =>
-                        `<option value="${p.id}"
-                                data-price-member="${p.price_for_member}"
-                                data-price-customer="${p.price_for_customer}"
-                                ${item && p.id == item.product_id ? 'selected' : ''}>
-                                ${p.barcode} - ${p.name}
-                            </option>`
-                    ).join('')}
-                </select>
-            </td>
-            <td>
-                <input type="number" name="items[${index}][qty]" class="form-control qty"
-                    value="${item ? item.qty : 1}">
-            </td>
-            <td>
-                <input type="text" name="items[${index}][price]" class="form-control price"
-                    value="${item ? formatRupiah(item.price) : ''}">
-            </td>
-            <td>
-                <input type="text" name="items[${index}][amount]" class="form-control amount"
-                    value="${item ? formatRupiah(item.amount) : ''}" readonly>
-            </td>
-            <td>
-                <button type="button" class="btn btn-danger remove">X</button>
-            </td>
-        </tr>
-        `;
+        let id = $(this).val();
+        let product = products.find(p => p.id == id);
 
-                $('#items-table tbody').append(row);
-                $('#items-table tbody tr:last .select2').select2();
+        let price = product ? product.buy_price : 0;
 
-                index++;
-            }
+        $('#buy_price').val(format(price));
 
-            // load existing
-            existingItems.forEach(item => addRow(item));
+        calculate();
+    });
 
-            $('#add-row').click(() => addRow());
+    // =========================
+    // QTY CHANGE
+    // =========================
+    $('#qty').on('keyup change', function() {
+        calculate();
+    });
 
-            $(document).on('change', '.product', function() {
-                let selected = $(this).find(':selected');
-                let row = $(this).closest('tr');
+    // =========================
+    // HITUNG TOTAL
+    // =========================
+    function calculate() {
 
-                let price = (selectedType === 'member') ?
-                    selected.data('price-member') :
-                    selected.data('price-customer');
+        let qty = parseFloat($('#qty').val()) || 0;
+        let price = parse($('#buy_price').val());
 
-                row.find('.price').val(formatRupiah(price)).trigger('keyup');
-            });
+        let total = qty * price;
 
-            $(document).on('keyup change', '.qty, .price', function() {
-                let row = $(this).closest('tr');
+        $('#total').val(format(total));
+    }
 
-                let qty = parseFloat(row.find('.qty').val()) || 0;
-                let price = parseRupiah(row.find('.price').val());
-
-                let amount = qty * price;
-
-                row.find('.amount').val(formatRupiah(amount));
-                calculateTotal();
-            });
-
-            $(document).on('click', '.remove', function() {
-                $(this).closest('tr').remove();
-                calculateTotal();
-            });
-
-            function calculateTotal() {
-                let subtotal = 0;
-
-                $('.amount').each(function() {
-                    subtotal += parseRupiah($(this).val());
-                });
-
-                $('#subtotal').val(formatRupiah(subtotal));
-
-                let discount = parseRupiah($('#discount').val());
-                let expenses = parseRupiah($('#expenses').val());
-                let taxes = parseRupiah($('#taxes').val());
-
-                let grandTotal = subtotal - discount + expenses + taxes;
-
-                $('#grand_total').val(formatRupiah(grandTotal));
-
-                let paid = parseRupiah($('#paid').val());
-                let left = paid - grandTotal;
-
-                $('#left').val(formatRupiah(left));
-            }
-
-            $('#discount, #expenses, #taxes, #paid').on('keyup change', calculateTotal);
-
-            calculateTotal();
-
-        });
-    </script>
+});
+</script>
 @endsection

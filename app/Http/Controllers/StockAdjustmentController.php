@@ -52,6 +52,12 @@ class StockAdjustmentController extends Controller
         return view('stock_adjustment.index');
     }
 
+    public function show(StockAdjustment $stock_adjustment)
+    {
+        $stock_adjustment->load(['user', 'product']);
+        return view('stock_adjustment.show', compact('stock_adjustment'));
+    }
+
     public function create()
     {
         return view('stock_adjustment.create', [
@@ -67,18 +73,17 @@ class StockAdjustmentController extends Controller
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|numeric|min:1',
             'total'      => 'required'
-    ]);
+        ]);
 
-    // 🔥 CLEAN FORMAT ANGKA
-    $request->merge([
-        'total' => $this->cleanCurrency($request->total)
-    ]);
+        // 🔥 CLEAN FORMAT ANGKA
+        $request->merge([
+            'total' => $this->cleanCurrency($request->total)
+        ]);
 
         DB::beginTransaction();
 
         try {
             StockAdjustment::createData($request);
-
             DB::commit();
             return redirect()->route('stock_adjustment.index')->with('success', 'Stok Opname berhasil ditambah.');
 
@@ -103,13 +108,18 @@ class StockAdjustmentController extends Controller
             'inOut' => 'required|in:in,out',
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|numeric|min:1',
+            'total'      => 'required'
+        ]);
+
+        // 🔥 CLEAN FORMAT ANGKA
+        $request->merge([
+            'total' => $this->cleanCurrency($request->total)
         ]);
 
         DB::beginTransaction();
 
         try {
             StockAdjustment::updateData($id, $request);
-
             DB::commit();
             return redirect()->route('stock_adjustment.index')->with('success', 'Stok Opname berhasil diupdate.');
 
@@ -121,7 +131,7 @@ class StockAdjustmentController extends Controller
 
     public function destroy(StockAdjustment $stock_adjustment)
     {
-        StockAdjustment::deleteData($stock_adjustment);
+        $stock_adjustment->delete();
 
         return redirect()->route('stock_adjustment.index')->with('success', 'Stok Opname berhasil dihapus.');
     }

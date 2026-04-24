@@ -64,6 +64,7 @@ class StockAdjustment extends Model
             'inOut'      => $request->inOut,
             'product_id' => $request->product_id,
             'qty'        => $request->qty,
+            'total'      => $request->total,
         ]);
 
         self::handleStock($data);
@@ -73,20 +74,12 @@ class StockAdjustment extends Model
     }
 
     // =========================
-    // DELETE
-    // =========================
-    public static function deleteData($data)
-    {
-        self::rollback($data);
-        $data->delete();
-    }
-
-    // =========================
     // STOCK HANDLER
     // =========================
     private static function handleStock($data)
     {
         StockLedger::create([
+            'stock_adjustment_id' => $data->id,
             'product_id' => $data->product_id,
             'date'       => $data->date,
             'user_id'    => $data->user_id,
@@ -96,10 +89,7 @@ class StockAdjustment extends Model
         ]);
     }
 
-    // =========================
-    // ROLLBACK
-    // =========================
-    private static function rollback($data)
+    public static function rollback($data)
     {
         StockLedger::where('stock_adjustment_id', $data->id)->delete();
         Ledger::where('stock_adjustment_id', $data->id)->delete();

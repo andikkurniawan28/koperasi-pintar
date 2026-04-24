@@ -214,6 +214,7 @@ class Ledger extends Model
 
             // Persediaan naik
             self::insert([
+                'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => $config->inventory_account_id,
@@ -224,6 +225,7 @@ class Ledger extends Model
 
             // lawan pendapatan lain
             self::insert([
+                'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => 19,
@@ -236,6 +238,7 @@ class Ledger extends Model
 
             // Persediaan turun
             self::insert([
+                'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => $config->inventory_account_id,
@@ -246,6 +249,7 @@ class Ledger extends Model
 
             // lawan beban
             self::insert([
+                'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => 25,
