@@ -1,11 +1,11 @@
 @extends('template.master')
 
-@section('transaksi_active', 'active')
+@section('transaksi_jasa_active', 'active')
 @section('payment_active', 'active')
 
 @section('content')
     <div class="container-xxl container-p-y">
-        <h4 class="mb-4"><strong>Tambah pelunasan</strong></h4>
+    <h1 class="h3 mb-3"><strong>Tambah Pelunasan Tagihan</strong></h1>
 
         <div class="card">
             <div class="card-body">
@@ -18,12 +18,12 @@
                     </div>
 
                     <div class="mb-3">
-                        <label>Order</label>
-                        <select name="order_id" class="form-select select2" required>
+                        <label>Invoice</label>
+                        <select name="invoice_id" class="form-select select2" required>
                             <option value="">-- Pilih --</option>
-                            @foreach ($orders as $o)
+                            @foreach ($invoices as $o)
                                 <option value="{{ $o->id }}">
-                                    {{ $o->code }} - {{ $o->customer->name }}
+                                    {{ $o->code }}
                                     (Sisa: {{ number_format($o->left, 0, ',', '.') }})
                                 </option>
                             @endforeach
@@ -37,10 +37,11 @@
 
                     <div class="mb-3">
                         <label>Pembayaran lewat</label>
-                        <select name="via" class="form-control select2" required>
+                        <select name="account_id" class="form-control select2" required>
                             <option value="">-- Pilih --</option>
-                            <option value="Cash">Cash</option>
-                            <option value="QRIS">QRIS</option>
+                            @foreach($accounts as $a)
+                            <option value="{{ $a->id }}">{{ $a->code }}-{{ $a->name }}</option>
+                            @endforeach
                         </select>
                     </div>
 

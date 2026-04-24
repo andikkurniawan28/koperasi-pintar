@@ -1,6 +1,6 @@
 @extends('template.master')
 
-@section('transaksi_active', 'active')
+@section('transaksi_jasa_active', 'active')
 @section('payment_active', 'active')
 
 @section('content')

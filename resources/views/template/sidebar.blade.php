@@ -124,9 +124,7 @@
                 @if (in_array($role, ['Admin', 'Kasir']))
                     <li class="menu-item @yield('invoice_active')">
                         <a href="{{ route('invoice.index') }}" class="menu-link">
-                            <div>Tagihan
-                                <span class="badge bg-warning text-dark ms-2">Beta</span>
-                            </div>
+                            <div>Tagihan</div>
                         </a>
                     </li>
                 @endif
@@ -134,9 +132,7 @@
                 @if (in_array($role, ['Admin', 'Kasir']))
                     <li class="menu-item @yield('payment_active')">
                         <a href="{{ route('payment.index') }}" class="menu-link">
-                            <div>Pelunasan Tagihan
-                                <span class="badge bg-warning text-dark ms-2">Beta</span>
-                            </div>
+                            <div>Pelunasan Tagihan</div>
                         </a>
                     </li>
                 @endif

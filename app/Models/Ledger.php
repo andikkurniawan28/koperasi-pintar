@@ -259,4 +259,116 @@ class Ledger extends Model
             ]);
         }
     }
+
+    public static function catatTagihan($invoice)
+    {
+        $config = Configuration::first();
+
+        // Tentukan akun pendapatan
+        $revenueAccount = $invoice->type == "member"
+            ? $config->service_revenue_member_account_id
+            : $config->service_revenue_customer_account_id;
+
+        // =========================
+        // 1. PIUTANG USAHA (DEBIT)
+        // =========================
+        self::insert([
+            'date' => $invoice->date,
+            'user_id' => $invoice->user_id,
+            'account_id' => $config->account_receivable_account_id,
+            'description' => 'Tagihan ' . $invoice->code,
+            'debit' => $invoice->grand_total,
+            'credit' => 0,
+            'invoice_id' => $invoice->id,
+        ]);
+
+        // =========================
+        // 2. DISKON
+        // =========================
+        if ($invoice->discount > 0) {
+            self::insert([
+                'date' => $invoice->date,
+                'user_id' => $invoice->user_id,
+                'account_id' => $config->sales_discount_account_id,
+                'description' => 'Diskon ' . $invoice->code,
+                'debit' => $invoice->discount,
+                'credit' => 0,
+                'invoice_id' => $invoice->id,
+            ]);
+        }
+
+        // =========================
+        // 3. PENDAPATAN
+        // =========================
+        self::insert([
+            'date' => $invoice->date,
+            'user_id' => $invoice->user_id,
+            'account_id' => $revenueAccount,
+            'description' => 'Pendapatan ' . $invoice->code,
+            'credit' => $invoice->subtotal,
+            'debit' => 0,
+            'invoice_id' => $invoice->id,
+        ]);
+
+        // =========================
+        // 4. PPN
+        // =========================
+        if ($invoice->taxes > 0) {
+            self::insert([
+                'date' => $invoice->date,
+                'user_id' => $invoice->user_id,
+                'account_id' => $config->sales_tax_account_id,
+                'description' => 'PPN ' . $invoice->code,
+                'credit' => $invoice->taxes,
+                'debit' => 0,
+                'invoice_id' => $invoice->id,
+            ]);
+        }
+
+        // =========================
+        // 5. BIAYA TAMBAHAN
+        // =========================
+        if ($invoice->expenses > 0) {
+            self::insert([
+                'date' => $invoice->date,
+                'user_id' => $invoice->user_id,
+                'account_id' => $config->sales_expense_account_id,
+                'description' => 'Biaya ' . $invoice->code,
+                'credit' => $invoice->expenses,
+                'debit' => 0,
+                'invoice_id' => $invoice->id,
+            ]);
+        }
+    }
+
+    public static function catatPembayaran($payment)
+    {
+        $config = Configuration::first();
+
+        // =========================
+        // 1. KAS / BANK (DEBIT)
+        // =========================
+        self::insert([
+            'date' => $payment->date,
+            'user_id' => $payment->user_id,
+            'account_id' => $payment->account_id,
+            'description' => 'Pembayaran ' . $payment->invoice->code,
+            'debit' => $payment->total,
+            'credit' => 0,
+            'payment_id' => $payment->id,
+        ]);
+
+        // =========================
+        // 2. PIUTANG USAHA (CREDIT)
+        // =========================
+        self::insert([
+            'date' => $payment->date,
+            'user_id' => $payment->user_id,
+            'account_id' => $config->account_receivable_account_id,
+            'description' => 'Pelunasan ' . $payment->invoice->code,
+            'credit' => $payment->total,
+            'debit' => 0,
+            'payment_id' => $payment->id,
+        ]);
+    }
 }

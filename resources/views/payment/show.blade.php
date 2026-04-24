@@ -12,8 +12,8 @@
             {{-- HEADER --}}
             <div class="d-flex justify-content-between mb-4">
                 <div>
-                    <h3 class="mb-1"><strong>Fathania Souvenir</strong></h3>
-                    <p class="mb-0">Bukti Pembayaran</p>
+                    <h3 class="mb-1"><strong>Bukti Pembayaran</strong></h3>
+                    {{-- <p class="mb-0">Bukti Pembayaran</p> --}}
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $payment->code }}</h5>
@@ -27,7 +27,7 @@
             <div class="row mb-4">
                 <div class="col-md-6">
                     <h6><strong>Dari:</strong></h6>
-                    <p class="mb-0">{{ $payment->customer->name }}</p>
+                    <p class="mb-0">{{ $payment->customer->name ?? $payment->member->name }}</p>
                 </div>
                 <div class="col-md-6 text-end">
                     <h6><strong>Diterima oleh:</strong></h6>
@@ -40,15 +40,15 @@
                 <table class="table table-bordered">
                     <tr>
                         <th width="30%">Kode Order</th>
-                        <td>{{ $payment->order->code ?? '-' }}</td>
+                        <td>{{ $payment->invoice->code ?? '-' }}</td>
                     </tr>
                     <tr>
                         <th>Tanggal Order</th>
-                        <td>{{ $payment->order->date ?? '-' }}</td>
+                        <td>{{ $payment->invoice->date ?? '-' }}</td>
                     </tr>
                     <tr>
-                        <th>Total Order</th>
-                        <td>{{ number_format($payment->order->grand_total ?? 0,0,',','.') }}</td>
+                        <th>Total Tagihan</th>
+                        <td>{{ number_format($payment->invoice->grand_total ?? 0,0,',','.') }}</td>
                     </tr>
                     <tr>
                         <th>Total Dibayar</th>
@@ -56,11 +56,11 @@
                     </tr>
                     <tr>
                         <th>Via</th>
-                        <td>{{ $payment->via ?? '-' }}</td>
+                        <td>{{ $payment->account->code }}-{{ $payment->account->name }}</td>
                     </tr>
                     <tr>
                         <th>Sisa Tagihan Saat Ini</th>
-                        <td>{{ number_format($payment->order->left ?? 0,0,',','.') }}</td>
+                        <td>{{ number_format($payment->invoice->left ?? 0,0,',','.') }}</td>
                     </tr>
                 </table>
             </div>
