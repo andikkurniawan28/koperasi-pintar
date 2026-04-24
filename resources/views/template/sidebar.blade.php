@@ -70,6 +70,46 @@
             </a>
             <ul class="menu-sub">
 
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('saving_active')">
+                        <a href="{{ route('saving.index') }}" class="menu-link">
+                            <div>Simpanan
+                                <span class="badge bg-warning text-dark ms-2">Beta</span>
+                            </div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('withdraw_active')">
+                        <a href="{{ route('withdraw.index') }}" class="menu-link">
+                            <div>Penarikan Simpanan
+                                <span class="badge bg-warning text-dark ms-2">Beta</span>
+                            </div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('loan_active')">
+                        <a href="{{ route('loan.index') }}" class="menu-link">
+                            <div>Pinjaman
+                                <span class="badge bg-warning text-dark ms-2">Beta</span>
+                            </div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('installment_active')">
+                        <a href="{{ route('installment.index') }}" class="menu-link">
+                            <div>Pelunasan Pinjaman
+                                <span class="badge bg-warning text-dark ms-2">Beta</span>
+                            </div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
 
@@ -80,6 +120,26 @@
                 <div>Jasa</div>
             </a>
             <ul class="menu-sub">
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('invoice_active')">
+                        <a href="{{ route('invoice.index') }}" class="menu-link">
+                            <div>Tagihan
+                                <span class="badge bg-warning text-dark ms-2">Beta</span>
+                            </div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('payment_active')">
+                        <a href="{{ route('payment.index') }}" class="menu-link">
+                            <div>Pelunasan Tagihan
+                                <span class="badge bg-warning text-dark ms-2">Beta</span>
+                            </div>
+                        </a>
+                    </li>
+                @endif
 
             </ul>
         </li>

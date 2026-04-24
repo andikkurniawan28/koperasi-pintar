@@ -17,6 +17,8 @@ return new class extends Migration
             // Pendapatan Toko
             $table->foreignId('sales_revenue_member_account_id')->constrained('accounts');
             $table->foreignId('sales_revenue_customer_account_id')->constrained('accounts');
+            $table->foreignId('service_revenue_member_account_id')->constrained('accounts');
+            $table->foreignId('service_revenue_customer_account_id')->constrained('accounts');
 
             // Item Penjualan
             $table->foreignId('sales_discount_account_id')->constrained('accounts');
@@ -35,6 +37,9 @@ return new class extends Migration
             // Stok Opname
             $table->foreignId('stock_adjustment_gain_account_id')->constrained('accounts');
             $table->foreignId('stock_adjustment_loss_account_id')->constrained('accounts');
+
+            // Piutang Usaha
+            $table->foreignId('account_receivable_account_id')->constrained('accounts'); // Piutang Usaha
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

@@ -83,32 +83,26 @@ class DatabaseSeeder extends Seeder
 
         Configuration::insert([
 
-            // =========================
-            // PENJUALAN
-            // =========================
             'sales_revenue_member_account_id'   => 13,
             'sales_revenue_customer_account_id' => 14,
+            'service_revenue_member_account_id' => 17,
+            'service_revenue_customer_account_id' => 18,
 
             'sales_discount_account_id' => 28,
             'sales_expense_account_id'  => 19,
             'sales_tax_account_id'      => 27,
 
-            // =========================
-            // HPP & INVENTORY
-            // =========================
             'hpp_account_id'       => 20,
             'inventory_account_id' => 5,
 
-            // =========================
-            // PEMBELIAN (NEW)
-            // =========================
             'purchase_discount_account_id' => 29, // Diskon Pembelian
             'purchase_expense_account_id'  => 30, // Biaya Pembelian
             'purchase_tax_account_id'      => 26, // PPN Masukan
 
-            // Stok Opname
             'stock_adjustment_gain_account_id' => 19,
             'stock_adjustment_loss_account_id' => 25,
+
+            'account_receivable_account_id' => 3,
 
         ]);
 
