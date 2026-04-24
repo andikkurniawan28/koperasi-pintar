@@ -16,8 +16,10 @@ return new class extends Migration
             $table->string('code')->unique();
             $table->date('date');
             $table->string('inOut');
+            $table->text('description');
             $table->foreignId('product_id')->constrained();
             $table->integer('qty');
+            $table->double('price');
             $table->double('total');
             $table->foreignId('user_id')->constrained();
             $table->timestamp('created_at')->useCurrent();

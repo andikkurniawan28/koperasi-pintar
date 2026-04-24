@@ -39,8 +39,10 @@ class StockAdjustment extends Model
             'inOut'      => $request->inOut,
             'product_id' => $request->product_id,
             'qty'        => $request->qty,
+            'price'      => $request->price,
             'total'      => $request->total,
             'user_id'    => auth()->id(),
+            'description'      => $request->description,
         ]);
 
         self::handleStock($data);
@@ -64,7 +66,9 @@ class StockAdjustment extends Model
             'inOut'      => $request->inOut,
             'product_id' => $request->product_id,
             'qty'        => $request->qty,
+            'price'      => $request->price,
             'total'      => $request->total,
+            'description'      => $request->description,
         ]);
 
         self::handleStock($data);

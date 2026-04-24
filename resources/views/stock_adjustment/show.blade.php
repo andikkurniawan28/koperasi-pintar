@@ -47,6 +47,7 @@
                             <th>Jenis</th>
                             <th>Produk</th>
                             <th>Qty</th>
+                            <th>Harga</th>
                             <th>Total</th>
                         </tr>
                     </thead>
@@ -65,6 +66,7 @@
                             <td>{{ $stock_adjustment->inOut }}</td>
                             <td>{{ $stock_adjustment->product->name }}</td>
                             <td>{{ $stock_adjustment->qty }}</td>
+                            <td>{{ number_format($stock_adjustment->price,0,',','.') }}</td>
                             <td>{{ number_format($stock_adjustment->total,0,',','.') }}</td>
                         </tr>
                         {{-- @endforeach --}}

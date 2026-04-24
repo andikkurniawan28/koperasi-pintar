@@ -72,12 +72,14 @@ class StockAdjustmentController extends Controller
             'inOut' => 'required|in:in,out',
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|numeric|min:1',
-            'total'      => 'required'
+            'price'      => 'required',
+            'total'      => 'required',
         ]);
 
         // 🔥 CLEAN FORMAT ANGKA
         $request->merge([
-            'total' => $this->cleanCurrency($request->total)
+            'price' => $this->cleanCurrency($request->price),
+            'total' => $this->cleanCurrency($request->total),
         ]);
 
         DB::beginTransaction();
@@ -108,12 +110,14 @@ class StockAdjustmentController extends Controller
             'inOut' => 'required|in:in,out',
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|numeric|min:1',
-            'total'      => 'required'
+            'price'      => 'required',
+            'total'      => 'required',
         ]);
 
         // 🔥 CLEAN FORMAT ANGKA
         $request->merge([
-            'total' => $this->cleanCurrency($request->total)
+            'price' => $this->cleanCurrency($request->price),
+            'total' => $this->cleanCurrency($request->total),
         ]);
 
         DB::beginTransaction();

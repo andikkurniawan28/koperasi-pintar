@@ -1,0 +1,219 @@
+@extends('template.master')
+
+@section('master_active', 'active')
+@section('configuration_active', 'active')
+
+@section('content')
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        <h1 class="h3 mb-3"><strong>Konfigurasi</strong></h1>
+
+        <div class="card">
+            <div class="card-body">
+
+
+                <form action="{{ route('configuration.process') }}" method="POST">
+                    @csrf
+                    {{-- @method('PUT') --}}
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+
+                            <tr class="table-primary">
+                                <th colspan="2">Penjualan</th>
+                            </tr>
+
+                            <tr>
+                                <td width="30%">Pendapatan Toko dari Anggota</td>
+                                <td>
+                                    <select name="sales_revenue_member_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->sales_revenue_member_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Pendapatan Toko dari Umum</td>
+                                <td>
+                                    <select name="sales_revenue_customer_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->sales_revenue_customer_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Diskon Penjualan</td>
+                                <td>
+                                    <select name="sales_discount_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->sales_discount_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Biaya Tambahan</td>
+                                <td>
+                                    <select name="sales_expense_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->sales_expense_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>PPN Keluaran</td>
+                                <td>
+                                    <select name="sales_tax_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->sales_tax_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="table-success">
+                                <th colspan="2">Pembelian</th>
+                            </tr>
+
+                            <tr>
+                                <td>Diskon Pembelian</td>
+                                <td>
+                                    <select name="purchase_discount_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->purchase_discount_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Biaya Pembelian</td>
+                                <td>
+                                    <select name="purchase_expense_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->purchase_expense_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>PPN Masukan</td>
+                                <td>
+                                    <select name="purchase_tax_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->purchase_tax_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="table-warning">
+                                <th colspan="2">Persediaan & HPP</th>
+                            </tr>
+
+                            <tr>
+                                <td>Akun HPP</td>
+                                <td>
+                                    <select name="hpp_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->hpp_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Akun Persediaan</td>
+                                <td>
+                                    <select name="inventory_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->inventory_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr class="table-success">
+                                <th colspan="2">Stok Opname</th>
+                            </tr>
+
+                            <tr>
+                                <td>Stok Opname +</td>
+                                <td>
+                                    <select name="stock_adjustment_gain_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->stock_adjustment_gain_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>Stok Opname -</td>
+                                <td>
+                                    <select name="stock_adjustment_loss_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->stock_adjustment_loss_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
+                        </table>
+                    </div>
+
+                    <div class="text-end mt-3">
+                        <button class="btn btn-primary">Update</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+@endsection

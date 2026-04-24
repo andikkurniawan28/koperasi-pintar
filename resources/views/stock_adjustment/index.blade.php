@@ -23,6 +23,7 @@
                             <th>Tanggal</th>
                             <th>Kode</th>
                             <th>Jenis</th>
+                            <th>Keterangan</th>
                             <th>Produk</th>
                             <th>Admin</th>
                             <th>Qty</th>
@@ -54,6 +55,7 @@
                 { data: 'date', name: 'date' },
                 { data: 'code', name: 'code' },
                 { data: 'inOut', name: 'inOut' },
+                { data: 'description', name: 'description' },
                 { data: 'product', name: 'product' },
                 { data: 'user', name: 'user' },
                 { data: 'qty', name: 'qty' },

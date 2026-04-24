@@ -175,14 +175,6 @@
                 @endif
 
                 @if ($role === 'Admin')
-                    <li class="menu-item @yield('account_active')">
-                        <a href="{{ route('account.index') }}" class="menu-link">
-                            <div>Akun</div>
-                        </a>
-                    </li>
-                @endif
-
-                @if ($role === 'Admin')
                     <li class="menu-item @yield('saving_type_active')">
                         <a href="{{ route('saving_type.index') }}" class="menu-link">
                             <div>Jenis Simpanan</div>
@@ -194,6 +186,22 @@
                     <li class="menu-item @yield('product_active')">
                         <a href="{{ route('product.index') }}" class="menu-link">
                             <div>Produk</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($role === 'Admin')
+                    <li class="menu-item @yield('account_active')">
+                        <a href="{{ route('account.index') }}" class="menu-link">
+                            <div>Akun</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($role === 'Admin')
+                    <li class="menu-item @yield('configuration_active')">
+                        <a href="{{ route('configuration.index') }}" class="menu-link">
+                            <div>Konfigurasi</div>
                         </a>
                     </li>
                 @endif

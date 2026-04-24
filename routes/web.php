@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\CashFlowController;
+use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LedgerController;
@@ -114,6 +115,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cash_flow', [CashFlowController::class, 'index'])->name('cash_flow.index')->middleware('role:Admin');
     Route::get('profit_loss', [ProfitLossController::class, 'index'])->name('profit_loss.index')->middleware('role:Admin');
     Route::get('balance_sheet', [BalanceSheetController::class, 'index'])->name('balance_sheet.index')->middleware('role:Admin');
+
+    Route::get('configuration', [ConfigurationController::class, 'index'])->name('configuration.index')->middleware('role:Admin');
+    Route::post('configuration', [ConfigurationController::class, 'process'])->name('configuration.process')->middleware('role:Admin');
 });
 
 Route::post('ledger', [LedgerController::class, 'process'])->name('ledger.process');

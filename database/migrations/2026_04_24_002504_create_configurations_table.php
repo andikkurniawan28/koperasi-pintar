@@ -32,6 +32,10 @@ return new class extends Migration
             $table->foreignId('hpp_account_id')->constrained('accounts');
             $table->foreignId('inventory_account_id')->constrained('accounts');
 
+            // Stok Opname
+            $table->foreignId('stock_adjustment_gain_account_id')->constrained('accounts');
+            $table->foreignId('stock_adjustment_loss_account_id')->constrained('accounts');
+
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

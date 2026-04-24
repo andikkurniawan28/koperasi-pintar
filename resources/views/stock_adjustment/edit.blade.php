@@ -49,6 +49,14 @@
                         </select>
                     </div>
 
+
+                </div>
+
+                <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label>Keterangan</label>
+                            <textarea class="form-control" name="description" required>{{ old('description', $data->description) }}</textarea>
+                        </div>
                 </div>
 
                 <div class="row mb-3">
@@ -66,7 +74,7 @@
 
                     <div class="col-md-3">
                         <label>Harga Beli</label>
-                        <input type="text" id="buy_price" class="form-control" readonly>
+                        <input type="text" name="price" id="buy_price" class="form-control">
                     </div>
 
                     <div class="col-md-3">
@@ -101,6 +109,7 @@ $(function() {
     $('.select2').select2();
 
     let products = @json($products);
+    let data = @json($data);
 
     function format(num) {
         return new Intl.NumberFormat('id-ID').format(num || 0);
@@ -117,7 +126,7 @@ $(function() {
         let productId = $('select[name="product_id"]').val();
         let product = products.find(p => p.id == productId);
 
-        let price = product ? product.buy_price : 0;
+        let price = data ? data.price : 0;
 
         $('#buy_price').val(format(price));
     }
@@ -143,9 +152,11 @@ $(function() {
     // =========================
     // QTY CHANGE
     // =========================
-    $('#qty').on('keyup change', function() {
-        calculate();
-    });
+
+            // qty berubah
+            $('#qty, #buy_price').on('keyup change', function() {
+                calculate();
+            });
 
     // =========================
     // HITUNG TOTAL

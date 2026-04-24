@@ -45,6 +45,15 @@
 
                     <div class="row mb-3">
 
+
+                        <div class="col-md-6">
+                            <label>Keterangan</label>
+                            <textarea class="form-control" name="description" required>{{ old('description') }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+
                         <div class="col-md-3">
                             <label>Qty</label>
                             <input type="number" id="qty" name="qty" class="form-control" min="1" required>
@@ -52,7 +61,7 @@
 
                         <div class="col-md-3">
                             <label>Harga Beli</label>
-                            <input type="text" id="buy_price" class="form-control" readonly>
+                            <input type="text" name="price" id="buy_price" class="form-control">
                         </div>
 
                         <div class="col-md-3">
@@ -105,7 +114,7 @@
             });
 
             // qty berubah
-            $('#qty').on('keyup change', function() {
+            $('#qty, #buy_price').on('keyup change', function() {
                 calculate();
             });
 

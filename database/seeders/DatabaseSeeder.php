@@ -106,6 +106,10 @@ class DatabaseSeeder extends Seeder
             'purchase_expense_account_id'  => 30, // Biaya Pembelian
             'purchase_tax_account_id'      => 26, // PPN Masukan
 
+            // Stok Opname
+            'stock_adjustment_gain_account_id' => 19,
+            'stock_adjustment_loss_account_id' => 25,
+
         ]);
 
         SavingType::insert([
