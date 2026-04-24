@@ -1,10 +1,11 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="{{ route('home') }}" class="app-brand-link">
-            <span class="app-brand-logo demo">
+            {{-- <span class="app-brand-logo demo">
                 <img src="/fms/public/sneat/assets/img/fathania.png" alt="Logo"width="50">
-            </span>
-            <span class="app-brand-text demo menu-text fw-bolder ms-2">KC</span>
+            </span> --}}
+            {{-- <span class="app-brand-text demo menu-text fw-bolder ms-2">CK</span> --}}
+            <h4 class="mb-2">CerdasKoperasi</h4>
         </a>
 
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -38,6 +39,22 @@
                     <li class="menu-item @yield('sales_active')">
                         <a href="{{ route('sales.index') }}" class="menu-link">
                             <div>Penjualan</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('purchase_active')">
+                        <a href="{{ route('purchase.index') }}" class="menu-link">
+                            <div>Pembelian</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('stock_adjustment_active')">
+                        <a href="{{ route('stock_adjustment.index') }}" class="menu-link">
+                            <div>Stok Opname</div>
                         </a>
                     </li>
                 @endif

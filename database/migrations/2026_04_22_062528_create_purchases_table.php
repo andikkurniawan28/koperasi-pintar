@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('code')->unique();
             $table->date('date');
-            $table->string('type');
+            // $table->string('type');
             $table->foreignId('supplier_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->double('subtotal');

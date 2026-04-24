@@ -17,7 +17,7 @@ class CashFlowController extends Controller
         $date_from = $request->date_from;
         $date_to   = $request->date_to;
 
-        $cash = Ledger::where('account_id','1')
+        $cash = Ledger::whereIn('account_id', [1, 2])
             ->whereBetween('ledgers.date',[$date_from,$date_to])
             ->orderBy('ledgers.date')
             ->get();

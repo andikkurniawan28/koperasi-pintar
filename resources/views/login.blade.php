@@ -27,7 +27,7 @@
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
 
-    <title>Koperasi-Canggih</title>
+    <title>CerdasKoperasi</title>
 
     <meta name="description" content="" />
 
@@ -83,7 +83,7 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Koperasi-Canggih</h4>
+              <h4 class="mb-2">CerdasKoperasi</h4>
               <p class="mb-4">Silahkan login terlebih dahulu</p>
 
               <form id="formAuthentication" class="mb-3" action="{{ route('loginProcess') }}" method="POST">

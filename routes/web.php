@@ -10,8 +10,10 @@ use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfitLossController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SavingTypeController;
+use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockLedgerController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\UserController;
@@ -90,6 +92,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('sales/{sales}/edit', [SalesController::class, 'edit'])->name('sales.edit')->middleware('role:Admin');
     Route::put('sales/{sales}', [SalesController::class, 'update'])->name('sales.update')->middleware('role:Admin');
     Route::delete('sales/{sales}', [SalesController::class, 'destroy'])->name('sales.destroy')->middleware('role:Admin');
+
+    Route::get('purchase', [PurchaseController::class, 'index'])->name('purchase.index')->middleware('role:Admin, Kasir');
+    Route::get('purchase/create', [PurchaseController::class, 'create'])->name('purchase.create')->middleware('role:Admin, Kasir');
+    Route::post('purchase', [PurchaseController::class, 'store'])->name('purchase.store')->middleware('role:Admin, Kasir');
+    Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('purchase.show')->middleware('role:Admin, Kasir');
+    Route::get('purchase/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchase.edit')->middleware('role:Admin');
+    Route::put('purchase/{purchase}', [PurchaseController::class, 'update'])->name('purchase.update')->middleware('role:Admin');
+    Route::delete('purchase/{purchase}', [PurchaseController::class, 'destroy'])->name('purchase.destroy')->middleware('role:Admin');
+
+    Route::get('stock_adjustment', [StockAdjustmentController::class, 'index'])->name('stock_adjustment.index')->middleware('role:Admin, Kasir');
+    Route::get('stock_adjustment/create', [StockAdjustmentController::class, 'create'])->name('stock_adjustment.create')->middleware('role:Admin, Kasir');
+    Route::post('stock_adjustment', [StockAdjustmentController::class, 'store'])->name('stock_adjustment.store')->middleware('role:Admin, Kasir');
+    Route::get('stock_adjustment/{stock_adjustment}', [StockAdjustmentController::class, 'show'])->name('stock_adjustment.show')->middleware('role:Admin, Kasir');
+    Route::get('stock_adjustment/{stock_adjustment}/edit', [StockAdjustmentController::class, 'edit'])->name('stock_adjustment.edit')->middleware('role:Admin');
+    Route::put('stock_adjustment/{stock_adjustment}', [StockAdjustmentController::class, 'update'])->name('stock_adjustment.update')->middleware('role:Admin');
+    Route::delete('stock_adjustment/{stock_adjustment}', [StockAdjustmentController::class, 'destroy'])->name('stock_adjustment.destroy')->middleware('role:Admin');
 
     Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Admin');
     Route::get('stock_ledger', [StockLedgerController::class, 'index'])->name('stock_ledger.index')->middleware('role:Admin');

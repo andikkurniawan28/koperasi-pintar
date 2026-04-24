@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Account;
+use App\Models\Configuration;
 use App\Models\Customer;
 use App\Models\Member;
 use App\Models\Product;
@@ -75,6 +76,36 @@ class DatabaseSeeder extends Seeder
             ['id'=>25,'group'=>'Beban','sub'=>'Lain-lain','code'=>'605','name'=>'Beban Lain-lain','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
             ['id'=>26,'group'=>'Aset','sub'=>'Aset Lancar','code'=>'106','name'=>'PPN Masukan','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
             ['id'=>27,'group'=>'Kewajiban','sub'=>'Jangka Pendek','code'=>'204','name'=>'PPN Keluaran','normal_balance'=>'Kredit','initial_balance'=>0,'is_payment_gateway'=>0],
+            ['id'=>28,'group'=>'Pendapatan','sub'=>'Kontra Pendapatan','code'=>'408','name'=>'Diskon Penjualan','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
+            ['id'=>29,'group'=>'Aset','sub'=>'Kontra Aset','code'=>'107','name'=>'Diskon Pembelian','normal_balance'=>'Kredit','initial_balance'=>0,'is_payment_gateway'=>0],
+            ['id'=>30,'group'=>'Aset','sub'=>'Aset Lancar','code'=>'108','name'=>'Biaya Pembelian (Kapitalisasi)','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
+        ]);
+
+        Configuration::insert([
+
+            // =========================
+            // PENJUALAN
+            // =========================
+            'sales_revenue_member_account_id'   => 13,
+            'sales_revenue_customer_account_id' => 14,
+
+            'sales_discount_account_id' => 28,
+            'sales_expense_account_id'  => 19,
+            'sales_tax_account_id'      => 27,
+
+            // =========================
+            // HPP & INVENTORY
+            // =========================
+            'hpp_account_id'       => 20,
+            'inventory_account_id' => 5,
+
+            // =========================
+            // PEMBELIAN (NEW)
+            // =========================
+            'purchase_discount_account_id' => 29, // Diskon Pembelian
+            'purchase_expense_account_id'  => 30, // Biaya Pembelian
+            'purchase_tax_account_id'      => 26, // PPN Masukan
+
         ]);
 
         SavingType::insert([

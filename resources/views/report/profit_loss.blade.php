@@ -80,15 +80,15 @@
                     <tr class="table-primary">
                         <td colspan="2"><strong>PENDAPATAN</strong></td>
                     </tr>
-                    `;
+                `;
 
                 res.pendapatan_detail.forEach(function(row) {
                     let isMinus = row.balance < 0 ? 'text-danger fw-bold' : '';
 
                     html += `
                     <tr>
-                    <td>${row.code} - ${row.name}</td>
-                    <td class="text-end ${isMinus}">${format(row.balance)}</td>
+                        <td>${row.code} - ${row.name}</td>
+                        <td class="text-end ${isMinus}">${format(row.balance)}</td>
                     </tr>
                     `;
                 });
@@ -98,43 +98,78 @@
                         <th>Total Pendapatan</th>
                         <th class="text-end" id="total_pendapatan"></th>
                     </tr>
-                    `;
+                `;
 
-                                    // ===== BEBAN =====
-                                    html += `
+
+                // ===== HPP =====
+                html += `
+                    <tr class="table-warning">
+                        <td colspan="2"><strong>HARGA POKOK PENJUALAN</strong></td>
+                    </tr>
+                `;
+
+                res.hpp_detail.forEach(function(row) {
+                    let isMinus = row.balance < 0 ? 'text-danger fw-bold' : '';
+
+                    html += `
+                    <tr>
+                        <td>${row.code} - ${row.name}</td>
+                        <td class="text-end ${isMinus}">${format(row.balance)}</td>
+                    </tr>
+                    `;
+                });
+
+                html += `
+                    <tr class="table-light">
+                        <th>Total HPP</th>
+                        <th class="text-end" id="total_hpp"></th>
+                    </tr>
+
+                    <tr class="table-info">
+                        <th>Laba Kotor</th>
+                        <th class="text-end fw-bold" id="laba_kotor"></th>
+                    </tr>
+                `;
+
+
+                // ===== BEBAN =====
+                html += `
                     <tr class="table-danger">
                         <td colspan="2"><strong>BEBAN</strong></td>
                     </tr>
-                    `;
+                `;
 
                 res.beban_detail.forEach(function(row) {
                     let isMinus = row.balance < 0 ? 'text-danger fw-bold' : '';
 
                     html += `
                     <tr>
-                    <td>${row.code} - ${row.name}</td>
-                    <td class="text-end ${isMinus}">${format(row.balance)}</td>
+                        <td>${row.code} - ${row.name}</td>
+                        <td class="text-end ${isMinus}">${format(row.balance)}</td>
                     </tr>
                     `;
-                                    });
+                });
 
-                                    html += `
+                html += `
                     <tr class="table-light">
                         <th>Total Beban</th>
                         <th class="text-end" id="total_beban"></th>
                     </tr>
 
-                    <tr class="table-warning">
+                    <tr class="table-success">
                         <th>Laba Bersih</th>
-                        <th class="text-end fw-bold" id="laba"></th>
+                        <th class="text-end fw-bold" id="laba_bersih"></th>
                     </tr>
-                    `;
+                `;
 
                 $('#table-body').html(html);
 
+                // SET VALUE
                 setValue('#total_pendapatan', res.pendapatan);
+                setValue('#total_hpp', res.hpp);
+                setValue('#laba_kotor', res.laba_kotor, true);
                 setValue('#total_beban', res.beban);
-                setValue('#laba', res.laba, true);
+                setValue('#laba_bersih', res.laba_bersih, true);
 
             })
 

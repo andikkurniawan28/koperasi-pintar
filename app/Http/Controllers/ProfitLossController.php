@@ -13,13 +13,13 @@ class ProfitLossController extends Controller
         return view('report.profit_loss');
     }
 
-
     public function process(Request $request)
     {
         $date_from = $request->date_from;
         $date_to   = $request->date_to;
 
-        $accounts = Account::whereIn('group', ['Pendapatan','Beban'])
+        // 🔥 Tambahkan HPP
+        $accounts = Account::whereIn('group', ['Pendapatan','HPP','Beban'])
             ->orderBy('code')
             ->get();
 
@@ -39,19 +39,31 @@ class ProfitLossController extends Controller
             $account->balance = $balance;
         }
 
-        // 🔥 GROUPING DI SINI
+        // =========================
+        // GROUPING
+        // =========================
         $pendapatan_detail = $accounts->where('group','Pendapatan')->values();
+        $hpp_detail        = $accounts->where('group','HPP')->values();
         $beban_detail      = $accounts->where('group','Beban')->values();
 
         $pendapatan = $pendapatan_detail->sum('balance');
+        $hpp        = $hpp_detail->sum('balance');
         $beban      = $beban_detail->sum('balance');
+
+        // 🔥 Struktur laba yang benar
+        $laba_kotor = $pendapatan - $hpp;
+        $laba_bersih = $laba_kotor - $beban;
 
         return response()->json([
             'pendapatan_detail' => $pendapatan_detail,
+            'hpp_detail'        => $hpp_detail,
             'beban_detail'      => $beban_detail,
-            'pendapatan'        => $pendapatan,
-            'beban'             => $beban,
-            'laba'              => $pendapatan - $beban
+
+            'pendapatan' => $pendapatan,
+            'hpp'        => $hpp,
+            'laba_kotor' => $laba_kotor,
+            'beban'      => $beban,
+            'laba_bersih'=> $laba_bersih
         ]);
     }
 
