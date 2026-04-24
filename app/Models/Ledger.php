@@ -208,7 +208,7 @@ class Ledger extends Model
         $config = Configuration::first();
 
         $product = Product::find($data->product_id);
-        $value = $product->buy_price * $data->qty;
+        $value = $data->total;
 
         if ($data->inOut == 'in') {
 
@@ -217,7 +217,7 @@ class Ledger extends Model
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => $config->inventory_account_id,
-                'description' => 'Adjustment Masuk '.$data->code,
+                'description' => 'Stok Opname Masuk '.$data->code,
                 'debit' => $value,
                 'credit' => 0,
             ]);
@@ -227,7 +227,7 @@ class Ledger extends Model
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => 19,
-                'description' => 'Adjustment Masuk '.$data->code,
+                'description' => 'Stok Opname Masuk '.$data->code,
                 'credit' => $value,
                 'debit' => 0,
             ]);
@@ -239,7 +239,7 @@ class Ledger extends Model
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => $config->inventory_account_id,
-                'description' => 'Adjustment Keluar '.$data->code,
+                'description' => 'Stok Opname Keluar '.$data->code,
                 'credit' => $value,
                 'debit' => 0,
             ]);
@@ -249,7 +249,7 @@ class Ledger extends Model
                 'date' => $data->date,
                 'user_id' => $data->user_id,
                 'account_id' => 25,
-                'description' => 'Adjustment Keluar '.$data->code,
+                'description' => 'Stok Opname Keluar '.$data->code,
                 'debit' => $value,
                 'credit' => 0,
             ]);

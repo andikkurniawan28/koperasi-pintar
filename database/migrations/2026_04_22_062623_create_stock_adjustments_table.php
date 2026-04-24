@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('inOut');
             $table->foreignId('product_id')->constrained();
             $table->integer('qty');
+            $table->double('total');
             $table->foreignId('user_id')->constrained();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

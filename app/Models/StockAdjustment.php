@@ -13,9 +13,9 @@ class StockAdjustment extends Model
 
     protected static function booted()
     {
-        static::created(fn($row) => ActivityLog::log(auth()->id(), "Membuat adjustment ".$row->code));
-        static::updated(fn($row) => ActivityLog::log(auth()->id(), "Update adjustment ".$row->code));
-        static::deleted(fn($row) => ActivityLog::log(auth()->id(), "Hapus adjustment ".$row->code));
+        static::created(fn($row) => ActivityLog::log(auth()->id(), "Membuat stok opname ".$row->code));
+        static::updated(fn($row) => ActivityLog::log(auth()->id(), "Update stok opname ".$row->code));
+        static::deleted(fn($row) => ActivityLog::log(auth()->id(), "Hapus stok opname ".$row->code));
     }
 
     public function product(){
@@ -39,6 +39,7 @@ class StockAdjustment extends Model
             'inOut'      => $request->inOut,
             'product_id' => $request->product_id,
             'qty'        => $request->qty,
+            'total'      => $request->total,
             'user_id'    => auth()->id(),
         ]);
 
@@ -89,7 +90,7 @@ class StockAdjustment extends Model
             'product_id' => $data->product_id,
             'date'       => $data->date,
             'user_id'    => $data->user_id,
-            'description'=> 'Adjustment '.$data->code,
+            'description'=> 'Stok Opname '.$data->code,
             'in'         => $data->inOut == 'in' ? $data->qty : 0,
             'out'        => $data->inOut == 'out' ? $data->qty : 0,
         ]);
@@ -100,7 +101,7 @@ class StockAdjustment extends Model
     // =========================
     private static function rollback($data)
     {
-        StockLedger::where('description','like','%'.$data->code.'%')->delete();
-        Ledger::where('description','like','%'.$data->code.'%')->delete();
+        StockLedger::where('stock_adjustment_id', $data->id)->delete();
+        Ledger::where('stock_adjustment_id', $data->id)->delete();
     }
 }

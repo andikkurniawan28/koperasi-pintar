@@ -66,7 +66,13 @@ class StockAdjustmentController extends Controller
             'inOut' => 'required|in:in,out',
             'product_id' => 'required|exists:products,id',
             'qty' => 'required|numeric|min:1',
-        ]);
+            'total'      => 'required'
+    ]);
+
+    // 🔥 CLEAN FORMAT ANGKA
+    $request->merge([
+        'total' => $this->cleanCurrency($request->total)
+    ]);
 
         DB::beginTransaction();
 
@@ -118,5 +124,9 @@ class StockAdjustmentController extends Controller
         StockAdjustment::deleteData($stock_adjustment);
 
         return redirect()->route('stock_adjustment.index')->with('success', 'Stok Opname berhasil dihapus.');
+    }
+
+    public static function cleanCurrency($val){
+        return (double) str_replace('.', '', $val ?? 0);
     }
 }

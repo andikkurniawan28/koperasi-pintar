@@ -26,6 +26,7 @@
                             <th>Produk</th>
                             <th>Admin</th>
                             <th>Qty</th>
+                            <th>Total</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -56,6 +57,7 @@
                 { data: 'product', name: 'product' },
                 { data: 'user', name: 'user' },
                 { data: 'qty', name: 'qty' },
+                { data: 'total', name: 'total', render: function(data) { return formatRupiah(data); } },
                 { data: 'action', name: 'action', stock_adjustmentable: false, searchable: false }
             ]
         });
