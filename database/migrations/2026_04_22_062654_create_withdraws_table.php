@@ -17,6 +17,8 @@ return new class extends Migration
             $table->date('date');
             $table->foreignId('saving_id')->constrained();
             $table->foreignId('member_id')->constrained();
+            $table->foreignId('account_id')->constrained();
+            $table->foreignId('user_id')->constrained();
             $table->double('total');
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

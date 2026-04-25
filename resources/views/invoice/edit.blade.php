@@ -100,74 +100,74 @@
                 <button type="button" id="add-row" class="btn btn-primary mb-3">+ Tambah</button>
 
                 {{-- Summary --}}
-<div class="row">
-    <div class="col-md-8 offset-md-4">
-        <div class="row">
+                <div class="row">
+                    <div class="col-md-8 offset-md-4">
+                        <div class="row">
 
-            <!-- KOLOM KIRI -->
-            <div class="col-md-6">
-                <div class="mb-2">
-                    <label>Subtotal</label>
-                    <input type="text" name="subtotal" id="subtotal" class="form-control"
-                        value="{{ number_format($invoice->subtotal,0,',','.') }}" readonly>
+                            <!-- KOLOM KIRI -->
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label>Subtotal</label>
+                                    <input type="text" name="subtotal" id="subtotal" class="form-control"
+                                        value="{{ number_format($invoice->subtotal,0,',','.') }}" readonly>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Diskon</label>
+                                    <input type="text" name="discount" id="discount" class="form-control"
+                                        value="{{ number_format($invoice->discount,0,',','.') }}">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Biaya Lain-lain</label>
+                                    <input type="text" name="expenses" id="expenses" class="form-control"
+                                        value="{{ number_format($invoice->expenses,0,',','.') }}">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Pajak</label>
+                                    <input type="text" name="taxes" id="taxes" class="form-control"
+                                        value="{{ number_format($invoice->taxes,0,',','.') }}">
+                                </div>
+                            </div>
+
+                            <!-- KOLOM KANAN -->
+                            <div class="col-md-6">
+                                <div class="mb-2">
+                                    <label>Grand Total</label>
+                                    <input type="text" name="grand_total" id="grand_total" class="form-control"
+                                        value="{{ number_format($invoice->grand_total,0,',','.') }}" readonly>
+                                </div>
+
+                                {{-- <div class="mb-2">
+                                    <label>DP / Pembayaran</label>
+                                    <input type="text" name="paid" id="paid" class="form-control"
+                                        value="{{ number_format($invoice->paid,0,',','.') }}">
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Sisa</label>
+                                    <input type="text" name="left" id="left" class="form-control"
+                                        value="{{ number_format($invoice->left,0,',','.') }}" readonly>
+                                </div>
+
+                                <div class="mb-2">
+                                    <label>Pembayaran lewat</label>
+                                    <select name="account_id" class="form-control select2">
+                                        <option value="">-- Pilih --</option>
+                                        @foreach($payment_gateways as $p)
+                                            <option value="{{ $p->id }}"
+                                                {{ $invoice->account_id == $p->id ? 'selected' : '' }}>
+                                                {{ $p->code }} - {{ $p->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div> --}}
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
-
-                <div class="mb-2">
-                    <label>Diskon</label>
-                    <input type="text" name="discount" id="discount" class="form-control"
-                        value="{{ number_format($invoice->discount,0,',','.') }}">
-                </div>
-
-                <div class="mb-2">
-                    <label>Biaya Lain-lain</label>
-                    <input type="text" name="expenses" id="expenses" class="form-control"
-                        value="{{ number_format($invoice->expenses,0,',','.') }}">
-                </div>
-
-                <div class="mb-2">
-                    <label>Pajak</label>
-                    <input type="text" name="taxes" id="taxes" class="form-control"
-                        value="{{ number_format($invoice->taxes,0,',','.') }}">
-                </div>
-            </div>
-
-            <!-- KOLOM KANAN -->
-            <div class="col-md-6">
-                <div class="mb-2">
-                    <label>Grand Total</label>
-                    <input type="text" name="grand_total" id="grand_total" class="form-control"
-                        value="{{ number_format($invoice->grand_total,0,',','.') }}" readonly>
-                </div>
-
-                <div class="mb-2">
-                    <label>DP / Pembayaran</label>
-                    <input type="text" name="paid" id="paid" class="form-control"
-                        value="{{ number_format($invoice->paid,0,',','.') }}">
-                </div>
-
-                <div class="mb-2">
-                    <label>Sisa</label>
-                    <input type="text" name="left" id="left" class="form-control"
-                        value="{{ number_format($invoice->left,0,',','.') }}" readonly>
-                </div>
-
-                <div class="mb-2">
-                    <label>Pembayaran lewat</label>
-                    <select name="account_id" class="form-control select2">
-                        <option value="">-- Pilih --</option>
-                        @foreach($payment_gateways as $p)
-                            <option value="{{ $p->id }}"
-                                {{ $invoice->account_id == $p->id ? 'selected' : '' }}>
-                                {{ $p->code }} - {{ $p->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-
-        </div>
-    </div>
-</div>
 
                 <div class="text-end mt-3">
                     <button class="btn btn-success">Update</button>

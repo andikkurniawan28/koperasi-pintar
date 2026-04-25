@@ -73,9 +73,7 @@
                 @if (in_array($role, ['Admin', 'Kasir']))
                     <li class="menu-item @yield('saving_active')">
                         <a href="{{ route('saving.index') }}" class="menu-link">
-                            <div>Simpanan
-                                <span class="badge bg-warning text-dark ms-2">Beta</span>
-                            </div>
+                            <div>Simpanan</div>
                         </a>
                     </li>
                 @endif

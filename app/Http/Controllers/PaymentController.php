@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
-use App\Models\Invoice;
 use App\Models\Account;
+use App\Models\Invoice;
+use App\Models\Ledger;
+use App\Models\Payment;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Exception;
 use Yajra\DataTables\DataTables;
 
 class PaymentController extends Controller
@@ -44,12 +45,13 @@ class PaymentController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    // $editUrl = route('payment.edit', $row->id);
+                    $editUrl = route('payment.edit', $row->id);
                     $showUrl = route('payment.show', $row->id);
                     $deleteUrl = route('payment.destroy', $row->id);
                     // $recap = route('invoice.payment_record_per_invoice', $row->id);
 
                     return '<div class="btn-group">
+                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>
                                 <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
                                     ' . csrf_field() . method_field('DELETE') . '
@@ -91,13 +93,18 @@ class PaymentController extends Controller
             'total' => self::clean($request->total)
         ]);
 
+        $invoice = Invoice::findOrFail($request->invoice_id);
+        if($request->total > $invoice->left)
+        {
+            return redirect()->back()->with('error', 'Data tidak valid!!');
+        }
+
         DB::beginTransaction();
 
         try {
             Payment::createData($request);
-
             DB::commit();
-            return redirect()->route('payment.index')->with('success','Pembayaran berhasil');
+            return redirect()->route('payment.index')->with('success','Pelunasan Tagihan berhasil');
 
         } catch (Exception $e) {
             DB::rollBack();
@@ -109,10 +116,93 @@ class PaymentController extends Controller
     {
         Payment::deleteData($payment);
 
-        return back()->with('success','Pembayaran dihapus');
+        return back()->with('success','Pelunasan Tagihan berhasil dihapus');
     }
 
     private static function clean($val){
         return (double) str_replace('.', '', $val ?? 0);
+    }
+
+    public function edit(Payment $payment)
+    {
+        return view('payment.edit', [
+            'payment'  => $payment,
+            // 'invoices' => Invoice::all(), // boleh difilter kalau mau
+            'accounts' => Account::where('is_payment_gateway',1)->get()
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'date' => 'required|date',
+            'invoice_id' => 'required|exists:invoices,id',
+            'total' => 'required',
+            'account_id' => 'required|exists:accounts,id',
+        ]);
+
+        $request->merge([
+            'total' => self::clean($request->total)
+        ]);
+
+        $invoice = Invoice::findOrFail($request->invoice_id);
+        if($request->total > $invoice->left)
+        {
+            return redirect()->back()->with('error', 'Data tidak valid!!');
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $payment = Payment::findOrFail($id);
+            $invoice = $payment->invoice;
+
+            // =========================
+            // UPDATE PAYMENT
+            // =========================
+            $payment->update([
+                'date'       => $request->date,
+                'invoice_id' => $request->invoice_id,
+                'total'      => $request->total,
+                'account_id' => $request->account_id,
+            ]);
+
+            // =========================
+            // UPDATE ULANG INVOICE
+            // =========================
+            $invoice = Invoice::findOrFail($request->invoice_id);
+
+            $paid = Payment::where('invoice_id', $invoice->id)->sum('total');
+            $left = $invoice->grand_total - $paid;
+
+            if ($paid == 0) {
+                $status = 'Belum Bayar';
+            } elseif ($left <= 0) {
+                $status = 'Lunas';
+                $left = 0;
+            } else {
+                $status = 'DP';
+            }
+
+            $invoice->update([
+                'paid'   => $paid,
+                'left'   => $left,
+                'status' => $status
+            ]);
+
+            // =========================
+            // RESET LEDGER PAYMENT
+            // =========================
+            Ledger::where('payment_id', $payment->id)->delete();
+            Ledger::catatPembayaran($payment);
+
+            DB::commit();
+
+            return redirect()->route('payment.index')->with('success','Pelunasan Tagihan berhasil diupdate');
+
+        } catch (Exception $e) {
+            DB::rollBack();
+            return back()->with('error',$e->getMessage());
+        }
     }
 }

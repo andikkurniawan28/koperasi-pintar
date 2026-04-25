@@ -27,7 +27,7 @@ return new class extends Migration
             $table->double('grand_total');
             $table->double('paid');
             $table->double('left');
-            $table->foreignId('account_id')->constrained();
+            // $table->foreignId('account_id')->constrained();
             $table->string('status')->default('Belum Bayar'); // Sudah DP, Lunas
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

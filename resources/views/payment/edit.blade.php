@@ -13,15 +13,17 @@
                     @csrf
                     @method('PUT')
 
+                    <input type="hidden" name="invoice_id" value="{{ $payment->invoice_id }}">
+
                     <div class="mb-3">
                         <label>Tanggal</label>
                         <input type="date" name="date" value="{{ $payment->date }}" class="form-control">
                     </div>
 
                     <div class="mb-3">
-                        <label>Order</label>
+                        <label>Invoice</label>
                         <input type="text" class="form-control"
-                            value="{{ $payment->order->code }} - {{ $payment->order->customer->name }}" readonly>
+                            value="{{ $payment->invoice->code }} - {{ $payment->invoice->customer->name ?? $payment->invoice->member->name }}" readonly>
                     </div>
 
                     <div class="mb-3">
@@ -32,10 +34,13 @@
 
                     <div class="mb-3">
                         <label>Pembayaran lewat</label>
-                        <select name="via" class="form-control select2" required>
+                        <select name="account_id" class="form-control select2" required>
                             <option value="">-- Pilih --</option>
-                            <option value="Cash" {{ $payment->via == 'Cash' ? 'selected' : '' }}>Cash</option>
-                            <option value="QRIS" {{ $payment->via == 'QRIS' ? 'selected' : '' }}>QRIS</option>
+                            @foreach($accounts as $a)
+                                <option value="{{ $a->id }}" {{ $payment->account_id == $a->id ? 'selected' : '' }}>
+                                    {{ $a->code }} - {{ $a->name }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
 

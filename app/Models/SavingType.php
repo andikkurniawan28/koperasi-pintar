@@ -11,8 +11,12 @@ class SavingType extends Model
 
     protected $guarded = [];
 
-    public function saving_type(){
+    public function account(){
         return $this->belongsTo(Account::class);
+    }
+
+    public function savings(){
+        return $this->hasMany(Saving::class);
     }
 
     protected static function booted()

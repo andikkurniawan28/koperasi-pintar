@@ -371,4 +371,35 @@ class Ledger extends Model
             'payment_id' => $payment->id,
         ]);
     }
+
+    public static function catatSimpananMasuk($saving)
+    {
+        $config = Configuration::first();
+
+        // =========================
+        // 1. KAS / BANK (DEBIT)
+        // =========================
+        self::insert([
+            'date'        => $saving->date,
+            'user_id'     => auth()->id(),
+            'account_id'  => $saving->account_id, // akun kewajiban simpanan
+            'description' => 'Setoran Simpanan '.$saving->code,
+            'debit'       => $saving->total,
+            'credit'      => 0,
+            'saving_id'   => $saving->id,
+        ]);
+
+        // =========================
+        // 2. SIMPANAN (KREDIT)
+        // =========================
+        self::insert([
+            'date'        => $saving->date,
+            'user_id'     => auth()->id(),
+            'account_id'  => $saving->savingType->account_id, // akun kas/bank dari type
+            'description' => 'Simpanan Anggota '.$saving->code,
+            'debit'       => 0,
+            'credit'      => $saving->total,
+            'saving_id'   => $saving->id,
+        ]);
+    }
 }
