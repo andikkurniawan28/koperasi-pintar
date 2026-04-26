@@ -73,7 +73,7 @@
                 @if (in_array($role, ['Admin', 'Kasir']))
                     <li class="menu-item @yield('saving_active')">
                         <a href="{{ route('saving.index') }}" class="menu-link">
-                            <div>Simpanan</div>
+                            <div>Setoran Simpanan</div>
                         </a>
                     </li>
                 @endif
@@ -81,9 +81,7 @@
                 @if (in_array($role, ['Admin', 'Kasir']))
                     <li class="menu-item @yield('withdraw_active')">
                         <a href="{{ route('withdraw.index') }}" class="menu-link">
-                            <div>Penarikan Simpanan
-                                <span class="badge bg-warning text-dark ms-2">Beta</span>
-                            </div>
+                            <div>Penarikan Simpanan</div>
                         </a>
                     </li>
                 @endif

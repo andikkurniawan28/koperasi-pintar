@@ -21,6 +21,7 @@
                         <tr>
                             <th>Nama</th>
                             <th>Akun</th>
+                            <th>Dapat Ditarik</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -42,6 +43,7 @@
             columns: [
                 { data: 'name', name: 'name' },
                 { data: 'account', name: 'account' },
+                { data: 'is_withdrawable', name: 'is_withdrawable' },
                 { data: 'action', name: 'action', orderable: false, searchable: false }
             ]
         });

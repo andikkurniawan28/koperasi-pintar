@@ -23,9 +23,9 @@ return new class extends Migration
             $table->foreignId('invoice_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('payment_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('saving_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('withdraw_id')->nullable()->constrained()->onDelete('cascade');
+            // $table->foreignId('withdraw_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('loan_id')->nullable()->constrained()->onDelete('cascade');
-            $table->foreignId('installment_id')->nullable()->constrained()->onDelete('cascade');
+            // $table->foreignId('installment_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('stock_adjustment_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
             $table->timestamp('created_at')->useCurrent();

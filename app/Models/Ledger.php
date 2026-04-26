@@ -383,7 +383,7 @@ class Ledger extends Model
             'date'        => $saving->date,
             'user_id'     => auth()->id(),
             'account_id'  => $saving->account_id, // akun kewajiban simpanan
-            'description' => 'Setoran Simpanan '.$saving->code,
+            'description' => "Setoran Simpanan {$saving->savingType->name} oleh {$saving->member->name}",
             'debit'       => $saving->total,
             'credit'      => 0,
             'saving_id'   => $saving->id,
@@ -395,11 +395,42 @@ class Ledger extends Model
         self::insert([
             'date'        => $saving->date,
             'user_id'     => auth()->id(),
-            'account_id'  => $saving->savingType->account_id, // akun kas/bank dari type
-            'description' => 'Simpanan Anggota '.$saving->code,
+            'account_id'  => $saving->savingType->account_id, // akun k
+            'description' => "Setoran Simpanan {$saving->savingType->name} oleh {$saving->member->name}",
             'debit'       => 0,
             'credit'      => $saving->total,
             'saving_id'   => $saving->id,
+        ]);
+    }
+
+    public static function catatSimpananKeluar($withdraw)
+    {
+        $config = Configuration::first();
+
+        // =========================
+        // 1. KAS / BANK (DEBIT)
+        // =========================
+        self::insert([
+            'date'        => $withdraw->date,
+            'user_id'     => auth()->id(),
+            'account_id'  => $withdraw->account_id, // akun kewajiban simpanan
+            'description' => "Penarikan Simpanan {$withdraw->savingType->name} oleh {$withdraw->member->name}",
+            'credit'       => $withdraw->total,
+            'debit'      => 0,
+            'saving_id'   => $withdraw->id,
+        ]);
+
+        // =========================
+        // 2. SIMPANAN (KREDIT)
+        // =========================
+        self::insert([
+            'date'        => $withdraw->date,
+            'user_id'     => auth()->id(),
+            'account_id'  => $withdraw->savingType->account_id, // akun kas/bank dari type
+            'description' => "Penarikan Simpanan {$withdraw->savingType->name} oleh {$withdraw->member->name}",
+            'credit'       => 0,
+            'debit'      => $withdraw->total,
+            'saving_id'   => $withdraw->id,
         ]);
     }
 }

@@ -1,15 +1,15 @@
 @extends('template.master')
 
 @section('transaksi_simpan_pinjam_active', 'active')
-@section('saving_active', 'active')
+@section('withdraw_active', 'active')
 
 @section('content')
     <div class="container-xxl container-p-y">
-    <h1 class="h3 mb-3"><strong>Tambah Setoran Simpanan</strong></h1>
+    <h1 class="h3 mb-3"><strong>Tambah Penarikan Simpanan</strong></h1>
 
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('saving.store') }}" method="POST">
+                <form action="{{ route('withdraw.store') }}" method="POST">
                     @csrf
 
                     <div class="mb-3">
@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label>Jenis Simpanan</label>
+                        <label>Jenis Penarikan Simpanan</label>
                         <select name="saving_type_id" class="form-select select2" required>
                             <option value="">-- Pilih --</option>
                             @foreach ($types as $o)
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label>Setoran lewat</label>
+                        <label>Ditarik dari</label>
                         <select name="account_id" class="form-control select2" required>
                             <option value="">-- Pilih --</option>
                             @foreach($accounts as $a)

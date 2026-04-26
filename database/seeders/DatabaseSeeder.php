@@ -107,9 +107,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         SavingType::insert([
-            ['id'=>1,'name'=>'Simpanan Pokok','account_id'=>11],
-            ['id'=>2,'name'=>'Simpanan Wajib','account_id'=>9],
-            ['id'=>3,'name'=>'Simpanan Sukarela','account_id'=>10],
+            ['id'=>1,'name'=>'Simpanan Pokok','account_id'=>11, 'is_withdrawable' => 0],
+            ['id'=>2,'name'=>'Simpanan Wajib','account_id'=>9, 'is_withdrawable' => 1],
+            ['id'=>3,'name'=>'Simpanan Sukarela','account_id'=>10, 'is_withdrawable' => 1],
         ]);
     }
 }

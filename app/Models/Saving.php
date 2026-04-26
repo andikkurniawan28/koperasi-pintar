@@ -11,21 +11,32 @@ class Saving extends Model
 
     protected $guarded = [];
 
+    public static function phrase($saving)
+    {
+        if($saving->direction == "in"){
+            return "Menyetor";
+        }
+        else {
+            return "Menarik";
+        }
+    }
+
     // =========================
     // BOOT (LOG)
     // =========================
     protected static function booted()
     {
         static::created(function ($saving) {
-            ActivityLog::log(auth()->id(), "Menambah simpanan ".$saving->code);
+            $phrase = self::phrase($saving);
+            ActivityLog::log(auth()->id(), "{$phrase} simpanan ".$saving->id);
         });
 
         static::updated(function ($saving) {
-            ActivityLog::log(auth()->id(), "Mengubah simpanan ".$saving->code);
+            ActivityLog::log(auth()->id(), "Mengubah simpanan ".$saving->id);
         });
 
         static::deleted(function ($saving) {
-            ActivityLog::log(auth()->id(), "Menghapus simpanan ".$saving->code);
+            ActivityLog::log(auth()->id(), "Menghapus simpanan ".$saving->id);
         });
     }
 
@@ -57,12 +68,11 @@ class Saving extends Model
     // =========================
     public static function createData($request)
     {
-        $code = 'SVG' . date('YmdHis');
+        $id = 'SVG' . date('YmdHis');
 
         $saving = self::create([
-            'code'                => $code,
             'date'                => $request->date,
-            'withdraw_allowed_at' => $request->withdraw_allowed_at,
+            'direction'           => 'in',
             'saving_type_id'      => $request->saving_type_id,
             'member_id'           => $request->member_id,
             'account_id'          => $request->account_id,
@@ -87,12 +97,12 @@ class Saving extends Model
 
         $saving->update([
             'date'                => $request->date,
-            'withdraw_allowed_at' => $request->withdraw_allowed_at,
+            'direction'           => 'in',
             'saving_type_id'      => $request->saving_type_id,
             'member_id'           => $request->member_id,
             'account_id'          => $request->account_id,
-            'user_id'             => auth()->user()->id,
             'total'               => $request->total,
+            'user_id'             => auth()->user()->id,
         ]);
 
         // reset ledger

@@ -27,6 +27,11 @@ class SavingTypeController extends Controller
                         $q->where('code', 'like', "%{$keyword}%");
                     });
                 })
+                ->addColumn('is_withdrawable', function ($row) {
+                    return $row->is_withdrawable
+                        ? '<span class="badge bg-success">Ya</span>'
+                        : '<span class="badge bg-danger">Tidak</span>';
+                })
                 ->addColumn('action', function ($row) {
                     $editUrl = route('saving_type.edit', $row->id);
                     $deleteUrl = route('saving_type.destroy', $row->id);
@@ -39,7 +44,7 @@ class SavingTypeController extends Controller
                                 </form>
                             </div>';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'is_withdrawable'])
                 ->make(true);
         }
 
@@ -58,11 +63,13 @@ class SavingTypeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:saving_types,name',
             'account_id' => 'required|exists:accounts,id',
+            'is_withdrawable' => 'required',
         ]);
 
         SavingType::create([
             'name' => $request->name,
             'account_id' => $request->account_id,
+            'is_withdrawable' => $request->is_withdrawable,
         ]);
 
         return redirect()->route('saving_type.index')->with('success', 'Jenis Simpanan berhasil ditambahkan.');
@@ -79,11 +86,13 @@ class SavingTypeController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:saving_types,name,' . $saving_type->id,
             'account_id' => 'required|exists:accounts,id',
+            'is_withdrawable' => 'required',
         ]);
 
         $saving_type->update([
             'name' => $request->name,
             'account_id' => $request->account_id,
+            'is_withdrawable' => $request->is_withdrawable,
         ]);
 
         return redirect()->route('saving_type.index')->with('success', 'Jenis Simpanan berhasil diperbarui.');

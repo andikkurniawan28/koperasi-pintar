@@ -1,14 +1,14 @@
 @extends('template.master')
 
 @section('transaksi_simpan_pinjam_active', 'active')
-@section('saving_active', 'active')
+@section('withdraw_active', 'active')
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-    <h1 class="h3 mb-3"><strong>Daftar Setoran Simpanan</strong></h1>
+    <h1 class="h3 mb-3"><strong>Daftar Penarikan Simpanan</strong></h1>
 
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="{{ route('saving.create') }}" class="btn btn-primary">
+        <a href="{{ route('withdraw.create') }}" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Tambah
         </a>
     </div>
@@ -16,7 +16,7 @@
     <div class="card shadow-sm">
         <div class="card-body">
             <div class="table-responsive">
-                <table id="savingTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center" width="100%">
+                <table id="withdrawTable" class="table table-bordered table-hover table-striped table-sm w-100 text-center" width="100%">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -43,11 +43,11 @@
     }
 
     $(function() {
-        $('#savingTable').DataTable({
+        $('#withdrawTable').DataTable({
             processing: true,
             serverSide: true,
-            ajax: "{{ route('saving.index') }}",
-            saving: [[0, 'desc']],
+            ajax: "{{ route('withdraw.index') }}",
+            withdraw: [[0, 'desc']],
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'date', name: 'date' },
@@ -58,7 +58,7 @@
                 // { data: 'total', name: 'total', render: function(data) { return formatRupiah(data); } },
                 { data: 'total', name: 'total', render: function(data) { return formatRupiah(data); } },
                 // { data: 'via', name: 'via' },
-                { data: 'action', name: 'action', savingable: false, searchable: false }
+                { data: 'action', name: 'action', withdrawable: false, searchable: false }
             ]
         });
     });

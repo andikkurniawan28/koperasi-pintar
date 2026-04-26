@@ -16,7 +16,7 @@ class SavingController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $data = Saving::with(['member','savingType'])->latest();
+            $data = Saving::with(['member','savingType', 'user'])->where('direction', 'in')->latest();
 
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -93,7 +93,7 @@ class SavingController extends Controller
             $saving = Saving::createData($request);
 
             DB::commit();
-            return redirect()->route('saving.index')->with('success','Simpanan berhasil disimpan');
+            return redirect()->route('saving.index')->with('success','Setoran Simpanan berhasil disimpan');
 
         } catch (Exception $e) {
             DB::rollBack();
@@ -130,7 +130,7 @@ class SavingController extends Controller
             $saving = Saving::updateData($id, $request);
 
             DB::commit();
-            return redirect()->route('saving.index')->with('success','Simpanan berhasil diupdate');
+            return redirect()->route('saving.index')->with('success','Setoran Simpanan berhasil diupdate');
 
         } catch (Exception $e) {
             DB::rollBack();
@@ -142,7 +142,7 @@ class SavingController extends Controller
     {
         $saving->delete();
 
-        return back()->with('success','Simpanan berhasil dihapus');
+        return back()->with('success','Setoran Simpanan berhasil dihapus');
     }
 
     private static function clean($val){

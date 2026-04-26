@@ -27,6 +27,15 @@
                     </select>
                 </div>
 
+                <div class="mb-3">
+                    <label class="form-label">Bisa ditarik ?</label>
+                        <select name="account_id" class="form-control select2" required>
+                            <option value="">-- Pilih --</option>
+                            <option value="0">Tidak</option>
+                            <option value="1">Ya</option>
+                        </select>
+                </div>
+
                 <div class="d-flex justify-content-end">
                     <a href="{{ route('saving_type.index') }}" class="btn btn-secondary me-2">Batal</a>
                     <button type="submit" class="btn btn-primary">Simpan</button>
