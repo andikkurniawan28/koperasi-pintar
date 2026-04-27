@@ -433,4 +433,39 @@ class Ledger extends Model
             'saving_id'   => $withdraw->id,
         ]);
     }
+
+    public static function catatPencairanLoan($loan)
+    {
+        // Ambil akun dari loan type (piutang)
+        $receivableAccount = $loan->loanType->account_id;
+
+        // Ambil akun kas/bank (kamu harus kirim dari form / loan)
+        $cashAccount = $loan->account_id ?? null;
+
+        if (!$cashAccount) {
+            throw new \Exception("Akun kas/bank belum diset untuk pencairan.");
+        }
+
+        // Debit: Piutang
+        self::create([
+            'date'        => $loan->date,
+            'description' => 'Pencairan Pinjaman ' . $loan->code,
+            'debit'       => $loan->principal,
+            'credit'      => 0,
+            'account_id'  => $receivableAccount,
+            'loan_id'     => $loan->id,
+            'user_id'     => auth()->id(),
+        ]);
+
+        // Credit: Kas / Bank
+        self::create([
+            'date'        => $loan->date,
+            'description' => 'Pencairan Pinjaman ' . $loan->code,
+            'debit'       => 0,
+            'credit'      => $loan->principal,
+            'account_id'  => $cashAccount,
+            'loan_id'     => $loan->id,
+            'user_id'     => auth()->id(),
+        ]);
+    }
 }

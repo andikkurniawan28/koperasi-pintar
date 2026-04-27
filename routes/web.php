@@ -11,6 +11,7 @@ use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LoanController;
+use App\Http\Controllers\LoanTypeController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
@@ -84,6 +85,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('saving_type/{saving_type}/edit', [SavingTypeController::class, 'edit'])->name('saving_type.edit')->middleware('role:Admin');
     Route::put('saving_type/{saving_type}', [SavingTypeController::class, 'update'])->name('saving_type.update')->middleware('role:Admin');
     Route::delete('saving_type/{saving_type}', [SavingTypeController::class, 'destroy'])->name('saving_type.destroy')->middleware('role:Admin');
+
+    Route::get('loan_type', [LoanTypeController::class, 'index'])->name('loan_type.index')->middleware('role:Admin');
+    Route::get('loan_type/create', [LoanTypeController::class, 'create'])->name('loan_type.create')->middleware('role:Admin');
+    Route::post('loan_type', [LoanTypeController::class, 'store'])->name('loan_type.store')->middleware('role:Admin');
+    Route::get('loan_type/{loan_type}/edit', [LoanTypeController::class, 'edit'])->name('loan_type.edit')->middleware('role:Admin');
+    Route::put('loan_type/{loan_type}', [LoanTypeController::class, 'update'])->name('loan_type.update')->middleware('role:Admin');
+    Route::delete('loan_type/{loan_type}', [LoanTypeController::class, 'destroy'])->name('loan_type.destroy')->middleware('role:Admin');
 
     Route::get('product', [ProductController::class, 'index'])->name('product.index')->middleware('role:Admin');
     Route::get('product/create', [ProductController::class, 'create'])->name('product.create')->middleware('role:Admin');

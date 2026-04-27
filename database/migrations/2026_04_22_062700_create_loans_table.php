@@ -14,15 +14,28 @@ return new class extends Migration
         Schema::create('loans', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->date('date');
+
+            $table->date('date'); // pencairan
             $table->date('due_date');
-            $table->foreignId('saving_type_id')->constrained();
+
+            $table->foreignId('loan_type_id')->constrained();
+            $table->foreignId('account_id')->constrained();
             $table->foreignId('member_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+
             $table->double('principal');
-            $table->double('total_interest');
-            $table->double('interest_per_month');
-            $table->double('penalty_per_month');
+            $table->double('interest_rate');
             $table->integer('tenor');
+
+            $table->double('total_interest');
+            $table->double('total_amount');
+            $table->double('installment');
+
+            $table->double('remaining_balance');
+
+            $table->enum('status', ['ongoing', 'paid_off', 'default'])
+                ->default('ongoing');
+
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

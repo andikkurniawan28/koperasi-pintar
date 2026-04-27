@@ -19,16 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('direction')->default('in');
             $table->double('total');
-            // $table->string('code')->unique();
-            // $table->date('date');
-            // $table->date('withdraw_allowed_at')->nullable();
-            // $table->foreignId('saving_type_id')->constrained();
-            // $table->foreignId('member_id')->constrained();
             $table->foreignId('account_id')->constrained();
-            // $table->foreignId('user_id')->constrained();
-            // $table->double('total');
-            // $table->double('witdrawn')->default(0);
-            // $table->double('left')->default(0);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
         });

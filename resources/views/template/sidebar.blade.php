@@ -89,9 +89,7 @@
                 @if (in_array($role, ['Admin', 'Kasir']))
                     <li class="menu-item @yield('loan_active')">
                         <a href="{{ route('loan.index') }}" class="menu-link">
-                            <div>Pinjaman
-                                <span class="badge bg-warning text-dark ms-2">Beta</span>
-                            </div>
+                            <div>Pinjaman</div>
                         </a>
                     </li>
                 @endif
@@ -230,6 +228,14 @@
                     <li class="menu-item @yield('saving_type_active')">
                         <a href="{{ route('saving_type.index') }}" class="menu-link">
                             <div>Jenis Simpanan</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($role === 'Admin')
+                    <li class="menu-item @yield('loan_type_active')">
+                        <a href="{{ route('loan_type.index') }}" class="menu-link">
+                            <div>Jenis Pinjaman</div>
                         </a>
                     </li>
                 @endif

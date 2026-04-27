@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use App\Models\Account;
 use App\Models\Configuration;
 use App\Models\Customer;
+use App\Models\LoanType;
 use App\Models\Member;
 use App\Models\Product;
 use App\Models\Role;
@@ -110,6 +111,13 @@ class DatabaseSeeder extends Seeder
             ['id'=>1,'name'=>'Simpanan Pokok','account_id'=>11, 'is_withdrawable' => 0],
             ['id'=>2,'name'=>'Simpanan Wajib','account_id'=>9, 'is_withdrawable' => 1],
             ['id'=>3,'name'=>'Simpanan Sukarela','account_id'=>10, 'is_withdrawable' => 1],
+        ]);
+
+        LoanType::insert([
+            ['id' => 1, 'name'=>'Pinjaman Umum','interest_rate'=>2.5,'interest_type'=>'flat','tenor_min'=>1,'tenor_max'=>24,'max_amount'=>10000000,'requires_collateral'=>false,'account_id'=>4],
+            ['id' => 2, 'name'=>'Pinjaman Karyawan','interest_rate'=>1.5,'interest_type'=>'flat','tenor_min'=>1,'tenor_max'=>12,'max_amount'=>5000000,'requires_collateral'=>false,'account_id'=>4],
+            ['id' => 3, 'name'=>'Pinjaman Usaha','interest_rate'=>3,'interest_type'=>'effective','tenor_min'=>3,'tenor_max'=>36,'max_amount'=>50000000,'requires_collateral'=>true,'account_id'=>4],
+            ['id' => 4, 'name'=>'Pinjaman Darurat','interest_rate'=>0,'interest_type'=>'flat','tenor_min'=>1,'tenor_max'=>6,'max_amount'=>2000000,'requires_collateral'=>false,'account_id'=>4],
         ]);
     }
 }
