@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $payment->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $payment->date }}</p>
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($payment->date)->locale('id')->translatedFormat('d F Y') }}</p>
                 </div>
             </div>
 
@@ -77,7 +77,7 @@
                     <p class="text-muted">Terima kasih atas pembayaran Anda.</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p>{{ $payment->date }}</p>
+                    <p>{{ \Carbon\Carbon::parse($payment->date)->locale('id')->translatedFormat('d F Y') }}</p>
                     <br><br>
                     <p><strong>{{ $payment->user->name }}</strong></p>
                 </div>

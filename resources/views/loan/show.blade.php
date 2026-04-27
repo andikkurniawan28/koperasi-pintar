@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $loan->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($loan->date)->format('d-m-Y') }}</p>
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($loan->date)->locale('id')->translatedFormat('d F Y') }}</p>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
                     <p class="text-muted">Terima kasih. Harap melakukan pembayaran sesuai jadwal.</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p>{{ \Carbon\Carbon::parse($loan->date)->format('d-m-Y') }}</p>
+                    <p>{{ \Carbon\Carbon::parse($loan->date)->locale('id')->translatedFormat('d F Y') }}</p>
                     <br><br>
                     <p><strong>{{ $loan->user->name }}</strong></p>
                 </div>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('sales_revenue_customer_account_id')->constrained('accounts');
             $table->foreignId('service_revenue_member_account_id')->constrained('accounts');
             $table->foreignId('service_revenue_customer_account_id')->constrained('accounts');
+            $table->foreignId('interest_income_account_id')->constrained('accounts');
 
             // Item Penjualan
             $table->foreignId('sales_discount_account_id')->constrained('accounts');

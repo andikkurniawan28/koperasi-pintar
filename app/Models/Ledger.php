@@ -471,59 +471,68 @@ class Ledger extends Model
 
     public static function catatPembayaranLoan($loan, $payment)
     {
+        $config = Configuration::first();
+
         $receivableAccount = $loan->loanType->account_id;
         $cashAccount       = $payment->account_id;
 
-        // ⚠️ kamu harus punya setting ini (atau hardcode dulu)
-        $interestAccount = config('account.interest_income');
-        $penaltyAccount  = config('account.penalty_income');
+        $interestAccount = $config->interest_income_account_id;
+        $penaltyAccount  = $config->interest_income_account_id; // 🔥 jangan pakai interest lagi
 
+        // =========================
         // Debit: Kas / Bank
+        // =========================
         self::create([
             'date'        => $payment->date,
             'description' => 'Pembayaran Pinjaman ' . $loan->code,
             'debit'       => $payment->total,
             'credit'      => 0,
             'account_id'  => $cashAccount,
-            'loan_id'     => $loan->id,
+            'installment_id' => $payment->id, // 🔥 fix typo
             'user_id'     => auth()->id(),
         ]);
 
-        // Credit: Piutang (pokok)
-        if ($payment->principal_paid > 0) {
+        // =========================
+        // Credit: Piutang (Pokok)
+        // =========================
+        if ($payment->principal > 0) {
             self::create([
                 'date'        => $payment->date,
                 'description' => 'Bayar Pokok ' . $loan->code,
                 'debit'       => 0,
-                'credit'      => $payment->principal_paid,
+                'credit'      => $payment->principal,
                 'account_id'  => $receivableAccount,
-                'loan_id'     => $loan->id,
+                'installment_id' => $payment->id,
                 'user_id'     => auth()->id(),
             ]);
         }
 
-        // Credit: Bunga
-        if ($payment->interest_paid > 0) {
+        // =========================
+        // Credit: Pendapatan Bunga
+        // =========================
+        if ($payment->interest > 0) {
             self::create([
                 'date'        => $payment->date,
                 'description' => 'Bayar Bunga ' . $loan->code,
                 'debit'       => 0,
-                'credit'      => $payment->interest_paid,
+                'credit'      => $payment->interest,
                 'account_id'  => $interestAccount,
-                'loan_id'     => $loan->id,
+                'installment_id' => $payment->id,
                 'user_id'     => auth()->id(),
             ]);
         }
 
+        // =========================
         // Credit: Denda
-        if ($payment->penalty_paid > 0) {
+        // =========================
+        if ($payment->penalty > 0) {
             self::create([
                 'date'        => $payment->date,
                 'description' => 'Bayar Denda ' . $loan->code,
                 'debit'       => 0,
-                'credit'      => $payment->penalty_paid,
+                'credit'      => $payment->penalty,
                 'account_id'  => $penaltyAccount,
-                'loan_id'     => $loan->id,
+                'installment_id' => $payment->id,
                 'user_id'     => auth()->id(),
             ]);
         }

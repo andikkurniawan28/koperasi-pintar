@@ -79,6 +79,20 @@
                                 </td>
                             </tr>
 
+                            <tr>
+                                <td>Pendapatan Bunga dari Anggota</td>
+                                <td>
+                                    <select name="interest_income_account_id" class="form-control select2">
+                                        @foreach ($accounts as $a)
+                                            <option value="{{ $a->id }}"
+                                                {{ $configuration->interest_income_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $a->code }} - {{ $a->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </td>
+                            </tr>
+
                             <tr class="table-primary">
                                 <th colspan="2">Penjualan</th>
                             </tr>

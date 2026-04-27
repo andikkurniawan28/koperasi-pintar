@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $stock_adjustment->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $stock_adjustment->date }}</p>
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($stock_adjustment->date)->locale('id')->translatedFormat('d F Y') }}</p>
                     {{-- <p class="mb-0">Status:
                         <span class="badge bg-label-primary">{{ $stock_adjustment->status }}</span>
                     </p> --}}
@@ -47,8 +47,8 @@
                             <th>Jenis</th>
                             <th>Produk</th>
                             <th>Qty</th>
-                            <th>Harga</th>
-                            <th>Total</th>
+                            <th class="text-end">Harga</th>
+                            <th class="text-end">Total</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,8 +66,8 @@
                             <td>{{ $stock_adjustment->inOut }}</td>
                             <td>{{ $stock_adjustment->product->name }}</td>
                             <td>{{ $stock_adjustment->qty }}</td>
-                            <td>{{ number_format($stock_adjustment->price,0,',','.') }}</td>
-                            <td>{{ number_format($stock_adjustment->total,0,',','.') }}</td>
+                            <td class="text-end">{{ number_format($stock_adjustment->price,0,',','.') }}</td>
+                            <td class="text-end">{{ number_format($stock_adjustment->amount,0,',','.') }}</td>
                         </tr>
                         {{-- @endforeach --}}
                     </tbody>

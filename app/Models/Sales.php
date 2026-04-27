@@ -68,6 +68,7 @@ class Sales extends Model
             $product = Product::find($item['product_id']);
 
             $hpp = $product->buy_price * $item['qty'];
+
             $totalHpp += $hpp;
 
             SalesProduct::create([
@@ -89,7 +90,6 @@ class Sales extends Model
             ]);
         }
 
-        // kirim HPP ke ledger
         Ledger::catatPenjualan($sales, $request, $totalHpp);
 
         return $sales;

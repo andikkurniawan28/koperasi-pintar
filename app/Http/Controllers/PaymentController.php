@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Invoice;
 use App\Models\Ledger;
 use App\Models\Payment;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,11 @@ class PaymentController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->editColumn('date', function ($row) {
+                    return Carbon::parse($row->date)
+                        ->locale('id')
+                        ->translatedFormat('d F Y');
+                })
                 ->addColumn('invoice', fn($row) => $row->invoice->code ?? '-')
                 ->addColumn('member', fn($row) => $row->member->name ?? '-')
                 ->addColumn('customer', fn($row) => $row->customer->name ?? '-')
@@ -51,7 +57,6 @@ class PaymentController extends Controller
                     // $recap = route('invoice.payment_record_per_invoice', $row->id);
 
                     return '<div class="btn-group">
-                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>
                                 <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
                                     ' . csrf_field() . method_field('DELETE') . '

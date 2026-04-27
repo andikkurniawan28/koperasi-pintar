@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $purchase->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $purchase->date }}</p>
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($purchase->date)->locale('id')->translatedFormat('d F Y') }}</p>
                     {{-- <p class="mb-0">Status:
                         <span class="badge bg-label-primary">{{ $purchase->status }}</span>
                     </p> --}}
@@ -46,26 +46,18 @@
                             <th>No</th>
                             <th>Produk</th>
                             <th>Qty</th>
-                            <th>Harga</th>
-                            <th>Total</th>
+                            <th class="text-end">Harga</th>
+                            <th class="text-end">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($purchase->product as $i => $item)
                         <tr>
                             <td>{{ $i+1 }}</td>
-                            {{-- <td>
-                                {{ $item->product->productCategory->name }} -
-                                {{ $item->product->name }}
-                                <br>
-                                <small class="text-muted">
-                                    {{ $item->product->packaging->name ?? '-' }}
-                                </small>
-                            </td> --}}
                             <td>{{ $item->product->name }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td>{{ number_format($item->price,0,',','.') }}</td>
-                            <td>{{ number_format($item->amount,0,',','.') }}</td>
+                            <td class="text-end">{{ number_format($item->price,0,',','.') }}</td>
+                            <td class="text-end">{{ number_format($item->amount,0,',','.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -75,8 +67,8 @@
             {{-- SUMMARY --}}
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-1"><strong>Catatan:</strong></p>
-                    <p class="text-muted">Terima kasih telah berbelanja 🙏</p>
+                    {{-- <p class="mb-1"><strong>Catatan:</strong></p>
+                    <p class="text-muted">Terima kasih telah berbelanja 🙏</p> --}}
                 </div>
 
                 <div class="col-md-6">

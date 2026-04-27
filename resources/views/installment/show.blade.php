@@ -13,11 +13,13 @@
             <div class="d-flex justify-content-between mb-4">
                 <div>
                     <h3 class="mb-1"><strong>Pelunasan Pinjaman</strong></h3>
-                    {{-- <p class="mb-0">Bukti Pembayaran</p> --}}
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $installment->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $installment->date }}</p>
+                    <p class="mb-0">
+                        Tanggal:
+                        {{ \Carbon\Carbon::parse($installment->date)->locale('id')->translatedFormat('d F Y') }}
+                    </p>
                 </div>
             </div>
 
@@ -39,40 +41,38 @@
             <div class="table-responsive mb-4">
                 <table class="table table-bordered">
                     <tr>
-                        <th width="30%">Jenis</th>
-                        <td>{{ $installment->savingType->name }}</td>
+                        <th width="30%">Jenis Pinjaman</th>
+                        <td>{{ $installment->loan->loanType->name }}</td>
                     </tr>
                     <tr>
-                        <th>Total Penarikan</th>
-                        <td><strong>{{ number_format($installment->total,0,',','.') }}</strong></td>
+                        <th>Jumlah Bayar</th>
+                        <td>
+                            <strong>Rp {{ number_format($installment->total,0,',','.') }}</strong>
+                        </td>
                     </tr>
                     <tr>
-                        <th>Penarikan Lewat</th>
-                        <td>{{ $installment->account->code }}-{{ $installment->account->name }}</td>
+                        <th>Melalui Akun</th>
+                        <td>{{ $installment->account->code }} - {{ $installment->account->name }}</td>
                     </tr>
                 </table>
             </div>
 
-            {{-- TERBILANG --}}
-            {{-- <div class="mb-4">
-                <p class="mb-1"><strong>Terbilang:</strong></p>
-                <p class="text-muted" id="terbilang-text"></p>
-            </div> --}}
-
             {{-- FOOTER --}}
             <div class="row mt-5">
                 <div class="col-md-6">
-                    <p class="text-muted">Terima kasih atas setoran Anda.</p>
+                    <p class="text-muted">Terima kasih atas pembayaran Anda.</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p>{{ $installment->date }}</p>
+                    <p>
+                        {{ \Carbon\Carbon::parse($installment->date)->locale('id')->translatedFormat('d F Y') }}
+                    </p>
                     <br><br>
                     <p><strong>{{ $installment->user->name }}</strong></p>
                 </div>
             </div>
 
             {{-- ACTION --}}
-            <div class="text-end mt-4">
+            <div class="text-end mt-4 no-print">
                 <button onclick="window.print()" class="btn btn-primary">
                     Print
                 </button>
@@ -88,5 +88,5 @@
 @endsection
 
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/terbilang@1.0.0/terbilang.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/terbilang@1.0.0/terbilang.min.js"></script>
 @endsection

@@ -14,10 +14,10 @@ class Saving extends Model
     public static function phrase($saving)
     {
         if($saving->direction == "in"){
-            return "Menyetor";
+            return "Menerima setoran";
         }
         else {
-            return "Menarik";
+            return "Melayani penarikan";
         }
     }
 
@@ -28,15 +28,15 @@ class Saving extends Model
     {
         static::created(function ($saving) {
             $phrase = self::phrase($saving);
-            ActivityLog::log(auth()->id(), "{$phrase} simpanan ".$saving->id);
+            ActivityLog::log(auth()->id(), "{$phrase} simpanan ".$saving->code);
         });
 
         static::updated(function ($saving) {
-            ActivityLog::log(auth()->id(), "Mengubah simpanan ".$saving->id);
+            ActivityLog::log(auth()->id(), "Mengubah simpanan ".$saving->code);
         });
 
         static::deleted(function ($saving) {
-            ActivityLog::log(auth()->id(), "Menghapus simpanan ".$saving->id);
+            ActivityLog::log(auth()->id(), "Menghapus simpanan ".$saving->code);
         });
     }
 
@@ -68,9 +68,10 @@ class Saving extends Model
     // =========================
     public static function createData($request)
     {
-        $id = 'SVG' . date('YmdHis');
+        $code = 'SVG' . date('YmdHis');
 
         $saving = self::create([
+            'code'                => $code,
             'date'                => $request->date,
             'direction'           => 'in',
             'saving_type_id'      => $request->saving_type_id,

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('savings', function (Blueprint $table) {
             $table->id();
+            $table->string('code')->unique();
             $table->date('date');
             $table->foreignId('saving_type_id')->constrained();
             $table->foreignId('member_id')->constrained();

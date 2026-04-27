@@ -1,6 +1,6 @@
 @extends('template.invoice')
 
-@section('transaksi_jasa_active', 'active')
+@section('transaksi_toko_active', 'active')
 @section('invoice_active', 'active')
 
 @section('content')
@@ -13,14 +13,14 @@
             <div class="d-flex justify-content-between mb-4">
                 <div>
                     <h3 class="mb-1"><strong>Faktur Tagihan</strong></h3>
-                    {{-- <p class="mb-0">Invoice Tagihan</p> --}}
+                    {{-- <p class="mb-0">Invoice Penjualan</p> --}}
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $invoice->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $invoice->date }}</p>
-                    {{-- <p class="mb-0">Status:
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($invoice->date)->locale('id')->translatedFormat('d F Y') }}</p>
+                    <p class="mb-0">Status:
                         <span class="badge bg-label-primary">{{ $invoice->status }}</span>
-                    </p> --}}
+                    </p>
                 </div>
             </div>
 
@@ -44,28 +44,18 @@
                     <thead class="table-light">
                         <tr>
                             <th>No</th>
-                            <th>Produk</th>
-                            <th>Qty</th>
-                            <th>Harga</th>
-                            <th>Total</th>
+                            <th>Nama</th>
+                            <th>Ket</th>
+                            <th class="text-end">Total</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($invoice->product as $i => $item)
+                        @foreach($invoice->item as $i => $item)
                         <tr>
                             <td>{{ $i+1 }}</td>
-                            {{-- <td>
-                                {{ $item->product->productCategory->name }} -
-                                {{ $item->product->name }}
-                                <br>
-                                <small class="text-muted">
-                                    {{ $item->product->packaging->name ?? '-' }}
-                                </small>
-                            </td> --}}
-                            <td>{{ $item->product->name }}</td>
-                            <td>{{ $item->qty }}</td>
-                            <td>{{ number_format($item->price,0,',','.') }}</td>
-                            <td>{{ number_format($item->amount,0,',','.') }}</td>
+                            <td>{{ $item->name }}</td>
+                            <td>{{ $item->description }}</td>
+                            <td class="text-end">{{ number_format($item->amount,0,',','.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -75,8 +65,8 @@
             {{-- SUMMARY --}}
             <div class="row">
                 <div class="col-md-6">
-                    <p class="mb-1"><strong>Catatan:</strong></p>
-                    <p class="text-muted">Terima kasih telah berbelanja 🙏</p>
+                    {{-- <p class="mb-1"><strong>Catatan:</strong></p>
+                    <p class="text-muted">Terima kasih telah berbelanja 🙏</p> --}}
                 </div>
 
                 <div class="col-md-6">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\StockAdjustment;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +18,11 @@ class StockAdjustmentController extends Controller
             $data = StockAdjustment::with(['product', 'user'])->latest();
 
             return DataTables::of($data)
+                ->editColumn('date', function ($row) {
+                    return Carbon::parse($row->date)
+                        ->locale('id')
+                        ->translatedFormat('d F Y');
+                })
                 ->addIndexColumn()
                 ->addColumn('product', fn($row) => $row->product->name ?? '-')
                 ->addColumn('user', fn($row) => $row->user->name ?? '-')
@@ -37,7 +43,6 @@ class StockAdjustmentController extends Controller
                     // $recap = route('stock_adjustment.payment_record_per_invoice', $row->id);
 
                     return '<div class="btn-group">
-                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>
                                 <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
                                     ' . csrf_field() . method_field('DELETE') . '

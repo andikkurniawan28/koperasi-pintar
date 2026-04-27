@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\Member;
-use App\Models\Withdraw;
 use App\Models\SavingType;
+use App\Models\Withdraw;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,11 @@ class WithdrawController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->editColumn('date', function ($row) {
+                    return Carbon::parse($row->date)
+                        ->locale('id')
+                        ->translatedFormat('d F Y');
+                })
                 ->addColumn('member', fn($row) => $row->member->name ?? '-')
                 ->addColumn('type', fn($row) => $row->savingType->name ?? '-')
                 ->addColumn('user', fn($row) => $row->user->name ?? '-')
@@ -44,7 +50,6 @@ class WithdrawController extends Controller
                     $deleteUrl = route('withdraw.destroy', $row->id);
 
                     return '<div class="btn-group">
-                        <a href="'.$editUrl.'" class="btn btn-sm btn-warning">Edit</a>
                         <a href="'.$showUrl.'" class="btn btn-sm btn-info">Tampil</a>
                         <form action="'.$deleteUrl.'" method="POST" onsubmit="return confirm(\'Hapus?\')" style="display:inline-block;">
                             '.csrf_field().method_field('DELETE').'
@@ -68,7 +73,9 @@ class WithdrawController extends Controller
     public function create()
     {
         return view('withdraw.create', [
-            'members' => Member::all(),
+            'members' => Member::whereHas('savings', function ($q) {
+                $q->whereIn('saving_type_id', [2,3]);
+            })->get(),
             'types'   => SavingType::where('is_withdrawable', 1)->get(),
             'accounts' => Account::where('is_payment_gateway',1)->get()
         ]);
@@ -90,8 +97,14 @@ class WithdrawController extends Controller
         DB::beginTransaction();
 
         try {
+            $balance = Member::savingBalance(
+                $request->member_id,
+                $request->saving_type_id
+            );
+            if ($request->total > $balance) {
+                throw new \Exception('Saldo tidak mencukupi. Saldo tersedia: ' . number_format($balance, 0, ',', '.'));
+            }
             $withdraw = Withdraw::createData($request);
-
             DB::commit();
             return redirect()->route('withdraw.index')->with('success','Penarikan Simpanan berhasil disimpan');
 

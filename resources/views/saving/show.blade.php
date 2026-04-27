@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $saving->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $saving->date }}</p>
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($saving->date)->locale('id')->translatedFormat('d F Y') }}</p>
                 </div>
             </div>
 
@@ -65,7 +65,7 @@
                     <p class="text-muted">Terima kasih atas setoran Anda.</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <p>{{ $saving->date }}</p>
+                    <p>{{ \Carbon\Carbon::parse($saving->date)->locale('id')->translatedFormat('d F Y') }}</p>
                     <br><br>
                     <p><strong>{{ $saving->user->name }}</strong></p>
                 </div>

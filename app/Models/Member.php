@@ -23,4 +23,24 @@ class Member extends Model
             ActivityLog::log(auth()->user()->id, "Menghapus anggota ". $member->name);
         });
     }
+
+    public function savings()
+    {
+        return $this->hasMany(Saving::class);
+    }
+
+    public static function savingBalance($member_id, $saving_type_id)
+    {
+        $in = Saving::where('member_id', $member_id)
+            ->where('saving_type_id', $saving_type_id)
+            ->where('direction', 'in')
+            ->sum('total');
+
+        $out = Saving::where('member_id', $member_id)
+            ->where('saving_type_id', $saving_type_id)
+            ->where('direction', 'out')
+            ->sum('total');
+
+        return $in - $out;
+    }
 }

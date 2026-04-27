@@ -22,7 +22,7 @@
                             <th>ID</th>
                             <th>Tanggal</th>
                             <th>Kode</th>
-                            <th>Loan</th>
+                            <th>Pinjaman</th>
                             <th>Anggota</th>
                             <th>Admin</th>
                             <th>Total</th>

@@ -238,8 +238,10 @@
 
 
         function format(num) {
-            let n = Number(num) || 0;
-            return new Intl.NumberFormat('id-ID').format(n)
+            let n = Math.floor(Number(num) || 0); // atau Math.round()
+            return new Intl.NumberFormat('id-ID', {
+                maximumFractionDigits: 0
+            }).format(n);
         }
     </script>
 

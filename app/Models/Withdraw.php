@@ -16,10 +16,10 @@ class Withdraw extends Model
     public static function phrase($withdraw)
     {
         if($withdraw->direction == "in"){
-            return "Menyetor";
+            return "Menerima penyetoran";
         }
         else {
-            return "Menarik";
+            return "Melayani penarikan";
         }
     }
 
@@ -30,15 +30,15 @@ class Withdraw extends Model
     {
         static::created(function ($withdraw) {
             $phrase = self::phrase($withdraw);
-            ActivityLog::log(auth()->id(), "{$phrase} simpanan ".$withdraw->id);
+            ActivityLog::log(auth()->id(), "{$phrase} simpanan ".$withdraw->code);
         });
 
         static::updated(function ($withdraw) {
-            ActivityLog::log(auth()->id(), "Mengubah simpanan ".$withdraw->id);
+            ActivityLog::log(auth()->id(), "Mengubah penarikan simpanan ".$withdraw->code);
         });
 
         static::deleted(function ($withdraw) {
-            ActivityLog::log(auth()->id(), "Menghapus simpanan ".$withdraw->id);
+            ActivityLog::log(auth()->id(), "Menghapus penarikan simpanan ".$withdraw->code);
         });
     }
 
@@ -70,9 +70,10 @@ class Withdraw extends Model
     // =========================
     public static function createData($request)
     {
-        $id = 'SVG' . date('YmdHis');
+        $code = 'WD' . date('YmdHis');
 
         $withdraw = self::create([
+            'code'                => $code,
             'date'                => $request->date,
             'direction'           => 'out',
             'saving_type_id'      => $request->saving_type_id,

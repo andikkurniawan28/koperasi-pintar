@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $withdraw->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $withdraw->date }}</p>
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($withdraw->date)->locale('id')->translatedFormat('d F Y') }}</p>
                 </div>
             </div>
 
@@ -26,11 +26,11 @@
             {{-- INFO --}}
             <div class="row mb-4">
                 <div class="col-md-6">
-                    <h6><strong>Dari:</strong></h6>
+                    <h6><strong>Oleh:</strong></h6>
                     <p class="mb-0">{{ $withdraw->member->name }}</p>
                 </div>
                 <div class="col-md-6 text-end">
-                    <h6><strong>Diterima oleh:</strong></h6>
+                    <h6><strong>Dilayani oleh:</strong></h6>
                     <p class="mb-0">{{ $withdraw->user->name }}</p>
                 </div>
             </div>
@@ -62,10 +62,10 @@
             {{-- FOOTER --}}
             <div class="row mt-5">
                 <div class="col-md-6">
-                    <p class="text-muted">Terima kasih atas setoran Anda.</p>
+                    {{-- <p class="text-muted">Terima kasih atas setoran Anda.</p> --}}
                 </div>
                 <div class="col-md-6 text-end">
-                    <p>{{ $withdraw->date }}</p>
+                    <p>{{ \Carbon\Carbon::parse($withdraw->date)->locale('id')->translatedFormat('d F Y') }}</p>
                     <br><br>
                     <p><strong>{{ $withdraw->user->name }}</strong></p>
                 </div>

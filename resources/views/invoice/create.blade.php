@@ -112,7 +112,7 @@
                                         <input type="text" name="grand_total" id="grand_total" class="form-control" readonly>
                                     </div>
 
-                                    <div class="mb-2">
+                                    {{-- <div class="mb-2">
                                         <label>DP / Pembayaran</label>
                                         <input type="text" name="paid" id="paid" class="form-control" value="0">
                                     </div>
@@ -130,7 +130,7 @@
                                                 <option value="{{ $p->id }}">{{ $p->code }} - {{ $p->name }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                             </div>
@@ -241,7 +241,7 @@ $(function() {
     // =========================
     // FORMAT UANG
     // =========================
-    $(document).on('keyup', '.price, #discount, #expenses, #taxes, #paid', function() {
+    $(document).on('keyup', '.price, #discount, #expenses, #taxes', function() {
         let value = parseRupiah($(this).val());
         $(this).val(formatRupiah(value));
     });
@@ -288,13 +288,13 @@ $(function() {
 
         $('#grand_total').val(formatRupiah(grandTotal));
 
-        let paid = parseRupiah($('#paid').val());
-        let left = grandTotal - paid;
+        // let paid = parseRupiah($('#paid').val());
+        // let left = grandTotal - paid;
 
-        $('#left').val(formatRupiah(left));
+        // $('#left').val(formatRupiah(left));
     }
 
-    $('#discount, #expenses, #taxes, #paid').on('keyup change', calculateTotal);
+    $('#discount, #expenses, #taxes').on('keyup change', calculateTotal);
 
 });
 </script>

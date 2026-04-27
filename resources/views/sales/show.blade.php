@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-end">
                     <h5 class="mb-1">#{{ $sales->code }}</h5>
-                    <p class="mb-0">Tanggal: {{ $sales->date }}</p>
+                    <p class="mb-0">Tanggal: {{ \Carbon\Carbon::parse($sales->date)->locale('id')->translatedFormat('d F Y') }}</p>
                     {{-- <p class="mb-0">Status:
                         <span class="badge bg-label-primary">{{ $sales->status }}</span>
                     </p> --}}
@@ -46,26 +46,18 @@
                             <th>No</th>
                             <th>Produk</th>
                             <th>Qty</th>
-                            <th>Harga</th>
-                            <th>Total</th>
+                            <th class="text-end">Harga</th>
+                            <th class="text-end">Total</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($sales->product as $i => $item)
                         <tr>
                             <td>{{ $i+1 }}</td>
-                            {{-- <td>
-                                {{ $item->product->productCategory->name }} -
-                                {{ $item->product->name }}
-                                <br>
-                                <small class="text-muted">
-                                    {{ $item->product->packaging->name ?? '-' }}
-                                </small>
-                            </td> --}}
                             <td>{{ $item->product->name }}</td>
                             <td>{{ $item->qty }}</td>
-                            <td>{{ number_format($item->price,0,',','.') }}</td>
-                            <td>{{ number_format($item->amount,0,',','.') }}</td>
+                            <td class="text-end">{{ number_format($item->price,0,',','.') }}</td>
+                            <td class="text-end">{{ number_format($item->amount,0,',','.') }}</td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -21,7 +21,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Tanggal</th>
-                            {{-- <th>Kode</th> --}}
+                            <th>Kode</th>
                             <th>Jenis</th>
                             <th>Anggota</th>
                             <th>Admin</th>
@@ -51,7 +51,7 @@
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'date', name: 'date' },
-                // { data: 'code', name: 'code' },
+                { data: 'code', name: 'code' },
                 { data: 'type', name: 'type' },
                 { data: 'member', name: 'member' },
                 { data: 'user', name: 'user' },

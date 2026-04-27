@@ -47,7 +47,8 @@
             processing: true,
             serverSide: true,
             ajax: "{{ route('sales.index') }}",
-            sales: [[0, 'desc']],
+            order: [[0, 'desc']], // ✅ fix
+
             columns: [
                 { data: 'id', name: 'id' },
                 { data: 'date', name: 'date' },
@@ -56,7 +57,7 @@
                 { data: 'customer', name: 'customer' },
                 { data: 'user', name: 'user' },
                 { data: 'grand_total', name: 'grand_total', render: function(data) { return formatRupiah(data); } },
-                { data: 'action', name: 'action', salesable: false, searchable: false }
+                { data: 'action', name: 'action', orderable: false, searchable: false } // ✅ fix
             ]
         });
     });

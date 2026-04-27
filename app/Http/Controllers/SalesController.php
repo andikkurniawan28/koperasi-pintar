@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreSalesRequest;
 use App\Models\Account;
 use App\Models\Customer;
 use App\Models\Member;
 use App\Models\Product;
 use App\Models\Sales;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +23,11 @@ class SalesController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->editColumn('date', function ($row) {
+                    return Carbon::parse($row->date)
+                        ->locale('id')
+                        ->translatedFormat('d F Y');
+                })
                 ->addColumn('member', fn($row) => $row->member->name ?? '-')
                 ->addColumn('customer', fn($row) => $row->customer->name ?? '-')
                 ->addColumn('user', fn($row) => $row->user->name ?? '-')
@@ -43,10 +50,7 @@ class SalesController extends Controller
                     $editUrl = route('sales.edit', $row->id);
                     $showUrl = route('sales.show', $row->id);
                     $deleteUrl = route('sales.destroy', $row->id);
-                    // $recap = route('sales.payment_record_per_invoice', $row->id);
-
                     return '<div class="btn-group">
-                                <a href="' . $editUrl . '" class="btn btn-sm btn-warning">Edit</a>
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>
                                 <form action="' . $deleteUrl . '" method="POST" onsubmit="return confirm(\'Hapus data ini?\')" style="display:inline-block;">
                                     ' . csrf_field() . method_field('DELETE') . '
@@ -77,47 +81,22 @@ class SalesController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function store(StoreSalesRequest  $request)
     {
-        $request->validate([
-            'date' => 'required|date',
-            'type' => 'required|in:member,customer',
-            'customer_id' => 'nullable|exists:customers,id',
-            'member_id' => 'nullable|exists:members,id',
-            'subtotal' => 'required',
-            'discount' => 'required',
-            'taxes' => 'required',
-            'expenses' => 'required',
-            'grand_total' => 'required',
-            'account_id' => 'required|exists:accounts,id',
-            'items' => 'required|array',
-            'items.*.product_id' => 'required',
-            'items.*.qty' => 'required|numeric|min:1',
-            'items.*.price' => 'required',
-        ]);
-
         $request = self::cleanRequest($request);
-
         DB::beginTransaction();
-
         try {
             $sales = Sales::catatPenjualan($request);
-
             DB::commit();
-
             return redirect()->route('sales.index')->with('success', 'Penjualan berhasil dibuat.');
         } catch (Exception $e) {
-
             DB::rollBack();
-
             return back()->with('error', $e->getMessage());
         }
     }
 
     public function edit(Sales $sales)
     {
-        $sales->load('product');
-
         return view('sales.edit', [
             'sales' => $sales,
             'customers' => Customer::all(),

@@ -88,6 +88,7 @@ class DatabaseSeeder extends Seeder
             'sales_revenue_customer_account_id' => 14,
             'service_revenue_member_account_id' => 17,
             'service_revenue_customer_account_id' => 18,
+            'interest_income_account_id' => 15,
 
             'sales_discount_account_id' => 28,
             'sales_expense_account_id'  => 19,

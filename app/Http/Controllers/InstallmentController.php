@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Account;
 use App\Models\Installment;
 use App\Models\Loan;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,17 +20,27 @@ class InstallmentController extends Controller
 
             return DataTables::of($data)
                 ->addIndexColumn()
+                ->editColumn('date', function ($row) {
+                    return Carbon::parse($row->date)
+                        ->locale('id')
+                        ->translatedFormat('d F Y');
+                })
                 ->addColumn('loan', fn($row) => $row->loan->code ?? '-')
                 ->addColumn('member', fn($row) => $row->member->name ?? '-')
                 ->addColumn('user', fn($row) => $row->user->name ?? '-')
                 ->addColumn('total', fn($row) => number_format($row->total,0,',','.'))
                 ->addColumn('action', function ($row) {
+                    $editUrl = route('installment.edit', $row->id);
+                    $showUrl = route('installment.show', $row->id);
                     $deleteUrl = route('installment.destroy', $row->id);
 
-                    return '<form action="'.$deleteUrl.'" method="POST" onsubmit="return confirm(\'Hapus?\')" style="display:inline-block;">
-                        '.csrf_field().method_field('DELETE').'
-                        <button class="btn btn-sm btn-danger">Hapus</button>
-                    </form>';
+                    return '<div class="btn-group">
+                        <a href="'.$showUrl.'" class="btn btn-sm btn-info">Tampil</a>
+                        <form action="'.$deleteUrl.'" method="POST" onsubmit="return confirm(\'Hapus?\')" style="display:inline-block;">
+                            '.csrf_field().method_field('DELETE').'
+                            <button class="btn btn-sm btn-danger">Hapus</button>
+                        </form>
+                    </div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -92,17 +103,7 @@ class InstallmentController extends Controller
 
     public function destroy(Installment $installment)
     {
-        DB::beginTransaction();
-
-        try {
-            Installment::deleteData($installment);
-
-            DB::commit();
-            return back()->with('success','Angsuran berhasil dihapus');
-
-        } catch (Exception $e) {
-            DB::rollBack();
-            return back()->with('error',$e->getMessage());
-        }
+        $installment->delete();
+        return back()->with('success','Pelunasan pinjaman berhasil dihapus');
     }
 }
