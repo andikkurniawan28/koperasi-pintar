@@ -102,6 +102,14 @@
                     </li>
                 @endif
 
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('journal_active')">
+                        <a href="{{ route('journal.index') }}" class="menu-link">
+                            <div>Jurnal Umum</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
 

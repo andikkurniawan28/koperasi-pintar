@@ -9,6 +9,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\JournalController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\LoanTypeController;
@@ -171,6 +172,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('installment/{installment}/edit', [InstallmentController::class, 'edit'])->name('installment.edit')->middleware('role:Admin');
     Route::put('installment/{installment}', [InstallmentController::class, 'update'])->name('installment.update')->middleware('role:Admin');
     Route::delete('installment/{installment}', [InstallmentController::class, 'destroy'])->name('installment.destroy')->middleware('role:Admin');
+
+    Route::get('journal', [JournalController::class, 'index'])->name('journal.index')->middleware('role:Admin, Kasir');
+    Route::get('journal/create', [JournalController::class, 'create'])->name('journal.create')->middleware('role:Admin, Kasir');
+    Route::post('journal', [JournalController::class, 'store'])->name('journal.store')->middleware('role:Admin, Kasir');
+    Route::get('journal/{journal}', [JournalController::class, 'show'])->name('journal.show')->middleware('role:Admin, Kasir');
+    Route::get('journal/{journal}/edit', [JournalController::class, 'edit'])->name('journal.edit')->middleware('role:Admin');
+    Route::put('journal/{journal}', [JournalController::class, 'update'])->name('journal.update')->middleware('role:Admin');
+    Route::delete('journal/{journal}', [JournalController::class, 'destroy'])->name('journal.destroy')->middleware('role:Admin');
 
     Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Admin');
     Route::get('stock_ledger', [StockLedgerController::class, 'index'])->name('stock_ledger.index')->middleware('role:Admin');
