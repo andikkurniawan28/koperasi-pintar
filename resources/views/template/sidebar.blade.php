@@ -97,9 +97,7 @@
                 @if (in_array($role, ['Admin', 'Kasir']))
                     <li class="menu-item @yield('installment_active')">
                         <a href="{{ route('installment.index') }}" class="menu-link">
-                            <div>Pelunasan Pinjaman
-                                <span class="badge bg-warning text-dark ms-2">Beta</span>
-                            </div>
+                            <div>Pelunasan Pinjaman</div>
                         </a>
                     </li>
                 @endif
