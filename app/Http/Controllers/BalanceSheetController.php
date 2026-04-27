@@ -65,7 +65,7 @@ class BalanceSheetController extends Controller
         // =========================
         // TOTAL PASIVA
         // =========================
-        $total_pasiva = $total_kewajiban + $total_ekuitas + $laba;
+        $total_pasiva = $total_kewajiban + $total_ekuitas;
 
         return response()->json([
             'aset' => $aset,

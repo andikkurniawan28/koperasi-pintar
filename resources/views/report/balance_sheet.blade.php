@@ -13,7 +13,6 @@
         <div class="card mb-3">
             <div class="card-body">
                 <div class="row">
-
                     <div class="col-md-3">
                         <label class="form-label">Dari</label>
                         <input type="date" id="date_from" class="form-control" value="{{ date('Y-m-01') }}">
@@ -29,11 +28,9 @@
                             Proses
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>
-
 
         <div class="row">
 
@@ -41,7 +38,6 @@
             <div class="col-md-6">
                 <div class="card mb-3">
                     <div class="card-header"><strong>Aset</strong></div>
-
                     <div class="card-body">
                         <table class="table table-sm table-bordered">
                             <thead>
@@ -50,9 +46,7 @@
                                     <th class="text-end">Jumlah</th>
                                 </tr>
                             </thead>
-
                             <tbody id="aset-body"></tbody>
-
                             <tfoot>
                                 <tr>
                                     <th>Total Aset</th>
@@ -76,14 +70,12 @@
                 </div>
             </div>
 
-
             {{-- ================= PASIVA ================= --}}
             <div class="col-md-6">
 
                 {{-- KEWAJIBAN --}}
                 <div class="card mb-3">
                     <div class="card-header"><strong>Kewajiban</strong></div>
-
                     <div class="card-body">
                         <table class="table table-sm table-bordered">
                             <thead>
@@ -92,9 +84,7 @@
                                     <th class="text-end">Jumlah</th>
                                 </tr>
                             </thead>
-
                             <tbody id="kewajiban-body"></tbody>
-
                             <tfoot>
                                 <tr>
                                     <th>Total Kewajiban</th>
@@ -105,11 +95,9 @@
                     </div>
                 </div>
 
-
-                {{-- EKUITAS --}}
+                {{-- MODAL --}}
                 <div class="card mb-3">
                     <div class="card-header"><strong>Modal</strong></div>
-
                     <div class="card-body">
                         <table class="table table-sm table-bordered">
                             <thead>
@@ -118,9 +106,7 @@
                                     <th class="text-end">Jumlah</th>
                                 </tr>
                             </thead>
-
                             <tbody id="ekuitas-body"></tbody>
-
                             <tfoot>
                                 <tr>
                                     <th>Total Modal</th>
@@ -131,48 +117,32 @@
                     </div>
                 </div>
 
-
                 {{-- TOTAL PASIVA --}}
                 <div class="card mb-3">
                     <div class="card-header"><strong>Total Pasiva</strong></div>
-
                     <div class="card-body">
                         <table class="table table-sm table-bordered">
-
-                            <tr>
-                                <th>Laba Berjalan</th>
-                                <th class="text-end" id="total_laba"></th>
-                            </tr>
-
                             <tr>
                                 <th>Total Pasiva</th>
                                 <th class="text-end" id="total_pasiva"></th>
                             </tr>
-
                         </table>
                     </div>
                 </div>
 
             </div>
-
         </div>
-
     </div>
-
 @endsection
 
-
 @section('script')
-
     <script>
         $('#btn-process').click(function() {
 
             $.post("{{ route('balance_sheet.process') }}", {
-
                     _token: "{{ csrf_token() }}",
                     date_from: $('#date_from').val(),
                     date_to: $('#date_to').val()
-
                 })
 
                 .done(function(res) {
@@ -181,68 +151,45 @@
                     renderTable('kewajiban-body', res.kewajiban)
                     renderTable('ekuitas-body', res.ekuitas)
 
-                    // TOTAL
                     $('#total_aset').html(format(res.total_aset))
                     $('#total_aktiva').html(format(res.total_aset))
                     $('#total_kewajiban').html(format(res.total_kewajiban))
                     $('#total_ekuitas').html(format(res.total_ekuitas))
 
-                    // LABA BERJALAN
-                    $('#total_laba').html(format(res.laba))
-                    $('#laba_berjalan').html(format(res.laba))
-
-                    // TOTAL PASIVA
+                    // ✅ tanpa laba
                     $('#total_pasiva').html(format(res.total_pasiva))
 
-                    // 🔥 OPTIONAL: BALANCE CHECK
+                    // balance check
                     if (res.total_aset !== res.total_pasiva) {
                         $('#total_pasiva').addClass('text-danger fw-bold')
                     }
-
                 })
 
                 .fail(function(xhr) {
                     console.log(xhr.responseText)
                     alert('Terjadi error')
                 })
-
         })
 
-
         function renderTable(target, data) {
-
             let html = ''
 
             data.forEach(function(row) {
-
                 html += `
         <tr>
             <td>${row.code} - ${row.name}</td>
             <td class="text-end">${format(row.balance)}</td>
-        </tr>
-        `
+        </tr>`
             })
-
-            // 🔥 Tambahkan laba ke ekuitas
-            if (target === 'ekuitas-body') {
-                html += `
-        <tr class="table-warning">
-            <td><strong>Laba Berjalan</strong></td>
-            <td class="text-end fw-bold" id="laba_berjalan"></td>
-        </tr>
-        `
-            }
 
             $('#' + target).html(html)
         }
 
-
         function format(num) {
-            let n = Math.floor(Number(num) || 0); // atau Math.round()
+            let n = Math.floor(Number(num) || 0);
             return new Intl.NumberFormat('id-ID', {
                 maximumFractionDigits: 0
             }).format(n);
         }
     </script>
-
 @endsection
