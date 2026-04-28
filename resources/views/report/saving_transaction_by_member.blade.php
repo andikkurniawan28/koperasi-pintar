@@ -48,7 +48,6 @@
 @endsection
 
 @section('script')
-
 <script>
 $(function(){
 
@@ -68,26 +67,22 @@ $(function(){
         })
         .done(function(res){
 
-            let cols = res.columns || {};
+            let savingTypes = res.savingTypes || [];
             let data = res.data || [];
 
             // =========================
             // HEADER
             // =========================
             let head = `<tr>
-                <th>Member</th>`;
+                <th>Anggota</th>`;
 
-            Object.entries(cols).forEach(([id, name]) => {
-                head += `<th>${name}</th>`;
+            savingTypes.forEach(s => {
+                head += `<th>${s.name}</th>`;
             });
 
             head += `
-                <th>Penarikan</th>
-                <th>Saldo Simpanan</th>
+                <th>Belanja</th>
                 <th>Pinjaman</th>
-                <th>Angsuran</th>
-                <th>Sisa Hutang</th>
-                <th>Sales</th>
             </tr>`;
 
             $('#table-head').html(head);
@@ -98,7 +93,11 @@ $(function(){
             let body = '';
 
             if(data.length === 0){
-                body = `<tr><td colspan="10" class="text-center">Tidak ada data</td></tr>`;
+                body = `<tr>
+                    <td colspan="${savingTypes.length + 3}" class="text-center">
+                        Tidak ada data
+                    </td>
+                </tr>`;
             } else {
 
                 data.forEach(row => {
@@ -106,17 +105,14 @@ $(function(){
                     body += `<tr>
                         <td>${row.member}</td>`;
 
-                    Object.keys(cols).forEach(id => {
-                        body += `<td>Rp ${rupiah(row['saving_'+id])}</td>`;
+                    // tampilkan semua simpanan
+                    savingTypes.forEach(s => {
+                        body += `<td>Rp ${rupiah(row[s.name])}</td>`;
                     });
 
                     body += `
-                        <td>Rp ${rupiah(row.saving_out)}</td>
-                        <td>Rp ${rupiah(row.saving_balance)}</td>
-                        <td>Rp ${rupiah(row.loan)}</td>
-                        <td>Rp ${rupiah(row.installment)}</td>
-                        <td>Rp ${rupiah(row.loan_remaining)}</td>
-                        <td>Rp ${rupiah(row.sales)}</td>
+                        <td>Rp ${rupiah(row.Belanja)}</td>
+                        <td>Rp ${rupiah(row.Pinjaman)}</td>
                     </tr>`;
                 });
             }
@@ -136,5 +132,4 @@ $(function(){
 
 });
 </script>
-
 @endsection
