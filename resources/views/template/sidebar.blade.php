@@ -198,6 +198,14 @@
                     </li>
                 @endif
 
+                @if (in_array($role, ['Admin']))
+                    <li class="menu-item @yield('saving_transaction_by_member_active')">
+                        <a href="{{ route('saving_transaction_by_member.index') }}" class="menu-link">
+                            <div>Kontribusi Modal & Transaksi Oleh Anggota</div>
+                        </a>
+                    </li>
+                @endif
+
             </ul>
         </li>
 

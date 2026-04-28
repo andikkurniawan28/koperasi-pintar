@@ -22,6 +22,7 @@ use App\Http\Controllers\ProfitLossController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\SalesController;
 use App\Http\Controllers\SavingController;
+use App\Http\Controllers\SavingTransactionByMemberReportController;
 use App\Http\Controllers\SavingTypeController;
 use App\Http\Controllers\StockAdjustmentController;
 use App\Http\Controllers\StockLedgerController;
@@ -171,6 +172,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cash_flow', [CashFlowController::class, 'index'])->name('cash_flow.index')->middleware('role:Admin');
     Route::get('profit_loss', [ProfitLossController::class, 'index'])->name('profit_loss.index')->middleware('role:Admin');
     Route::get('balance_sheet', [BalanceSheetController::class, 'index'])->name('balance_sheet.index')->middleware('role:Admin');
+    Route::get('saving_transaction_by_member', [SavingTransactionByMemberReportController::class, 'index'])->name('saving_transaction_by_member.index')->middleware('role:Admin');
 
     Route::get('auto_journal', [AutoJournalController::class, 'index'])->name('auto_journal.index')->middleware('role:Admin');
     Route::post('auto_journal', [AutoJournalController::class, 'process'])->name('auto_journal.process')->middleware('role:Admin');
@@ -182,3 +184,4 @@ Route::post('stock_ledger', [StockLedgerController::class, 'process'])->name('st
 Route::post('cash_flow', [CashFlowController::class, 'process'])->name('cash_flow.process');
 Route::post('profit_loss', [ProfitLossController::class, 'process'])->name('profit_loss.process');
 Route::post('balance_sheet', [BalanceSheetController::class, 'process'])->name('balance_sheet.process');
+Route::post('saving_transaction_by_member', [SavingTransactionByMemberReportController::class, 'process'])->name('saving_transaction_by_member.process');
