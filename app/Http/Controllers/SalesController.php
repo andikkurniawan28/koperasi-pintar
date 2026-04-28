@@ -47,7 +47,6 @@ class SalesController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('sales.edit', $row->id);
                     $showUrl = route('sales.show', $row->id);
                     $deleteUrl = route('sales.destroy', $row->id);
                     return '<div class="btn-group">

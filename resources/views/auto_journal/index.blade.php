@@ -1,18 +1,18 @@
 @extends('template.master')
 
-@section('master_active', 'active')
 @section('configuration_active', 'active')
+@section('auto_journal_active', 'active')
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
 
-        <h1 class="h3 mb-3"><strong>Konfigurasi</strong></h1>
+        <h1 class="h3 mb-3"><strong>Auto Jurnal</strong></h1>
 
         <div class="card">
             <div class="card-body">
 
 
-                <form action="{{ route('configuration.process') }}" method="POST">
+                <form action="{{ route('auto_journal.process') }}" method="POST">
                     @csrf
                     {{-- @method('PUT') --}}
 
@@ -29,7 +29,7 @@
                                     <select name="sales_revenue_member_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->sales_revenue_member_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->sales_revenue_member_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -43,7 +43,7 @@
                                     <select name="sales_revenue_customer_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->sales_revenue_customer_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->sales_revenue_customer_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -57,7 +57,7 @@
                                     <select name="service_revenue_member_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->service_revenue_member_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->service_revenue_member_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -71,7 +71,7 @@
                                     <select name="service_revenue_customer_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->service_revenue_customer_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->service_revenue_customer_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -85,7 +85,7 @@
                                     <select name="interest_income_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->interest_income_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->interest_income_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -103,7 +103,7 @@
                                     <select name="sales_discount_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->sales_discount_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->sales_discount_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -117,7 +117,7 @@
                                     <select name="sales_expense_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->sales_expense_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->sales_expense_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -131,7 +131,7 @@
                                     <select name="sales_tax_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->sales_tax_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->sales_tax_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -149,7 +149,7 @@
                                     <select name="purchase_discount_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->purchase_discount_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->purchase_discount_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -163,7 +163,7 @@
                                     <select name="purchase_expense_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->purchase_expense_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->purchase_expense_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -177,7 +177,7 @@
                                     <select name="purchase_tax_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->purchase_tax_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->purchase_tax_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -195,7 +195,7 @@
                                     <select name="hpp_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->hpp_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->hpp_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -209,7 +209,7 @@
                                     <select name="inventory_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->inventory_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->inventory_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -223,7 +223,7 @@
                                     <select name="stock_adjustment_gain_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->stock_adjustment_gain_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->stock_adjustment_gain_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -237,7 +237,7 @@
                                     <select name="stock_adjustment_loss_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->stock_adjustment_loss_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->stock_adjustment_loss_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach
@@ -255,7 +255,7 @@
                                     <select name="account_receivable_account_id" class="form-control select2">
                                         @foreach ($accounts as $a)
                                             <option value="{{ $a->id }}"
-                                                {{ $configuration->account_receivable_account_id == $a->id ? 'selected' : '' }}>
+                                                {{ $auto_journal->account_receivable_account_id == $a->id ? 'selected' : '' }}>
                                                 {{ $a->code }} - {{ $a->name }}
                                             </option>
                                         @endforeach

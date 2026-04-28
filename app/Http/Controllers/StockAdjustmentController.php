@@ -37,10 +37,8 @@ class StockAdjustmentController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('stock_adjustment.edit', $row->id);
                     $showUrl = route('stock_adjustment.show', $row->id);
                     $deleteUrl = route('stock_adjustment.destroy', $row->id);
-                    // $recap = route('stock_adjustment.payment_record_per_invoice', $row->id);
 
                     return '<div class="btn-group">
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>

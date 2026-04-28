@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Configuration;
+use App\Models\AutoJournal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,13 +18,13 @@ class Ledger extends Model
 
     public static function catatPenjualan($sales, $request, $totalHpp)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         // Tentukan akun pendapatan
         if($request->type == "member"){
-            $revenueAccount = $config->sales_revenue_member_account_id;
+            $revenueAccount = $auto_journal->sales_revenue_member_account_id;
         } else {
-            $revenueAccount = $config->sales_revenue_customer_account_id;
+            $revenueAccount = $auto_journal->sales_revenue_customer_account_id;
         }
 
         // =========================
@@ -47,7 +47,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $sales->date,
                 'user_id' => $sales->user_id,
-                'account_id' => $config->sales_discount_account_id,
+                'account_id' => $auto_journal->sales_discount_account_id,
                 'description' => 'Diskon Penjualan '.$sales->code,
                 'debit' => $sales->discount,
                 'credit' => 0,
@@ -75,7 +75,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $sales->date,
                 'user_id' => $sales->user_id,
-                'account_id' => $config->sales_tax_account_id,
+                'account_id' => $auto_journal->sales_tax_account_id,
                 'description' => 'PPN Keluaran '.$sales->code,
                 'credit' => $sales->taxes,
                 'debit' => 0,
@@ -90,7 +90,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $sales->date,
                 'user_id' => $sales->user_id,
-                'account_id' => $config->sales_expense_account_id,
+                'account_id' => $auto_journal->sales_expense_account_id,
                 'description' => 'Biaya Tambahan '.$sales->code,
                 'credit' => $sales->expenses, // diasumsikan dibebankan ke customer
                 'debit' => 0,
@@ -107,7 +107,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $sales->date,
                 'user_id' => $sales->user_id,
-                'account_id' => $config->hpp_account_id,
+                'account_id' => $auto_journal->hpp_account_id,
                 'description' => 'HPP '.$sales->code,
                 'debit' => $totalHpp,
                 'credit' => 0,
@@ -118,7 +118,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $sales->date,
                 'user_id' => $sales->user_id,
-                'account_id' => $config->inventory_account_id,
+                'account_id' => $auto_journal->inventory_account_id,
                 'description' => 'Persediaan keluar '.$sales->code,
                 'credit' => $totalHpp,
                 'debit' => 0,
@@ -129,7 +129,7 @@ class Ledger extends Model
 
     public static function catatPembelian($purchase)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         // =========================
         // 1. PERSEDIAAN (DEBIT)
@@ -137,7 +137,7 @@ class Ledger extends Model
         self::insert([
             'date' => $purchase->date,
             'user_id' => $purchase->user_id,
-            'account_id' => $config->inventory_account_id,
+            'account_id' => $auto_journal->inventory_account_id,
             'description' => 'Pembelian '.$purchase->code,
             'debit' => $purchase->subtotal,
             'credit' => 0,
@@ -151,7 +151,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $purchase->date,
                 'user_id' => $purchase->user_id,
-                'account_id' => $config->purchase_discount_account_id,
+                'account_id' => $auto_journal->purchase_discount_account_id,
                 'description' => 'Diskon Pembelian '.$purchase->code,
                 'credit' => $purchase->discount,
                 'debit' => 0,
@@ -166,7 +166,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $purchase->date,
                 'user_id' => $purchase->user_id,
-                'account_id' => $config->purchase_tax_account_id,
+                'account_id' => $auto_journal->purchase_tax_account_id,
                 'description' => 'PPN Masukan '.$purchase->code,
                 'debit' => $purchase->taxes,
                 'credit' => 0,
@@ -181,7 +181,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $purchase->date,
                 'user_id' => $purchase->user_id,
-                'account_id' => $config->purchase_expense_account_id,
+                'account_id' => $auto_journal->purchase_expense_account_id,
                 'description' => 'Biaya Pembelian '.$purchase->code,
                 'debit' => $purchase->expenses,
                 'credit' => 0,
@@ -205,7 +205,7 @@ class Ledger extends Model
 
     public static function catatAdjustment($data)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         $product = Product::find($data->product_id);
         $value = $data->total;
@@ -217,7 +217,7 @@ class Ledger extends Model
                 'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
-                'account_id' => $config->inventory_account_id,
+                'account_id' => $auto_journal->inventory_account_id,
                 'description' => 'Stok Opname Masuk '.$data->code,
                 'debit' => $value,
                 'credit' => 0,
@@ -228,7 +228,7 @@ class Ledger extends Model
                 'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
-                'account_id' => $config->stock_adjustment_gain_account_id,
+                'account_id' => $auto_journal->stock_adjustment_gain_account_id,
                 'description' => 'Stok Opname Masuk '.$data->code,
                 'credit' => $value,
                 'debit' => 0,
@@ -241,7 +241,7 @@ class Ledger extends Model
                 'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
-                'account_id' => $config->inventory_account_id,
+                'account_id' => $auto_journal->inventory_account_id,
                 'description' => 'Stok Opname Keluar '.$data->code,
                 'credit' => $value,
                 'debit' => 0,
@@ -252,7 +252,7 @@ class Ledger extends Model
                 'stock_adjustment_id' => $data->id,
                 'date' => $data->date,
                 'user_id' => $data->user_id,
-                'account_id' => $config->stock_adjustment_loss_account_id,
+                'account_id' => $auto_journal->stock_adjustment_loss_account_id,
                 'description' => 'Stok Opname Keluar '.$data->code,
                 'debit' => $value,
                 'credit' => 0,
@@ -262,12 +262,12 @@ class Ledger extends Model
 
     public static function catatTagihan($invoice)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         // Tentukan akun pendapatan
         $revenueAccount = $invoice->type == "member"
-            ? $config->service_revenue_member_account_id
-            : $config->service_revenue_customer_account_id;
+            ? $auto_journal->service_revenue_member_account_id
+            : $auto_journal->service_revenue_customer_account_id;
 
         // =========================
         // 1. PIUTANG USAHA (DEBIT)
@@ -275,7 +275,7 @@ class Ledger extends Model
         self::insert([
             'date' => $invoice->date,
             'user_id' => $invoice->user_id,
-            'account_id' => $config->account_receivable_account_id,
+            'account_id' => $auto_journal->account_receivable_account_id,
             'description' => 'Tagihan ' . $invoice->code,
             'debit' => $invoice->grand_total,
             'credit' => 0,
@@ -289,7 +289,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $invoice->date,
                 'user_id' => $invoice->user_id,
-                'account_id' => $config->sales_discount_account_id,
+                'account_id' => $auto_journal->sales_discount_account_id,
                 'description' => 'Diskon ' . $invoice->code,
                 'debit' => $invoice->discount,
                 'credit' => 0,
@@ -317,7 +317,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $invoice->date,
                 'user_id' => $invoice->user_id,
-                'account_id' => $config->sales_tax_account_id,
+                'account_id' => $auto_journal->sales_tax_account_id,
                 'description' => 'PPN ' . $invoice->code,
                 'credit' => $invoice->taxes,
                 'debit' => 0,
@@ -332,7 +332,7 @@ class Ledger extends Model
             self::insert([
                 'date' => $invoice->date,
                 'user_id' => $invoice->user_id,
-                'account_id' => $config->sales_expense_account_id,
+                'account_id' => $auto_journal->sales_expense_account_id,
                 'description' => 'Biaya ' . $invoice->code,
                 'credit' => $invoice->expenses,
                 'debit' => 0,
@@ -343,7 +343,7 @@ class Ledger extends Model
 
     public static function catatPembayaran($payment)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         // =========================
         // 1. KAS / BANK (DEBIT)
@@ -364,7 +364,7 @@ class Ledger extends Model
         self::insert([
             'date' => $payment->date,
             'user_id' => $payment->user_id,
-            'account_id' => $config->account_receivable_account_id,
+            'account_id' => $auto_journal->account_receivable_account_id,
             'description' => 'Pelunasan ' . $payment->invoice->code,
             'credit' => $payment->total,
             'debit' => 0,
@@ -374,7 +374,7 @@ class Ledger extends Model
 
     public static function catatSimpananMasuk($saving)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         // =========================
         // 1. KAS / BANK (DEBIT)
@@ -405,7 +405,7 @@ class Ledger extends Model
 
     public static function catatSimpananKeluar($withdraw)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         // =========================
         // 1. KAS / BANK (DEBIT)
@@ -471,13 +471,13 @@ class Ledger extends Model
 
     public static function catatPembayaranLoan($loan, $payment)
     {
-        $config = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
         $receivableAccount = $loan->loanType->account_id;
         $cashAccount       = $payment->account_id;
 
-        $interestAccount = $config->interest_income_account_id;
-        $penaltyAccount  = $config->interest_income_account_id; // 🔥 jangan pakai interest lagi
+        $interestAccount = $auto_journal->interest_income_account_id;
+        $penaltyAccount  = $auto_journal->interest_income_account_id; // 🔥 jangan pakai interest lagi
 
         // =========================
         // Debit: Kas / Bank

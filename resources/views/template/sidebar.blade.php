@@ -102,14 +102,6 @@
                     </li>
                 @endif
 
-                @if (in_array($role, ['Admin', 'Kasir']))
-                    <li class="menu-item @yield('journal_active')">
-                        <a href="{{ route('journal.index') }}" class="menu-link">
-                            <div>Jurnal Umum</div>
-                        </a>
-                    </li>
-                @endif
-
             </ul>
         </li>
 
@@ -133,6 +125,25 @@
                     <li class="menu-item @yield('payment_active')">
                         <a href="{{ route('payment.index') }}" class="menu-link">
                             <div>Pelunasan Tagihan</div>
+                        </a>
+                    </li>
+                @endif
+
+            </ul>
+        </li>
+
+        <!-- Akuntansi -->
+        <li class="menu-item @yield('transaksi_akuntansi_active')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-money"></i>
+                <div>Akuntansi</div>
+            </a>
+            <ul class="menu-sub">
+
+                @if (in_array($role, ['Admin', 'Kasir']))
+                    <li class="menu-item @yield('journal_active')">
+                        <a href="{{ route('journal.index') }}" class="menu-link">
+                            <div>Jurnal Umum</div>
                         </a>
                     </li>
                 @endif
@@ -262,10 +273,29 @@
                     </li>
                 @endif
 
+            </ul>
+        </li>
+
+        <!-- Master -->
+        <li class="menu-item @yield('configuration_active')">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon tf-icons bx bx-wrench"></i>
+                <div>Konfigurasi</div>
+            </a>
+            <ul class="menu-sub">
+
                 @if ($role === 'Admin')
-                    <li class="menu-item @yield('configuration_active')">
-                        <a href="{{ route('configuration.index') }}" class="menu-link">
-                            <div>Konfigurasi</div>
+                    <li class="menu-item @yield('auto_journal_active')">
+                        <a href="{{ route('auto_journal.index') }}" class="menu-link">
+                            <div>Auto Journal</div>
+                        </a>
+                    </li>
+                @endif
+
+                @if ($role === 'Admin')
+                    <li class="menu-item @yield('activity_log_active')">
+                        <a href="{{ route('activity_log.index') }}" class="menu-link">
+                            <div>Log</div>
                         </a>
                     </li>
                 @endif

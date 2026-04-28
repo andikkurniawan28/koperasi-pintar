@@ -31,7 +31,6 @@ class JournalController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('journal.edit', $row->id);
                     $showUrl = route('journal.show', $row->id);
                     $deleteUrl = route('journal.destroy', $row->id);
                     return '<div class="btn-group">
@@ -68,7 +67,7 @@ class JournalController extends Controller
         try {
             $journal = Journal::catatJurnal($request);
             DB::commit();
-            return redirect()->route('journal.index')->with('success', 'Jurnal berhasil dibuat.');
+            return redirect()->route('journal.index')->with('success', 'Jurnal Umum berhasil dibuat.');
         } catch (Exception $e) {
             DB::rollBack();
             return back()->with('error', $e->getMessage());
@@ -79,7 +78,7 @@ class JournalController extends Controller
     {
         $journal->delete();
 
-        return redirect()->route('journal.index')->with('success', 'Jurnal berhasil dihapus.');
+        return redirect()->route('journal.index')->with('success', 'Jurnal Umum berhasil dihapus.');
     }
 
     public static function cleanCurrencyFormatting($val){

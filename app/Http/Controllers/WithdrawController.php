@@ -45,7 +45,6 @@ class WithdrawController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('withdraw.edit', $row->id);
                     $showUrl = route('withdraw.show', $row->id);
                     $deleteUrl = route('withdraw.destroy', $row->id);
 

@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Account;
 use App\Models\ActivityLog;
-use App\Models\Configuration;
+use App\Models\AutoJournal;
 use Illuminate\Http\Request;
 
-class ConfigurationController extends Controller
+class AutoJournalController extends Controller
 {
     public function index()
     {
-        $configuration = Configuration::first();
+        $auto_journal = AutoJournal::first();
         $accounts = Account::all();
-        return view('configuration.index', compact('configuration', 'accounts'));
+        return view('auto_journal.index', compact('auto_journal', 'accounts'));
     }
 
     public function process(Request $request)
@@ -40,9 +40,9 @@ class ConfigurationController extends Controller
             'stock_adjustment_loss_account_id' => 'required|exists:accounts,id',
         ]);
 
-        $configuration = Configuration::first();
+        $auto_journal = AutoJournal::first();
 
-        $configuration->update([
+        $auto_journal->update([
 
             // =========================
             // PENJUALAN
@@ -73,8 +73,8 @@ class ConfigurationController extends Controller
             'stock_adjustment_loss_account_id' => $request->stock_adjustment_loss_account_id,
 
         ]);
-        ActivityLog::log(auth()->user()->id, 'Memperbarui konfigurasi');
+        ActivityLog::log(auth()->user()->id, 'Memperbarui Konfigurasi Auto Jurnal');
 
-        return redirect()->route('configuration.index')->with('success', 'Konfigurasi berhasil diupdate');
+        return redirect()->route('auto_journal.index')->with('success', 'Konfigurasi Auto Jurnal berhasil diupdate');
     }
 }

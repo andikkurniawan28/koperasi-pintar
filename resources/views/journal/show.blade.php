@@ -1,6 +1,6 @@
 @extends('template.invoice')
 
-@section('transaksi_toko_active', 'active')
+@section('transaksi_akuntansi_active', 'active')
 @section('journal_active', 'active')
 
 @section('content')

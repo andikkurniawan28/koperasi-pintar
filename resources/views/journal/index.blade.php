@@ -1,6 +1,6 @@
 @extends('template.master')
 
-@section('transaksi_simpan_pinjam_active', 'active')
+@section('transaksi_akuntansi_active', 'active')
 @section('journal_active', 'active')
 
 @section('content')

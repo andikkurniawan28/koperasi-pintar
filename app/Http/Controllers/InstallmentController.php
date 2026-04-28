@@ -30,7 +30,6 @@ class InstallmentController extends Controller
                 ->addColumn('user', fn($row) => $row->user->name ?? '-')
                 ->addColumn('total', fn($row) => number_format($row->total,0,',','.'))
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('installment.edit', $row->id);
                     $showUrl = route('installment.show', $row->id);
                     $deleteUrl = route('installment.destroy', $row->id);
 

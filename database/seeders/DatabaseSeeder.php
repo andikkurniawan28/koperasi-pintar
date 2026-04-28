@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Account;
-use App\Models\Configuration;
+use App\Models\AutoJournal;
 use App\Models\Customer;
 use App\Models\LoanType;
 use App\Models\Member;
@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
             ['id'=>30,'group'=>'Aset','sub'=>'Aset Lancar','code'=>'108','name'=>'Biaya Pembelian (Kapitalisasi)','normal_balance'=>'Debit','initial_balance'=>0,'is_payment_gateway'=>0],
         ]);
 
-        Configuration::insert([
+        AutoJournal::insert([
 
             'sales_revenue_member_account_id'   => 13,
             'sales_revenue_customer_account_id' => 14,

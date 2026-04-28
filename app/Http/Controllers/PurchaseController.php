@@ -39,10 +39,8 @@ class PurchaseController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('purchase.edit', $row->id);
                     $showUrl = route('purchase.show', $row->id);
                     $deleteUrl = route('purchase.destroy', $row->id);
-                    // $recap = route('purchase.payment_record_per_invoice', $row->id);
 
                     return '<div class="btn-group">
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>

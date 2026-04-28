@@ -45,7 +45,6 @@ class SavingController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('saving.edit', $row->id);
                     $showUrl = route('saving.show', $row->id);
                     $deleteUrl = route('saving.destroy', $row->id);
 

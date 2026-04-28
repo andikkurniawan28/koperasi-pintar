@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BalanceSheetController;
 use App\Http\Controllers\CashFlowController;
-use App\Http\Controllers\ConfigurationController;
+use App\Http\Controllers\AutoJournalController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstallmentController;
 use App\Http\Controllers\InvoiceController;
@@ -43,6 +45,9 @@ Route::get('login', [AuthController::class, 'login'])->name('login');
 Route::post('login', [AuthController::class, 'loginProcess'])->name('loginProcess');
 Route::get('logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/', HomeController::class)->name('home')->middleware(['auth']);
+
+Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
 Route::middleware(['auth'])->group(function () {
 
     Route::get('user', [UserController::class, 'index'])->name('user.index')->middleware('role:Admin');
@@ -105,80 +110,60 @@ Route::middleware(['auth'])->group(function () {
     Route::get('sales/create', [SalesController::class, 'create'])->name('sales.create')->middleware('role:Admin, Kasir');
     Route::post('sales', [SalesController::class, 'store'])->name('sales.store')->middleware('role:Admin, Kasir');
     Route::get('sales/{sales}', [SalesController::class, 'show'])->name('sales.show')->middleware('role:Admin, Kasir');
-    Route::get('sales/{sales}/edit', [SalesController::class, 'edit'])->name('sales.edit')->middleware('role:Admin');
-    Route::put('sales/{sales}', [SalesController::class, 'update'])->name('sales.update')->middleware('role:Admin');
     Route::delete('sales/{sales}', [SalesController::class, 'destroy'])->name('sales.destroy')->middleware('role:Admin');
 
     Route::get('purchase', [PurchaseController::class, 'index'])->name('purchase.index')->middleware('role:Admin, Kasir');
     Route::get('purchase/create', [PurchaseController::class, 'create'])->name('purchase.create')->middleware('role:Admin, Kasir');
     Route::post('purchase', [PurchaseController::class, 'store'])->name('purchase.store')->middleware('role:Admin, Kasir');
     Route::get('purchase/{purchase}', [PurchaseController::class, 'show'])->name('purchase.show')->middleware('role:Admin, Kasir');
-    Route::get('purchase/{purchase}/edit', [PurchaseController::class, 'edit'])->name('purchase.edit')->middleware('role:Admin');
-    Route::put('purchase/{purchase}', [PurchaseController::class, 'update'])->name('purchase.update')->middleware('role:Admin');
     Route::delete('purchase/{purchase}', [PurchaseController::class, 'destroy'])->name('purchase.destroy')->middleware('role:Admin');
 
     Route::get('stock_adjustment', [StockAdjustmentController::class, 'index'])->name('stock_adjustment.index')->middleware('role:Admin, Kasir');
     Route::get('stock_adjustment/create', [StockAdjustmentController::class, 'create'])->name('stock_adjustment.create')->middleware('role:Admin, Kasir');
     Route::post('stock_adjustment', [StockAdjustmentController::class, 'store'])->name('stock_adjustment.store')->middleware('role:Admin, Kasir');
     Route::get('stock_adjustment/{stock_adjustment}', [StockAdjustmentController::class, 'show'])->name('stock_adjustment.show')->middleware('role:Admin, Kasir');
-    Route::get('stock_adjustment/{stock_adjustment}/edit', [StockAdjustmentController::class, 'edit'])->name('stock_adjustment.edit')->middleware('role:Admin');
-    Route::put('stock_adjustment/{stock_adjustment}', [StockAdjustmentController::class, 'update'])->name('stock_adjustment.update')->middleware('role:Admin');
     Route::delete('stock_adjustment/{stock_adjustment}', [StockAdjustmentController::class, 'destroy'])->name('stock_adjustment.destroy')->middleware('role:Admin');
 
     Route::get('invoice', [InvoiceController::class, 'index'])->name('invoice.index')->middleware('role:Admin, Kasir');
     Route::get('invoice/create', [InvoiceController::class, 'create'])->name('invoice.create')->middleware('role:Admin, Kasir');
     Route::post('invoice', [InvoiceController::class, 'store'])->name('invoice.store')->middleware('role:Admin, Kasir');
     Route::get('invoice/{invoice}', [InvoiceController::class, 'show'])->name('invoice.show')->middleware('role:Admin, Kasir');
-    Route::get('invoice/{invoice}/edit', [InvoiceController::class, 'edit'])->name('invoice.edit')->middleware('role:Admin');
-    Route::put('invoice/{invoice}', [InvoiceController::class, 'update'])->name('invoice.update')->middleware('role:Admin');
     Route::delete('invoice/{invoice}', [InvoiceController::class, 'destroy'])->name('invoice.destroy')->middleware('role:Admin');
 
     Route::get('payment', [PaymentController::class, 'index'])->name('payment.index')->middleware('role:Admin, Kasir');
     Route::get('payment/create', [PaymentController::class, 'create'])->name('payment.create')->middleware('role:Admin, Kasir');
     Route::post('payment', [PaymentController::class, 'store'])->name('payment.store')->middleware('role:Admin, Kasir');
     Route::get('payment/{payment}', [PaymentController::class, 'show'])->name('payment.show')->middleware('role:Admin, Kasir');
-    Route::get('payment/{payment}/edit', [PaymentController::class, 'edit'])->name('payment.edit')->middleware('role:Admin');
-    Route::put('payment/{payment}', [PaymentController::class, 'update'])->name('payment.update')->middleware('role:Admin');
     Route::delete('payment/{payment}', [PaymentController::class, 'destroy'])->name('payment.destroy')->middleware('role:Admin');
 
     Route::get('saving', [SavingController::class, 'index'])->name('saving.index')->middleware('role:Admin, Kasir');
     Route::get('saving/create', [SavingController::class, 'create'])->name('saving.create')->middleware('role:Admin, Kasir');
     Route::post('saving', [SavingController::class, 'store'])->name('saving.store')->middleware('role:Admin, Kasir');
     Route::get('saving/{saving}', [SavingController::class, 'show'])->name('saving.show')->middleware('role:Admin, Kasir');
-    Route::get('saving/{saving}/edit', [SavingController::class, 'edit'])->name('saving.edit')->middleware('role:Admin');
-    Route::put('saving/{saving}', [SavingController::class, 'update'])->name('saving.update')->middleware('role:Admin');
     Route::delete('saving/{saving}', [SavingController::class, 'destroy'])->name('saving.destroy')->middleware('role:Admin');
 
     Route::get('withdraw', [WithdrawController::class, 'index'])->name('withdraw.index')->middleware('role:Admin, Kasir');
     Route::get('withdraw/create', [WithdrawController::class, 'create'])->name('withdraw.create')->middleware('role:Admin, Kasir');
     Route::post('withdraw', [WithdrawController::class, 'store'])->name('withdraw.store')->middleware('role:Admin, Kasir');
     Route::get('withdraw/{withdraw}', [WithdrawController::class, 'show'])->name('withdraw.show')->middleware('role:Admin, Kasir');
-    Route::get('withdraw/{withdraw}/edit', [WithdrawController::class, 'edit'])->name('withdraw.edit')->middleware('role:Admin');
-    Route::put('withdraw/{withdraw}', [WithdrawController::class, 'update'])->name('withdraw.update')->middleware('role:Admin');
     Route::delete('withdraw/{withdraw}', [WithdrawController::class, 'destroy'])->name('withdraw.destroy')->middleware('role:Admin');
 
     Route::get('loan', [LoanController::class, 'index'])->name('loan.index')->middleware('role:Admin, Kasir');
     Route::get('loan/create', [LoanController::class, 'create'])->name('loan.create')->middleware('role:Admin, Kasir');
     Route::post('loan', [LoanController::class, 'store'])->name('loan.store')->middleware('role:Admin, Kasir');
     Route::get('loan/{loan}', [LoanController::class, 'show'])->name('loan.show')->middleware('role:Admin, Kasir');
-    Route::get('loan/{loan}/edit', [LoanController::class, 'edit'])->name('loan.edit')->middleware('role:Admin');
-    Route::put('loan/{loan}', [LoanController::class, 'update'])->name('loan.update')->middleware('role:Admin');
     Route::delete('loan/{loan}', [LoanController::class, 'destroy'])->name('loan.destroy')->middleware('role:Admin');
 
     Route::get('installment', [InstallmentController::class, 'index'])->name('installment.index')->middleware('role:Admin, Kasir');
     Route::get('installment/create', [InstallmentController::class, 'create'])->name('installment.create')->middleware('role:Admin, Kasir');
     Route::post('installment', [InstallmentController::class, 'store'])->name('installment.store')->middleware('role:Admin, Kasir');
     Route::get('installment/{installment}', [InstallmentController::class, 'show'])->name('installment.show')->middleware('role:Admin, Kasir');
-    Route::get('installment/{installment}/edit', [InstallmentController::class, 'edit'])->name('installment.edit')->middleware('role:Admin');
-    Route::put('installment/{installment}', [InstallmentController::class, 'update'])->name('installment.update')->middleware('role:Admin');
     Route::delete('installment/{installment}', [InstallmentController::class, 'destroy'])->name('installment.destroy')->middleware('role:Admin');
 
     Route::get('journal', [JournalController::class, 'index'])->name('journal.index')->middleware('role:Admin, Kasir');
     Route::get('journal/create', [JournalController::class, 'create'])->name('journal.create')->middleware('role:Admin, Kasir');
     Route::post('journal', [JournalController::class, 'store'])->name('journal.store')->middleware('role:Admin, Kasir');
     Route::get('journal/{journal}', [JournalController::class, 'show'])->name('journal.show')->middleware('role:Admin, Kasir');
-    Route::get('journal/{journal}/edit', [JournalController::class, 'edit'])->name('journal.edit')->middleware('role:Admin');
-    Route::put('journal/{journal}', [JournalController::class, 'update'])->name('journal.update')->middleware('role:Admin');
     Route::delete('journal/{journal}', [JournalController::class, 'destroy'])->name('journal.destroy')->middleware('role:Admin');
 
     Route::get('ledger', [LedgerController::class, 'index'])->name('ledger.index')->middleware('role:Admin');
@@ -187,8 +172,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('profit_loss', [ProfitLossController::class, 'index'])->name('profit_loss.index')->middleware('role:Admin');
     Route::get('balance_sheet', [BalanceSheetController::class, 'index'])->name('balance_sheet.index')->middleware('role:Admin');
 
-    Route::get('configuration', [ConfigurationController::class, 'index'])->name('configuration.index')->middleware('role:Admin');
-    Route::post('configuration', [ConfigurationController::class, 'process'])->name('configuration.process')->middleware('role:Admin');
+    Route::get('auto_journal', [AutoJournalController::class, 'index'])->name('auto_journal.index')->middleware('role:Admin');
+    Route::post('auto_journal', [AutoJournalController::class, 'process'])->name('auto_journal.process')->middleware('role:Admin');
+    Route::get('activity_log', [ActivityLogController::class, 'index'])->name('activity_log.index')->middleware('role:Admin');
 });
 
 Route::post('ledger', [LedgerController::class, 'process'])->name('ledger.process');

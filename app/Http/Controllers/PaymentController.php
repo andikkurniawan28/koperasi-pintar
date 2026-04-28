@@ -51,10 +51,8 @@ class PaymentController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('payment.edit', $row->id);
                     $showUrl = route('payment.show', $row->id);
                     $deleteUrl = route('payment.destroy', $row->id);
-                    // $recap = route('invoice.payment_record_per_invoice', $row->id);
 
                     return '<div class="btn-group">
                                 <a href="' . $showUrl . '" class="btn btn-sm btn-info">Tampil</a>

@@ -48,7 +48,6 @@ class LoanController extends Controller
                     });
                 })
                 ->addColumn('action', function ($row) {
-                    $editUrl = route('loan.edit', $row->id);
                     $showUrl = route('loan.show', $row->id);
                     $deleteUrl = route('loan.destroy', $row->id);
 
