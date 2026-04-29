@@ -28,6 +28,7 @@ return new class extends Migration
             $table->foreignId('installment_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('stock_adjustment_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('journal_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('member_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained();
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();

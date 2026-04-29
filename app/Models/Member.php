@@ -29,18 +29,33 @@ class Member extends Model
         return $this->hasMany(Saving::class);
     }
 
-    public static function savingBalance($member_id, $saving_type_id)
-    {
-        $in = Saving::where('member_id', $member_id)
-            ->where('saving_type_id', $saving_type_id)
-            ->where('direction', 'in')
-            ->sum('total');
+    public static function salesRevenue($member_id){
+        $account_id = AutoJournal::first()->sales_revenue_member_account_id;
+        $account = Account::findOrFail($account_id);
+        $debit = Ledger::where('account_id', $account_id)->where('member_id', $member_id)->sum('debit');
+        $credit = Ledger::where('account_id', $account_id)->where('member_id', $member_id)->sum('credit');
 
-        $out = Saving::where('member_id', $member_id)
-            ->where('saving_type_id', $saving_type_id)
-            ->where('direction', 'out')
-            ->sum('total');
+        if($account->normal_balance == 'debit'){
+            $amount = $debit - $credit;
+        } else {
+            $amount = $credit - $debit;
+        }
 
-        return $in - $out;
+        return $amount;
+    }
+
+    public static function serviceRevenue($member_id){
+        $account_id = AutoJournal::first()->service_revenue_member_account_id;
+        $account = Account::findOrFail($account_id);
+        $debit = Ledger::where('account_id', $account_id)->where('member_id', $member_id)->sum('debit');
+        $credit = Ledger::where('account_id', $account_id)->where('member_id', $member_id)->sum('credit');
+
+        if($account->normal_balance == 'debit'){
+            $amount = $debit - $credit;
+        } else {
+            $amount = $credit - $debit;
+        }
+
+        return $amount;
     }
 }

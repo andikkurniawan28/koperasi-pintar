@@ -33,7 +33,16 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Member::insert([
-            ['name' => 'Budi Sugiarto', 'description' => 'PT. ABC', 'whatsapp' => '081234567891', 'code' => '1234']
+            ['name' => 'Budi Sugiarto',     'description' => 'PT. ABC',        'whatsapp' => '081234567801', 'code' => 'M001'],
+            ['name' => 'Siti Aminah',       'description' => 'CV. Sejahtera',  'whatsapp' => '081234567802', 'code' => 'M002'],
+            ['name' => 'Ahmad Fauzi',       'description' => 'UD. Makmur',     'whatsapp' => '081234567803', 'code' => 'M003'],
+            ['name' => 'Dewi Lestari',      'description' => 'PT. Sentosa',    'whatsapp' => '081234567804', 'code' => 'M004'],
+            ['name' => 'Rudi Hartono',      'description' => 'Toko Jaya',      'whatsapp' => '081234567805', 'code' => 'M005'],
+            ['name' => 'Maya Putri',        'description' => 'CV. Berkah',     'whatsapp' => '081234567806', 'code' => 'M006'],
+            ['name' => 'Andi Saputra',      'description' => 'UD. Sumber Rejeki','whatsapp' => '081234567807', 'code' => 'M007'],
+            ['name' => 'Nur Aisyah',        'description' => 'PT. Nusantara',  'whatsapp' => '081234567808', 'code' => 'M008'],
+            ['name' => 'Hendra Wijaya',     'description' => 'Toko Makmur',    'whatsapp' => '081234567809', 'code' => 'M009'],
+            ['name' => 'Fitri Handayani',   'description' => 'CV. Mandiri',    'whatsapp' => '081234567810', 'code' => 'M010'],
         ]);
 
         Customer::insert([

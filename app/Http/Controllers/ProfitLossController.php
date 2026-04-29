@@ -13,7 +13,7 @@ class ProfitLossController extends Controller
         return view('report.profit_loss');
     }
 
-    public function process(Request $request)
+    public static function process(Request $request)
     {
         $date_from = $request->date_from;
         $date_to   = $request->date_to;

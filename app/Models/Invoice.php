@@ -24,9 +24,6 @@ class Invoice extends Model
     public function account(){ return $this->belongsTo(Account::class); }
     public function item(){ return $this->hasMany(InvoiceItem::class); }
 
-    // =========================
-    // CREATE
-    // =========================
     public static function catatTagihan($request)
     {
         $invoice = self::create([
@@ -58,55 +55,6 @@ class Invoice extends Model
         }
 
         Ledger::catatTagihan($invoice, $request);
-
-        // DP langsung
-        if ($request->paid > 0) {
-            Payment::createFromInvoice($invoice, $request->paid);
-        }
-
-        return $invoice;
-    }
-
-    // =========================
-    // UPDATE
-    // =========================
-    public static function updateTagihan($id, $request)
-    {
-        $invoice = self::findOrFail($id);
-
-        $invoice->update([
-            'type' => $request->type,
-            'date' => $request->date,
-            'due_date' => $request->due_date,
-            'member_id' => $request->member_id,
-            'customer_id' => $request->customer_id,
-            'subtotal' => $request->subtotal,
-            'discount' => $request->discount,
-            'expenses' => $request->expenses,
-            'taxes' => $request->taxes,
-            'grand_total' => $request->grand_total,
-            // 'paid' => $request->paid,
-            // 'left' => $request->left,
-            // 'account_id' => $request->account_id,
-        ]);
-
-        // reset item & ledger saja
-        InvoiceItem::where('invoice_id', $invoice->id)->delete();
-        Ledger::where('invoice_id', $invoice->id)->delete();
-
-        foreach ($request->items as $item) {
-            InvoiceItem::create([
-                'invoice_id' => $invoice->id,
-                'name' => $item['name'],
-                'description' => $item['description'],
-                'amount' => $item['amount'],
-            ]);
-        }
-
-        Ledger::catatTagihan($invoice, $request);
-
-        // sinkron ulang (JANGAN HAPUS PAYMENT)
-        Payment::syncInvoice($invoice);
 
         return $invoice;
     }

@@ -66,6 +66,7 @@ class Ledger extends Model
             'credit' => $sales->subtotal,
             'debit' => 0,
             'sales_id' => $sales->id,
+            'member_id' => $sales->member_id,
         ]);
 
         // =========================
@@ -308,6 +309,7 @@ class Ledger extends Model
             'credit' => $invoice->subtotal,
             'debit' => 0,
             'invoice_id' => $invoice->id,
+            'member_id' => $invoice->member_id,
         ]);
 
         // =========================
@@ -400,6 +402,7 @@ class Ledger extends Model
             'debit'       => 0,
             'credit'      => $saving->total,
             'saving_id'   => $saving->id,
+            'member_id'   => $saving->member_id,
         ]);
     }
 
